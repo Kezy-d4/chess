@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-# Methods to isolate and identify the six component fields of a FEN record
+# Methods to isolate and identify the various data fields of a FEN record
 module FenSeparation
-  # Each field of a FEN record is already naturally separated by a whitespace,
-  # so the split method is very appropriate here.
   def piece_placement_data(fen_str)
     fields = fen_str.split
     fields[0]
@@ -32,5 +30,10 @@ module FenSeparation
   def full_move_number_data(fen_str)
     fields = fen_str.split
     fields[5]
+  end
+
+  def piece_placement_data_by_rank(fen_str, rank_num)
+    ranks = piece_placement_data(fen_str).split('/')
+    ranks.reverse[rank_num - 1]
   end
 end

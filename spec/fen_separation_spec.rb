@@ -55,5 +55,35 @@ describe FenSeparation do
         expect(result).to eq(expected)
       end
     end
+
+    describe '#piece_placement_data_by_rank' do
+      it 'returns a substring containing just the piece placement data of the eighth rank' do
+        rank_num = 8
+        result = dummy_class.piece_placement_data_by_rank(fen_str, rank_num)
+        expected = 'rnbqkbnr'
+        expect(result).to eq(expected)
+      end
+
+      it 'returns a substring containing just the piece placement data of the first rank' do
+        rank_num = 1
+        result = dummy_class.piece_placement_data_by_rank(fen_str, rank_num)
+        expected = 'RNBQKBNR'
+        expect(result).to eq(expected)
+      end
+
+      it 'returns a substring containing just the piece placement data of the sixth rank' do
+        rank_num = 6
+        result = dummy_class.piece_placement_data_by_rank(fen_str, rank_num)
+        expected = '8'
+        expect(result).to eq(expected)
+      end
+
+      it 'returns a substring containing just the piece placement data of the third rank' do
+        rank_num = 3
+        result = dummy_class.piece_placement_data_by_rank(fen_str, rank_num)
+        expected = '8'
+        expect(result).to eq(expected)
+      end
+    end
   end
 end
