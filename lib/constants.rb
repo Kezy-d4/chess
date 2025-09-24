@@ -16,5 +16,5 @@ module Constants
                              rook: "\u{265C}",
                              bishop: "\u{265D}",
                              knight: "\u{265E}",
-                             pawn: "\u{265F}" }.freeze
+                             pawn: "\u{2659}" }.freeze
 end
