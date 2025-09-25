@@ -11,10 +11,16 @@ module Constants
   PLAYER_COLOR_RGB_MAP = { white: '255;255;255',
                            black: '0;0;0' }.freeze
 
-  PIECE_UNICODE_ICON_MAP = { king: "\u{265A}",
-                             queen: "\u{265B}",
-                             rook: "\u{265C}",
-                             bishop: "\u{265D}",
-                             knight: "\u{265E}",
-                             pawn: "\u{2659}" }.freeze
+  PIECE_UNICODE_ICON_MAP = { K: "\u{265A}",
+                             k: "\u{265A}",
+                             Q: "\u{265B}",
+                             q: "\u{265B}",
+                             R: "\u{265C}",
+                             r: "\u{265C}",
+                             B: "\u{265D}",
+                             b: "\u{265D}",
+                             N: "\u{265E}",
+                             n: "\u{265E}",
+                             P: "\u{2659}",
+                             p: "\u{2659}" }.freeze
 end
