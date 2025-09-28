@@ -2,14 +2,28 @@
 
 # Module to store constants for use throughout the codebase
 module Constants
-  NUMBER_OF_RANKS = 8
-  NUMBER_OF_FILES = 8
+  NUMBER_OF_BOARD_FILES = 8
+  NUMBER_OF_BOARD_RANKS = 8
 
-  SQUARE_COLOR_RGB_MAP = { green: '119;162;109',
-                           yellow: '200;194;100' }.freeze
+  SQUARE_COLOR_RGB_MAP = { yellow: '200, 194, 100',
+                           green: '119, 162, 109' }.freeze
 
-  PLAYER_COLOR_RGB_MAP = { white: '255;255;255',
-                           black: '0;0;0' }.freeze
+  PIECE_COLOR_RGB_MAP = { white: '255, 255, 255',
+                          black: '0, 0, 0' }.freeze
+
+  WHITE_PIECE_FEN_MAP = { king: 'K',
+                          queen: 'Q',
+                          rook: 'R',
+                          bishop: 'B',
+                          knight: 'N',
+                          pawn: 'P' }.freeze
+
+  BLACK_PIECE_FEN_MAP = { king: 'k',
+                          queen: 'q',
+                          rook: 'r',
+                          bishop: 'b',
+                          knight: 'n',
+                          pawn: 'p' }.freeze
 
   PIECE_UNICODE_ICON_MAP = { K: "\u{265A}",
                              k: "\u{265A}",
