@@ -67,4 +67,8 @@ module FenParsing
   def black_queenside_castle_available?(fen)
     castling_rights_data(fen).include?(Constants::BLACK_PIECE_FEN_MAP[:queen])
   end
+
+  def white_has_the_move?(fen)
+    active_color_data(fen) == 'w'
+  end
 end
