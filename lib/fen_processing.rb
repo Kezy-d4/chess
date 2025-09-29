@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'constants'
+
 # Mixin to process a FEN record representing a chess position
 module FenProcessing
   def data_fields(fen)
@@ -48,5 +50,9 @@ module FenProcessing
 
   def en_passant_target_square_available?(fen)
     en_passant_target_square_data(fen) != '-'
+  end
+
+  def white_kingside_castle_available?(fen)
+    castling_rights_data(fen).include?(Constants::WHITE_PIECE_FEN_MAP[:king])
   end
 end

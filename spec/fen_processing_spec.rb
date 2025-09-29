@@ -213,4 +213,24 @@ describe FenProcessing do
       end
     end
   end
+
+  describe '#white_kingside_castle_available?' do
+    context 'when the FEN record represents a chess position where White has kingside castling rights' do
+      subject { initial_fen }
+
+      it 'returns true' do
+        result = dummy_class.white_kingside_castle_available?(initial_fen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the FEN record represents a chess position where White does not have kingside castling rights' do
+      subject(:white_kingside_castle_unavailable_fen) { '8/8/8/8/8/2N5/7k/5K2 w - - 99 151' }
+
+      it 'returns false' do
+        result = dummy_class.white_kingside_castle_available?(white_kingside_castle_unavailable_fen)
+        expect(result).to be(false)
+      end
+    end
+  end
 end
