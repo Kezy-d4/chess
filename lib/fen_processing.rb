@@ -45,4 +45,8 @@ module FenProcessing
   def seventy_five_move_rule_satisfied?(fen)
     half_move_clock_data(fen).to_i >= 150
   end
+
+  def en_passant_target_square_available?(fen)
+    en_passant_target_square_data(fen) != '-'
+  end
 end

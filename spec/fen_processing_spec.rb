@@ -193,4 +193,24 @@ describe FenProcessing do
       end
     end
   end
+
+  describe '#en_passant_target_square_available?' do
+    context 'when the FEN record represents a chess position with an en passant target square' do
+      subject(:en_passant_target_fen) { 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1' }
+
+      it 'returns true' do
+        result = dummy_class.en_passant_target_square_available?(en_passant_target_fen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the FEN record represents a chess position without an en passant target square' do
+      subject { initial_fen }
+
+      it 'returns false' do
+        result = dummy_class.en_passant_target_square_available?(initial_fen)
+        expect(result).to be(false)
+      end
+    end
+  end
 end
