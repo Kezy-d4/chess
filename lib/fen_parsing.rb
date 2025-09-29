@@ -101,11 +101,9 @@ module FenParsing
   end
 
   def number_of_white_pawns(fen)
-    counter = 0
-    piece_placement_data_of_squares(fen).each do |char|
-      counter += 1 if char == Constants::WHITE_PIECE_FEN_MAP[:pawn]
+    piece_placement_data_of_squares(fen).count do |char|
+      char == Constants::WHITE_PIECE_FEN_MAP[:pawn]
     end
-    counter
   end
 
   def number_of_white_pieces(fen)
