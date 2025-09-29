@@ -115,4 +115,10 @@ module FenParsing
       char == Constants::BLACK_PIECE_FEN_MAP[:pawn]
     end
   end
+
+  def number_of_black_pieces(fen)
+    piece_placement_data_of_squares(fen).count do |char|
+      Constants::BLACK_PIECE_FEN_MAP.value?(char)
+    end
+  end
 end
