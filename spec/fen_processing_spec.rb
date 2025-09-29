@@ -135,4 +135,62 @@ describe FenProcessing do
       end
     end
   end
+
+  describe '#fifty_move_rule_satisfied?' do
+    context 'when the FEN record represents a chess position with at least one hundred half moves' do
+      subject(:one_hundred_half_moves_fen) { '8/8/8/8/8/2N5/7k/5K2 w - - 100 151' }
+
+      it 'returns true' do
+        result = dummy_class.fifty_move_rule_satisfied?(one_hundred_half_moves_fen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the FEN record represents a chess position with more than one hundred half moves' do
+      subject(:one_hundred_and_one_half_moves_fen) { '8/8/8/8/8/2N5/7k/5K2 w - - 101 151' }
+
+      it 'returns true' do
+        result = dummy_class.fifty_move_rule_satisfied?(one_hundred_and_one_half_moves_fen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the FEN record represents a chess position with less than one hundred half moves' do
+      subject(:ninety_nine_half_moves_fen) { '8/8/8/8/8/2N5/7k/5K2 w - - 99 151' }
+
+      it 'returns false' do
+        result = dummy_class.fifty_move_rule_satisfied?(ninety_nine_half_moves_fen)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#seventy_five_move_rule_satisfied?' do
+    context 'when the FEN record represents a chess position with at least one hundred and fifty half moves' do
+      subject(:one_hundred_and_fifty_half_moves_fen) { '8/8/8/8/8/2N5/7k/5K2 w - - 150 201' }
+
+      it 'returns true' do
+        result = dummy_class.seventy_five_move_rule_satisfied?(one_hundred_and_fifty_half_moves_fen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the FEN record represents a chess position with more than one hundred and fifty half moves' do
+      subject(:one_hundred_and_fifty_one_half_moves_fen) { '8/8/8/8/8/2N5/7k/5K2 w - - 151 201' }
+
+      it 'returns true' do
+        result = dummy_class.seventy_five_move_rule_satisfied?(one_hundred_and_fifty_one_half_moves_fen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the FEN record represents a chess position with less than one hundred and fifty half moves' do
+      subject(:one_hundred_and_forty_nine_half_moves_fen) { '8/8/8/8/8/2N5/7k/5K2 w - - 149 201' }
+
+      it 'returns false' do
+        result = dummy_class.seventy_five_move_rule_satisfied?(one_hundred_and_forty_nine_half_moves_fen)
+        expect(result).to be(false)
+      end
+    end
+  end
 end

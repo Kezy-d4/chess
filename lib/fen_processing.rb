@@ -37,4 +37,12 @@ module FenProcessing
   def piece_placement_data_by_rank(fen, rank)
     piece_placement_data_of_ranks(fen).reverse[rank - 1]
   end
+
+  def fifty_move_rule_satisfied?(fen)
+    half_move_clock_data(fen).to_i >= 100
+  end
+
+  def seventy_five_move_rule_satisfied?(fen)
+    half_move_clock_data(fen).to_i >= 150
+  end
 end
