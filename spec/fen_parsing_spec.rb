@@ -426,4 +426,15 @@ describe FenParsing do
       end
     end
   end
+
+  describe '#number_of_white_pieces' do
+    context 'when the FEN record represents the initial chess position' do
+      subject { initial_fen }
+
+      it 'returns 16' do
+        result = dummy_class.number_of_white_pieces(initial_fen)
+        expect(result).to eq(16)
+      end
+    end
+  end
 end

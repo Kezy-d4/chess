@@ -107,4 +107,12 @@ module FenParsing
     end
     counter
   end
+
+  def number_of_white_pieces(fen)
+    counter = 0
+    piece_placement_data_of_squares(fen).each do |char|
+      counter += 1 if Constants::WHITE_PIECE_FEN_MAP.value?(char)
+    end
+    counter
+  end
 end
