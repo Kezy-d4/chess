@@ -3,7 +3,7 @@
 require_relative 'constants'
 
 # Mixin to process a FEN record representing a chess position
-module FenProcessing
+module FenParsing
   def data_fields(fen)
     fen.split
   end

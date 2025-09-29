@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative '../lib/fen_processing'
+require_relative '../lib/fen_parsing'
 
-describe FenProcessing do
-  let(:dummy_class) { Class.new { extend FenProcessing } }
+describe FenParsing do
+  let(:dummy_class) { Class.new { extend FenParsing } }
   let(:initial_fen) { 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' }
 
   describe '#data_fields' do
