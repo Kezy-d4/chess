@@ -313,4 +313,24 @@ describe FenParsing do
       end
     end
   end
+
+  describe '#black_has_the_move?' do
+    context 'when the FEN record represents a chess position where Black has the move' do
+      subject(:black_has_the_move_fen) { 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1' }
+
+      it 'returns true' do
+        result = dummy_class.black_has_the_move?(black_has_the_move_fen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the FEN record represents a chess position where Black does not have the move' do
+      subject { initial_fen }
+
+      it 'returns false' do
+        result = dummy_class.black_has_the_move?(initial_fen)
+        expect(result).to be(false)
+      end
+    end
+  end
 end

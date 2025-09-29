@@ -71,4 +71,8 @@ module FenParsing
   def white_has_the_move?(fen)
     active_color_data(fen) == 'w'
   end
+
+  def black_has_the_move?(fen)
+    active_color_data(fen) == 'b'
+  end
 end
