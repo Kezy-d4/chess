@@ -130,6 +130,26 @@ describe FenParsing do
     end
   end
 
+  describe '#char_represents_contiguous_empty_squares?' do
+    context 'when the character represents between one and eight contiguous empty squares' do
+      subject(:eight_contiguous_empty_squares_char) { '8' }
+
+      it 'returns true' do
+        result = dummy_class.char_represents_contiguous_empty_squares?(eight_contiguous_empty_squares_char)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the character does not represent contiguous empty squares' do
+      subject(:white_queen_char) { 'Q' }
+
+      it 'returns false' do
+        result = dummy_class.char_represents_contiguous_empty_squares?(white_queen_char)
+        expect(result).to be(false)
+      end
+    end
+  end
+
   describe '#piece_placement_data_of_ranks' do
     context 'when the FEN record represents the initial chess position' do
       subject { initial_fen }

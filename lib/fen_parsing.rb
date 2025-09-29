@@ -40,6 +40,10 @@ module FenParsing
     Constants::BLACK_PIECE_FEN_MAP.value?(char)
   end
 
+  def char_represents_contiguous_empty_squares?(char)
+    char.to_i.between?(1, Constants::NUMBER_OF_BOARD_FILES)
+  end
+
   def piece_placement_data_of_ranks(fen)
     piece_placement_data(fen).split('/')
   end
