@@ -333,4 +333,15 @@ describe FenParsing do
       end
     end
   end
+
+  describe '#number_of_white_pawns' do
+    context 'when the FEN record represents a chess position with eight white pawns on various ranks' do
+      subject(:eight_scattered_white_pawns_fen) { 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1' }
+
+      it 'returns 8' do
+        result = dummy_class.number_of_white_pawns(eight_scattered_white_pawns_fen)
+        expect(result).to eq(8)
+      end
+    end
+  end
 end

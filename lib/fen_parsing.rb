@@ -75,4 +75,12 @@ module FenParsing
   def black_has_the_move?(fen)
     active_color_data(fen) == 'b'
   end
+
+  def number_of_white_pawns(fen)
+    counter = 0
+    piece_placement_data(fen).chars.each do |char|
+      counter += 1 if char == Constants::WHITE_PIECE_FEN_MAP[:pawn]
+    end
+    counter
+  end
 end
