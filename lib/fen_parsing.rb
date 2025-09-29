@@ -59,4 +59,8 @@ module FenParsing
   def white_queenside_castle_available?(fen)
     castling_rights_data(fen).include?(Constants::WHITE_PIECE_FEN_MAP[:queen])
   end
+
+  def black_kingside_castle_available?(fen)
+    castling_rights_data(fen).include?(Constants::BLACK_PIECE_FEN_MAP[:king])
+  end
 end
