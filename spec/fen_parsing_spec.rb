@@ -150,6 +150,28 @@ describe FenParsing do
     end
   end
 
+  describe '#piece_placement_data_of_squares' do
+    context 'when the FEN record represents the initial chess position' do
+      subject { initial_fen }
+
+      let(:expected) do
+        ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r',
+         'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
+         nil, nil, nil, nil, nil, nil, nil, nil,
+         nil, nil, nil, nil, nil, nil, nil, nil,
+         nil, nil, nil, nil, nil, nil, nil, nil,
+         nil, nil, nil, nil, nil, nil, nil, nil,
+         'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
+         'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
+      end
+
+      it 'returns an array of substrings representing each square, with nil representing empty squares' do
+        result = dummy_class.piece_placement_data_of_squares(initial_fen)
+        expect(result).to eq(expected)
+      end
+    end
+  end
+
   describe '#piece_placement_data_of_ranks' do
     context 'when the FEN record represents the initial chess position' do
       subject { initial_fen }

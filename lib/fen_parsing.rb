@@ -52,6 +52,18 @@ module FenParsing
     piece_placement_data_of_ranks(fen).reverse[rank - 1]
   end
 
+  def piece_placement_data_of_squares(fen)
+    squares = []
+    piece_placement_data(fen).chars.each do |char|
+      if char_represents_white_piece?(char) || char_represents_black_piece?(char)
+        squares << char
+      elsif char_represents_contiguous_empty_squares?(char)
+        char.to_i.times { squares << nil }
+      end
+    end
+    squares
+  end
+
   def fifty_move_rule_satisfied?(fen)
     half_move_clock_data(fen).to_i >= 100
   end
