@@ -53,15 +53,13 @@ module FenParsing
   end
 
   def piece_placement_data_of_squares(fen)
-    squares = []
-    piece_placement_data(fen).chars.each do |char|
+    piece_placement_data(fen).chars.each_with_object([]) do |char, squares|
       if char_represents_white_piece?(char) || char_represents_black_piece?(char)
         squares << char
       elsif char_represents_contiguous_empty_squares?(char)
         char.to_i.times { squares << nil }
       end
     end
-    squares
   end
 
   def fifty_move_rule_satisfied?(fen)
