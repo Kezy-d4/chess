@@ -110,6 +110,26 @@ describe FenParsing do
     end
   end
 
+  describe '#char_represents_black_piece?' do
+    context 'when the character represents a black piece' do
+      subject(:black_queen_char) { 'q' }
+
+      it 'returns true' do
+        result = dummy_class.char_represents_black_piece?(black_queen_char)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the character does not represent a black piece' do
+      subject(:white_queen_char) { 'Q' }
+
+      it 'returns false' do
+        result = dummy_class.char_represents_black_piece?(white_queen_char)
+        expect(result).to be(false)
+      end
+    end
+  end
+
   describe '#piece_placement_data_of_ranks' do
     context 'when the FEN record represents the initial chess position' do
       subject { initial_fen }

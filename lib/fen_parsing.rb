@@ -36,6 +36,10 @@ module FenParsing
     Constants::WHITE_PIECE_FEN_MAP.value?(char)
   end
 
+  def char_represents_black_piece?(char)
+    Constants::BLACK_PIECE_FEN_MAP.value?(char)
+  end
+
   def piece_placement_data_of_ranks(fen)
     piece_placement_data(fen).split('/')
   end
