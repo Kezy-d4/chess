@@ -4,8 +4,7 @@ require_relative 'constants'
 
 # Parent to each of the pieces in chess
 class Piece
-  def initialize(owner, color)
-    @owner = owner
+  def initialize(color)
     @color = color
   end
 

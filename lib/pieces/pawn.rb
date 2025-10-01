@@ -4,7 +4,7 @@ require_relative '../piece'
 
 # A pawn chess piece
 class Pawn < Piece
-  def initialize(owner, color)
+  def initialize(color)
     super
     @icon = Constants::PIECE_UNICODE_ICON_MAP[:pawn]
   end
