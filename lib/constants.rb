@@ -33,4 +33,9 @@ module Constants
                              bishop: "\u{265D}",
                              knight: "\u{265E}",
                              pawn: "\u{2659}" }.freeze
+
+  PIECE_FEN_CLASS_MAP = {
+    white: { K: King, Q: Queen, R: Rook, B: Bishop, N: Knight, P: Pawn },
+    black: { k: King, q: Queen, r: Rook, b: Bishop, n: Knight, p: Pawn }
+  }.freeze
 end
