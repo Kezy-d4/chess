@@ -49,7 +49,14 @@ module FenParsing
   end
 
   def piece_placement_data_by_rank(fen, rank)
-    piece_placement_data_of_ranks(fen).reverse[rank - 1]
+    rank_data = piece_placement_data_of_ranks(fen).reverse[rank - 1]
+    rank_data.chars.each_with_object([]) do |char, squares|
+      if char_represents_white_piece?(char) || char_represents_black_piece?(char)
+        squares << char
+      elsif char_represents_contiguous_empty_squares?(char)
+        char.to_i.times { squares << nil }
+      end
+    end
   end
 
   def piece_placement_data_of_squares(fen)

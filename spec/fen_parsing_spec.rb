@@ -188,31 +188,31 @@ describe FenParsing do
     context 'when the FEN record represents the initial chess position' do
       subject { initial_fen }
 
-      it 'returns a substring representing the piece placement data of the eighth rank' do
+      it 'returns an array of substrings/nil representing each square of the eighth rank' do
         rank = 8
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = 'rnbqkbnr'
+        expected = %w[r n b q k b n r]
         expect(result).to eq(expected)
       end
 
-      it 'returns a substring representing the piece placement data of the sixth rank' do
+      it 'returns an array of substrings/nil representing each square of the sixth rank' do
         rank = 6
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = '8'
+        expected = [nil, nil, nil, nil, nil, nil, nil, nil]
         expect(result).to eq(expected)
       end
 
-      it 'returns a substring representing the piece placement data of the third rank' do
+      it 'returns an array of substrings/nil representing each square of the third rank' do
         rank = 3
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = '8'
+        expected = [nil, nil, nil, nil, nil, nil, nil, nil]
         expect(result).to eq(expected)
       end
 
-      it 'returns a substring representing the piece placement data of the second rank' do
+      it 'returns an array of substrings/nil representing each square of the second rank' do
         rank = 2
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = 'PPPPPPPP'
+        expected = %w[P P P P P P P P]
         expect(result).to eq(expected)
       end
     end
