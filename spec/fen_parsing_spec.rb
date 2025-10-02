@@ -150,28 +150,6 @@ describe FenParsing do
     end
   end
 
-  describe '#piece_placement_data_of_squares' do
-    context 'when the FEN record represents the initial chess position' do
-      subject { initial_fen }
-
-      let(:expected) do
-        ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r',
-         'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
-         nil, nil, nil, nil, nil, nil, nil, nil,
-         nil, nil, nil, nil, nil, nil, nil, nil,
-         nil, nil, nil, nil, nil, nil, nil, nil,
-         nil, nil, nil, nil, nil, nil, nil, nil,
-         'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-         'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
-      end
-
-      it 'returns an array of substrings representing each square, with nil representing empty squares' do
-        result = dummy_class.piece_placement_data_of_squares(initial_fen)
-        expect(result).to eq(expected)
-      end
-    end
-  end
-
   describe '#piece_placement_data_of_ranks' do
     context 'when the FEN record represents the initial chess position' do
       subject { initial_fen }
@@ -184,35 +162,57 @@ describe FenParsing do
     end
   end
 
+  describe '#piece_placement_data_of_squares' do
+    context 'when the FEN record represents the initial chess position' do
+      subject { initial_fen }
+
+      let(:expected) do
+        %w[r n b q k b n r /
+           p p p p p p p p /
+           8 /
+           8 /
+           8 /
+           8 /
+           P P P P P P P P /
+           R N B Q K B N R]
+      end
+
+      it 'returns an array of substrings representing the piece placement data of each square' do
+        result = dummy_class.piece_placement_data_of_squares(initial_fen)
+        expect(result).to eq(expected)
+      end
+    end
+  end
+
   describe '#piece_placement_data_by_rank' do
     context 'when the FEN record represents the initial chess position' do
       subject { initial_fen }
 
-      it 'returns an array of substrings/nil representing each square of the eighth rank' do
+      it 'returns a substring representing the piece placement data of the eighth rank' do
         rank = 8
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = %w[r n b q k b n r]
+        expected = 'rnbqkbnr'
         expect(result).to eq(expected)
       end
 
-      it 'returns an array of substrings/nil representing each square of the sixth rank' do
+      it 'returns a substring representing the piece placement data of the sixth rank' do
         rank = 6
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = [nil, nil, nil, nil, nil, nil, nil, nil]
+        expected = '8'
         expect(result).to eq(expected)
       end
 
-      it 'returns an array of substrings/nil representing each square of the third rank' do
+      it 'returns a substring representing the piece placement data of the third rank' do
         rank = 3
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = [nil, nil, nil, nil, nil, nil, nil, nil]
+        expected = '8'
         expect(result).to eq(expected)
       end
 
-      it 'returns an array of substrings/nil representing each square of the second rank' do
+      it 'returns a substring representing the piece placement data of the second rank' do
         rank = 2
         result = dummy_class.piece_placement_data_by_rank(initial_fen, rank)
-        expected = %w[P P P P P P P P]
+        expected = 'PPPPPPPP'
         expect(result).to eq(expected)
       end
     end
