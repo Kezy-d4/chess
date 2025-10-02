@@ -47,12 +47,12 @@ module Constants
   }.freeze
 
   PIECE_FEN_CLASS_MAP = {
-    white: { K: King, Q: Queen, R: Rook, B: Bishop, N: Knight, P: Pawn },
-    black: { k: King, q: Queen, r: Rook, b: Bishop, n: Knight, p: Pawn }
+    white: { 'K' => King, 'Q' => Queen, 'R' => Rook, 'B' => Bishop, 'N' => Knight, 'P' => Pawn },
+    black: { 'k' => King, 'q' => Queen, 'r' => Rook, 'b' => Bishop, 'n' => Knight, 'p' => Pawn }
   }.freeze
 
   PIECE_CLASS_FEN_MAP = {
     white: { King => 'K', Queen => 'Q', Rook => 'R', Bishop => 'B', Knight => 'N', Pawn => 'P' },
     black: { King => 'k', Queen => 'q', Rook => 'r', Bishop => 'b', Knight => 'n', Pawn => 'p' }
-  }
+  }.freeze
 end
