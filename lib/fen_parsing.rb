@@ -41,7 +41,7 @@ module FenParsing
   end
 
   def char_represents_contiguous_empty_squares?(char)
-    char.to_i.between?(1, Constants::NUMBER_OF_BOARD_FILES)
+    char.to_i.between?(Constants::BOARD_RANKS.min, Constants::BOARD_RANKS.max)
   end
 
   def piece_placement_data_of_ranks(fen)
