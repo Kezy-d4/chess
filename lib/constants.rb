@@ -4,8 +4,6 @@ require_relative 'pieces'
 
 # Namespace to store constants for use throughout the codebase
 module Constants
-  NUMBER_OF_BOARD_FILES = 8
-  NUMBER_OF_BOARD_RANKS = 8
   BOARD_FILES = ('a'..'h')
   BOARD_RANKS = (1..8)
 
