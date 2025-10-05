@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'fen_deserialization'
+require_relative 'square'
+require_relative 'pieces'
 
 # A chess position
 class Position
@@ -10,7 +12,6 @@ class Position
     @instantiated_squares_and_pieces = instantiated_squares_and_pieces
   end
 
-  # untested
   def access_square(algebraic_id)
     @instantiated_squares_and_pieces[algebraic_id]
   end
