@@ -23,16 +23,43 @@ class Display
 
   private
 
-  def update_active_square_color(new_color)
-    @active_square_color = new_color
+  def render_rank(rank)
+    update_active_square_color(initial_square_color_for_rank(rank))
+    rank_keys(rank).each do |algebraic_id|
+      square = @position.access_square(algebraic_id)
+      if square.empty?
+        render_empty_square
+      elsif square.occupied?
+        render_occupied_square(square)
+      end
+      switch_active_square_color
+    end
   end
 
-  def switch_active_square_color
-    if @active_square_color == :yellow
-      update_active_square_color(:green)
-    elsif @active_square_color == :green
-      update_active_square_color(:yellow)
+  def initial_square_color_for_rank(rank)
+    if rank.even?
+      :yellow
+    elsif rank.odd?
+      :green
     end
+  end
+
+  def rank_keys(rank)
+    Constants::BOARD_FILES.each_with_object([]) do |file, arr|
+      arr << :"#{file}#{rank}"
+    end
+  end
+
+  def render_empty_square
+    ansi = "\e[48;2;#{square_rgb_val}m#{empty_square}\e[0m"
+    print ansi
+  end
+
+  def render_occupied_square(square)
+    occupant_icon = square.occupant.icon
+    occupant_color = square.occupant.color
+    ansi = "\e[48;2;#{square_rgb_val}m\e[38;2;#{icon_rgb_val(occupant_color)}m#{occupied_square(occupant_icon)}\e[0m"
+    print ansi
   end
 
   def square_rgb_val
@@ -51,42 +78,15 @@ class Display
     " #{occupant_icon} "
   end
 
-  def render_empty_square
-    ansi = "\e[48;2;#{square_rgb_val}m#{empty_square}\e[0m"
-    print ansi
+  def update_active_square_color(new_color)
+    @active_square_color = new_color
   end
 
-  def render_occupied_square(square)
-    occupant_icon = square.occupant.icon
-    occupant_color = square.occupant.color
-    ansi = "\e[48;2;#{square_rgb_val}m\e[38;2;#{icon_rgb_val(occupant_color)}m#{occupied_square(occupant_icon)}\e[0m"
-    print ansi
-  end
-
-  def initial_square_color_for_rank(rank)
-    if rank.even?
-      :yellow
-    elsif rank.odd?
-      :green
-    end
-  end
-
-  def rank_keys(rank)
-    Constants::BOARD_FILES.each_with_object([]) do |file, arr|
-      arr << :"#{file}#{rank}"
-    end
-  end
-
-  def render_rank(rank)
-    update_active_square_color(initial_square_color_for_rank(rank))
-    rank_keys(rank).each do |algebraic_id|
-      square = @position.access_square(algebraic_id)
-      if square.empty?
-        render_empty_square
-      elsif square.occupied?
-        render_occupied_square(square)
-      end
-      switch_active_square_color
+  def switch_active_square_color
+    if @active_square_color == :yellow
+      update_active_square_color(:green)
+    elsif @active_square_color == :green
+      update_active_square_color(:yellow)
     end
   end
 end
