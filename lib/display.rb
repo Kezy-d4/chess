@@ -51,18 +51,36 @@ class Display
     ansi = "\e[48;2;#{square_rgb_val}m\e[38;2;#{icon_rgb_val(occupant_color)}m#{occupied_square(occupant_icon)}\e[0m"
     print ansi
   end
+
+  def initial_square_color_for_rank(rank)
+    if rank.even?
+      :yellow
+    elsif rank.odd?
+      :green
+    end
+  end
+
+  def rank_keys(rank)
+    Constants::BOARD_FILES.each_with_object([]) do |file, arr|
+      arr << :"#{file}#{rank}"
+    end
+  end
+
+  def render_rank(rank)
+    update_active_square_color(initial_square_color_for_rank(rank))
+    rank_keys(rank).each do |algebraic_id|
+      square = @position.access_square(algebraic_id)
+      if square.empty?
+        render_empty_square
+      elsif square.occupied?
+        render_occupied_square(square)
+      end
+      switch_active_square_color
+    end
+  end
 end
 
 # test script
 system('clear')
 position = Position.from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
 display = Display.new(position)
-display.render_empty_square
-display.switch_active_square_color
-display.render_occupied_square(position.access_square(:d1))
-display.switch_active_square_color
-display.render_occupied_square(position.access_square(:e8))
-display.switch_active_square_color
-display.render_empty_square
-puts
-gets
