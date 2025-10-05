@@ -10,7 +10,18 @@ class Display
     @active_square_color = :yellow
   end
 
-  # private
+  def render_board
+    Constants::BOARD_RANKS.to_a.reverse_each do |rank|
+      print "#{rank} "
+      render_rank(rank)
+      puts
+    end
+    print '   '
+    Constants::BOARD_FILES.each { |file| print "#{file}  " }
+    puts
+  end
+
+  private
 
   def update_active_square_color(new_color)
     @active_square_color = new_color
@@ -79,8 +90,3 @@ class Display
     end
   end
 end
-
-# test script
-system('clear')
-position = Position.from_fen('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1')
-display = Display.new(position)
