@@ -10,12 +10,10 @@ class Square
     @occupant = occupant
   end
 
-  # untested
   def empty?
     @occupant.nil?
   end
 
-  # untested
   def occupied?
     @occupant.is_a?(Piece)
   end
