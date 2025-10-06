@@ -25,7 +25,7 @@ class Display
 
   def render_rank(rank)
     update_active_square_color(initial_square_color_for_rank(rank))
-    rank_keys(rank).each do |algebraic_id|
+    Position.rank_keys(rank).each do |algebraic_id|
       square = @position.access_square(algebraic_id)
       if square.empty?
         render_empty_square
@@ -41,12 +41,6 @@ class Display
       :yellow
     elsif rank.odd?
       :green
-    end
-  end
-
-  def rank_keys(rank)
-    Constants::BOARD_FILES.each_with_object([]) do |file, arr|
-      arr << :"#{file}#{rank}"
     end
   end
 
@@ -90,3 +84,8 @@ class Display
     end
   end
 end
+
+# test script
+# position = Position.from_fen('rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2')
+# display = Display.new(position)
+# display.render_board
