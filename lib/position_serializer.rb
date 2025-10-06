@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'position'
 require_relative 'constants'
 
 # Serializes the piece placement data of a position into FEN format

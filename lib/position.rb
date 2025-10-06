@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'fen_deserialization'
+require_relative 'position_serializer'
 require_relative 'square'
 require_relative 'pieces'
 require_relative 'constants'
@@ -29,5 +30,9 @@ class Position
         arr << :"#{file}#{rank}"
       end
     end
+  end
+
+  def to_piece_placement_data
+    PositionSerializer.new(self).serialize_position
   end
 end
