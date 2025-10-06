@@ -4,7 +4,7 @@ require_relative 'fen_deserialization'
 require_relative 'square'
 require_relative 'pieces'
 
-# A chess position
+# The square and piece placement of a chess position
 class Position
   extend FenDeserialization
 
