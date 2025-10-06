@@ -8,6 +8,8 @@ require_relative 'pieces'
 class Position
   extend FenDeserialization
 
+  attr_reader :instantiated_squares_and_pieces
+
   def initialize(instantiated_squares_and_pieces)
     @instantiated_squares_and_pieces = instantiated_squares_and_pieces
   end
@@ -22,9 +24,5 @@ class Position
         arr << :"#{file}#{rank}"
       end
     end
-  end
-
-  def access_square(algebraic_id)
-    @instantiated_squares_and_pieces[algebraic_id]
   end
 end

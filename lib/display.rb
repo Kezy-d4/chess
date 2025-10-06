@@ -26,7 +26,7 @@ class Display
   def render_rank(rank)
     update_active_square_color(initial_square_color_for_rank(rank))
     Position.rank_keys(rank).each do |algebraic_id|
-      square = @position.access_square(algebraic_id)
+      square = @position.instantiated_squares_and_pieces[algebraic_id]
       if square.empty?
         render_empty_square
       elsif square.occupied?
