@@ -102,12 +102,50 @@ describe CoordsParsing do
       end
     end
 
-    context 'when passed numeric coordinates 88' do
+    context 'when passed numeric coordinates "88"' do
       subject(:numeric88) { '88' }
 
       it 'returns "h8"' do
         result = dummy_class.numeric_to_algebraic_coords(numeric88)
         expect(result).to eq('h8')
+      end
+    end
+  end
+
+  describe '#algebraic_coords_in_bounds?' do
+    context 'when passed in-bounds algebraic coordinates "e4"' do
+      subject(:algebraic_e4) { 'e4' }
+
+      it 'returns true' do
+        result = dummy_class.algebraic_coords_in_bounds?(algebraic_e4)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when passed out-of-bounds algebraic coordinates "h9"' do
+      subject(:invalid_algebraic_h9) { 'h9' }
+
+      it 'returns false' do
+        result = dummy_class.algebraic_coords_in_bounds?(invalid_algebraic_h9)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when passed out-of-bounds algebraic coordinates "a0"' do
+      subject(:invalid_algebraic_a0) { 'a0' }
+
+      it 'returns false' do
+        result = dummy_class.algebraic_coords_in_bounds?(invalid_algebraic_a0)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when passed out-of-bounds algebraic coordinates "i1"' do
+      subject(:invalid_algebraic_i1) { 'i1' }
+
+      it 'returns false' do
+        result = dummy_class.algebraic_coords_in_bounds?(invalid_algebraic_i1)
+        expect(result).to be(false)
       end
     end
   end

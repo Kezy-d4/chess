@@ -23,4 +23,9 @@ module CoordsParsing
       Constants::NUMBER_BOARD_FILE_MAP[board_file_coord(numeric_coords)]
     "#{alphabetic_board_file_coord}#{board_rank_coord(numeric_coords)}"
   end
+
+  def algebraic_coords_in_bounds?(algebraic_coords)
+    Constants::BOARD_FILES.include?(board_file_coord(algebraic_coords)) &&
+      Constants::BOARD_RANKS.include?(board_rank_coord(algebraic_coords).to_i)
+  end
 end
