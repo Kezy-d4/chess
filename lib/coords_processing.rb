@@ -28,6 +28,14 @@ module CoordsProcessing
   end
 
   def top_left_diagonal_adjacent_coords(algebraic_coords)
-    
+    arr = []
+    numeric_coords = algebraic_to_numeric_coords(algebraic_coords)
+    (Constants::BOARD_RANKS.max - board_rank_coord(numeric_coords).to_i).times do
+      new_board_file_coord = (board_file_coord(numeric_coords).to_i - 1).to_s
+      new_board_rank_coord = (board_rank_coord(numeric_coords).to_i + 1).to_s
+      numeric_coords = "#{new_board_file_coord}#{new_board_rank_coord}"
+      arr << numeric_to_algebraic_coords(numeric_coords)
+    end
+    arr
   end
 end

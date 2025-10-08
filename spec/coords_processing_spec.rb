@@ -26,4 +26,15 @@ describe CoordsProcessing do
       end
     end
   end
+
+  describe '#top_left_diagonal_adjacent_coords' do
+    context 'when passed algebraic coordinates "e4"' do
+      subject(:algebraic_e4) { 'e4' }
+
+      it 'returns an array of top left diagonal adjacent coordinates' do
+        result = dummy_class.top_left_diagonal_adjacent_coords(algebraic_e4)
+        expect(result).to match_array(%w[a8 b7 c6 d5])
+      end
+    end
+  end
 end
