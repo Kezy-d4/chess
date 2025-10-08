@@ -142,4 +142,24 @@ describe CoordsProcessing do
       end
     end
   end
+
+  describe '#all_adjacent_coords' do
+    context 'when passed algebraic coordinates "e4"' do
+      subject(:algebraic_e4) { 'e4' }
+
+      let(:expected) do
+        %w[e1 e2 e3 e5 e6 e7 e8
+           a4 b4 c4 d4 f4 g4 h4
+           a8 b7 c6 d5
+           h7 g6 f5
+           b1 c2 d3
+           h1 g2 f3]
+      end
+
+      it 'returns an array of all adjacent coordinates' do
+        result = dummy_class.all_adjacent_coords(algebraic_e4)
+        expect(result).to match_array(expected)
+      end
+    end
+  end
 end
