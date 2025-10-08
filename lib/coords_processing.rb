@@ -28,14 +28,34 @@ module CoordsProcessing
   end
 
   def top_left_diagonal_adjacent_coords(algebraic_coords)
+    diagonal_adjacent_coords(algebraic_coords, -1, 1)
+  end
+
+  def top_right_diagonal_adjacent_coords(algebraic_coords)
+    diagonal_adjacent_coords(algebraic_coords, 1, 1)
+  end
+
+  def bottom_left_diagonal_adjacent_coords(algebraic_coords)
+    diagonal_adjacent_coords(algebraic_coords, -1, -1)
+  end
+
+  def bottom_right_diagonal_adjacent_coords(algebraic_coords)
+    diagonal_adjacent_coords(algebraic_coords, 1, -1)
+  end
+
+  def diagonal_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
     arr = []
     numeric_coords = algebraic_to_numeric_coords(algebraic_coords)
-    (Constants::BOARD_RANKS.max - board_rank_coord(numeric_coords).to_i).times do
-      new_board_file_coord = (board_file_coord(numeric_coords).to_i - 1).to_s
-      new_board_rank_coord = (board_rank_coord(numeric_coords).to_i + 1).to_s
+    loop do
+      new_board_file_coord = board_file_coord(numeric_coords).to_i + board_file_deviation
+      new_board_rank_coord = board_rank_coord(numeric_coords).to_i + board_rank_deviation
       numeric_coords = "#{new_board_file_coord}#{new_board_rank_coord}"
+      break unless numeric_coords_in_bounds?(numeric_coords)
+
       arr << numeric_to_algebraic_coords(numeric_coords)
     end
     arr
   end
+
+  private :diagonal_adjacent_coords
 end
