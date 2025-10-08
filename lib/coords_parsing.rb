@@ -30,8 +30,8 @@ module CoordsParsing
   end
 
   def numeric_coords_in_bounds?(numeric_coords)
-    [board_file_coord(numeric_coords), board_rank_coord(numeric_coords)].all? do |coord|
-      Constants::BOARD_RANKS.include?(coord.to_i)
-    end
+    algebraic_coords = numeric_to_algebraic_coords(numeric_coords)
+    Constants::BOARD_FILES.include?(board_file_coord(algebraic_coords)) &&
+      Constants::BOARD_RANKS.include?(board_rank_coord(numeric_coords).to_i)
   end
 end
