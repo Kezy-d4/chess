@@ -149,4 +149,33 @@ describe CoordsParsing do
       end
     end
   end
+
+  describe '#numeric_coords_in_bounds?' do
+    context 'when passed in-bounds numeric coordinates "54"' do
+      subject(:numeric54) { '54' }
+
+      it 'returns true' do
+        result = dummy_class.numeric_coords_in_bounds?(numeric54)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when passed out-of-bounds numeric coordinates "89"' do
+      subject(:invalid_numeric89) { '89' }
+
+      it 'returns false' do
+        result = dummy_class.numeric_coords_in_bounds?(invalid_numeric89)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when passed out-of-bounds numeric coordinates "01"' do
+      subject(:invalid_numeric01) { '01' }
+
+      it 'returns false' do
+        result = dummy_class.numeric_coords_in_bounds?(invalid_numeric01)
+        expect(result).to be(false)
+      end
+    end
+  end
 end
