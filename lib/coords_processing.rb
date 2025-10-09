@@ -9,15 +9,6 @@ require_relative 'constants'
 module CoordsProcessing
   include CoordsParsing
 
-  def all_adjacent_coords(algebraic_coords)
-    [vertical_adjacent_coords(algebraic_coords),
-     horizontal_adjacent_coords(algebraic_coords),
-     top_left_diagonal_adjacent_coords(algebraic_coords),
-     top_right_diagonal_adjacent_coords(algebraic_coords),
-     bottom_left_diagonal_adjacent_coords(algebraic_coords),
-     bottom_right_diagonal_adjacent_coords(algebraic_coords)].flatten
-  end
-
   def vertical_adjacent_coords(algebraic_coords)
     Constants::BOARD_RANKS.to_a.each_with_object([]) do |board_rank, arr|
       next if board_rank.to_s == board_rank_coord(algebraic_coords)
