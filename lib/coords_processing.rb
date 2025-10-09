@@ -43,6 +43,26 @@ module CoordsProcessing
     diagonal_adjacent_coords(algebraic_coords, 1, -1)
   end
 
+  def top_left_knight_adjacent_coords(algebraic_coords)
+    [knight_adjacent_coords(algebraic_coords, -2, 1),
+     knight_adjacent_coords(algebraic_coords, -1, 2)].compact
+  end
+
+  def top_right_knight_adjacent_coords(algebraic_coords)
+    [knight_adjacent_coords(algebraic_coords, 2, 1),
+     knight_adjacent_coords(algebraic_coords, 1, 2)].compact
+  end
+
+  def bottom_left_knight_adjacent_coords(algebraic_coords)
+    [knight_adjacent_coords(algebraic_coords, -2, -1),
+     knight_adjacent_coords(algebraic_coords, -1, -2)].compact
+  end
+
+  def bottom_right_knight_adjacent_coords(algebraic_coords)
+    [knight_adjacent_coords(algebraic_coords, 2, -1),
+     knight_adjacent_coords(algebraic_coords, 1, -2)].compact
+  end
+
   def diagonal_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
     arr = []
     numeric_coords = algebraic_to_numeric_coords(algebraic_coords)
@@ -57,5 +77,13 @@ module CoordsProcessing
     arr
   end
 
-  private :diagonal_adjacent_coords
+  def knight_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
+    numeric_coords = algebraic_to_numeric_coords(algebraic_coords)
+    new_board_file_coord = board_file_coord(numeric_coords).to_i + board_file_deviation
+    new_board_rank_coord = board_rank_coord(numeric_coords).to_i + board_rank_deviation
+    new_numeric_coords = "#{new_board_file_coord}#{new_board_rank_coord}"
+    numeric_to_algebraic_coords(new_numeric_coords) if numeric_coords_in_bounds?(new_numeric_coords)
+  end
+
+  private :diagonal_adjacent_coords, :knight_adjacent_coords
 end
