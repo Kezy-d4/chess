@@ -258,4 +258,64 @@ describe CoordsProcessing do
       end
     end
   end
+
+  describe '#adjust_board_rank_coord' do
+    context 'when passed algebraic coordinates "e4"' do
+      subject(:algebraic_e4) { 'e4' }
+
+      it 'returns "e8" when passed a board rank deviation of 4' do
+        board_rank_deviation = 4
+        result = dummy_class.adjust_board_rank_coord(algebraic_e4, board_rank_deviation)
+        expect(result).to eq('e8')
+      end
+
+      it 'returns "e1" when passed a board rank deviation of -3' do
+        board_rank_deviation = -3
+        result = dummy_class.adjust_board_rank_coord(algebraic_e4, board_rank_deviation)
+        expect(result).to eq('e1')
+      end
+
+      it 'returns nil when passed a board rank deviation of 5' do
+        board_rank_deviation = 5
+        result = dummy_class.adjust_board_rank_coord(algebraic_e4, board_rank_deviation)
+        expect(result).to be_nil
+      end
+
+      it 'returns nil when passed a board rank deviation of -4' do
+        board_rank_deviation = -4
+        result = dummy_class.adjust_board_rank_coord(algebraic_e4, board_rank_deviation)
+        expect(result).to be_nil
+      end
+    end
+  end
+
+  describe '#adjust_board_file_coord' do
+    context 'when passed algebraic coordinates "e4"' do
+      subject(:algebraic_e4) { 'e4' }
+
+      it 'returns "h4" when passed a board file deviation of 3' do
+        board_file_deviation = 3
+        result = dummy_class.adjust_board_file_coord(algebraic_e4, board_file_deviation)
+        expect(result).to eq('h4')
+      end
+
+      it 'returns "a4" when passed a board file deviation of -4' do
+        board_file_deviation = -4
+        result = dummy_class.adjust_board_file_coord(algebraic_e4, board_file_deviation)
+        expect(result).to eq('a4')
+      end
+
+      it 'returns nil when passed a board file deviation of 4' do
+        board_file_deviation = 4
+        result = dummy_class.adjust_board_file_coord(algebraic_e4, board_file_deviation)
+        expect(result).to be_nil
+      end
+
+      it 'returns nil when passed a board file deviation of -5' do
+        board_file_deviation = -5
+        result = dummy_class.adjust_board_file_coord(algebraic_e4, board_file_deviation)
+        expect(result).to be_nil
+      end
+    end
+  end
 end

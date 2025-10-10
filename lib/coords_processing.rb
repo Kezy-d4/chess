@@ -4,8 +4,8 @@ require_relative 'coords_parsing'
 require_relative 'constants'
 
 # CoordsProcessing is a mixin to process coordinates representing a square on a
-# chessboard. Its primary responsibility is to generate the coordinates adjacent
-# to any given algebraic coordinates.
+# chessboard. Its primary responsibility is to generate the in-bounds
+# coordinates adjacent to any given algebraic coordinates.
 module CoordsProcessing
   include CoordsParsing
 
@@ -61,6 +61,19 @@ module CoordsProcessing
   def bottom_right_knight_adjacent_coords(algebraic_coords)
     [knight_adjacent_coords(algebraic_coords, 2, -1),
      knight_adjacent_coords(algebraic_coords, 1, -2)].compact
+  end
+
+  def adjust_board_rank_coord(algebraic_coords, board_rank_deviation)
+    new_board_rank_coord = (board_rank_coord(algebraic_coords).to_i + board_rank_deviation).to_s
+    new_coords = "#{board_file_coord(algebraic_coords)}#{new_board_rank_coord}"
+    new_coords if algebraic_coords_in_bounds?(new_coords)
+  end
+
+  def adjust_board_file_coord(algebraic_coords, board_file_deviation)
+    numeric_coords = algebraic_to_numeric_coords(algebraic_coords)
+    new_board_file_coord = (board_file_coord(numeric_coords).to_i + board_file_deviation).to_s
+    new_numeric_coords = "#{new_board_file_coord}#{board_rank_coord(numeric_coords)}"
+    numeric_to_algebraic_coords(new_numeric_coords) if numeric_coords_in_bounds?(new_numeric_coords)
   end
 
   def diagonal_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
