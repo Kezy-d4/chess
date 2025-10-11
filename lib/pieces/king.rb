@@ -1,3 +1,6 @@
 # frozen_string_literal: true
 
-class King; end
+require_relative '../piece'
+
+# A king chess piece
+class King < Piece; end
