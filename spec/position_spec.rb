@@ -44,4 +44,30 @@ describe Position do
       end
     end
   end
+
+  describe '#algebraic_to_index_coords' do
+    context 'when passed algebraic coordinates "a1"' do
+      it 'returns [0, 0]' do
+        algebraic_coords = 'a1'
+        result = described_class.algebraic_to_index_coords(algebraic_coords)
+        expect(result).to eq([0, 0])
+      end
+    end
+
+    context 'when passed algebraic coordinates "h8"' do
+      it 'returns [7, 7]' do
+        algebraic_coords = 'h8'
+        result = described_class.algebraic_to_index_coords(algebraic_coords)
+        expect(result).to eq([7, 7])
+      end
+    end
+
+    context 'when passed algebraic coordinates "e4"' do
+      it 'returns [3, 4]' do
+        algebraic_coords = 'e4'
+        result = described_class.algebraic_to_index_coords(algebraic_coords)
+        expect(result).to eq([3, 4])
+      end
+    end
+  end
 end

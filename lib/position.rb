@@ -14,6 +14,12 @@ class Position
     def generate_empty_position
       Array.new(Constants::BOARD_RANKS.to_a.length) { BoardRank.new }
     end
+
+    def algebraic_to_index_coords(algebraic_coords)
+      board_rank_index = algebraic_coords[-1].to_i - 1
+      board_file_index = Constants::BOARD_FILE_NUMBER_MAP[algebraic_coords[0]].to_i - 1
+      [board_rank_index, board_file_index]
+    end
   end
 
   def access_board_rank(board_rank_index)
