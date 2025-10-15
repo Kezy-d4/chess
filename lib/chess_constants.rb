@@ -13,5 +13,5 @@ module ChessConstants
     bishop: "\u{2657}",
     knight: "\u{2658}",
     pawn: "\u{2659}"
-  }
+  }.freeze
 end
