@@ -11,8 +11,4 @@ module FenParsing
   def piece_placement_data(fen)
     data_fields(fen)[0]
   end
-
-  def piece_placement_data_of_ranks(fen)
-    piece_placement_data(fen).split('/')
-  end
 end
