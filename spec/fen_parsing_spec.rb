@@ -28,4 +28,16 @@ describe FenParsing do
       end
     end
   end
+
+  describe '#piece_placement_data_of_ranks' do
+    context 'when testing the default fen record' do
+      subject(:fen_default) { ChessConstants::DEFAULT_FEN }
+
+      it 'returns an array of substrings representing the piece placement data of each rank' do
+        result = dummy_class.piece_placement_data_of_ranks(fen_default)
+        expected = %w[rnbqkbnr pppppppp 8 8 8 8 PPPPPPPP RNBQKBNR]
+        expect(result).to eq(expected)
+      end
+    end
+  end
 end

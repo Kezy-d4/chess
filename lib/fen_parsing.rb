@@ -2,7 +2,7 @@
 
 require_relative 'chess_constants'
 
-# A mixin to parse a chess fen record
+# A mixin to parse a fen record
 module FenParsing
   def data_fields(fen)
     fen.split
@@ -10,5 +10,9 @@ module FenParsing
 
   def piece_placement_data(fen)
     data_fields(fen)[0]
+  end
+
+  def piece_placement_data_of_ranks(fen)
+    piece_placement_data(fen).split('/')
   end
 end
