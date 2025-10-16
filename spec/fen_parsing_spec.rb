@@ -28,4 +28,73 @@ describe FenParsing do
       end
     end
   end
+
+  describe '#char_represents_white_piece?' do
+    context 'when testing a character that represents a white piece' do
+      subject(:char_white_king) { 'K' }
+
+      it 'returns true' do
+        result = dummy_class.char_represents_white_piece?(char_white_king)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when testing a character that does not represent a white piece' do
+      subject(:char_black_king) { 'k' }
+
+      it 'returns false' do
+        result = dummy_class.char_represents_white_piece?(char_black_king)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#char_represents_black_piece?' do
+    context 'when testing a character that represents a black piece' do
+      subject(:char_black_queen) { 'q' }
+
+      it 'returns true' do
+        result = dummy_class.char_represents_black_piece?(char_black_queen)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when testing a character that does not represent a black piece' do
+      subject(:char_white_queen) { 'Q' }
+
+      it 'returns false' do
+        result = dummy_class.char_represents_black_piece?(char_white_queen)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#char_represents_contiguous_empty_squares?' do
+    context 'when testing a character that represents eight contiguous empty squares' do
+      subject(:char_eight) { '8' }
+
+      it 'returns true' do
+        result = dummy_class.char_represents_contiguous_empty_squares?(char_eight)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when testing a character that represents one contiguous empty square' do
+      subject(:char_one) { '1' }
+
+      it 'returns true' do
+        result = dummy_class.char_represents_contiguous_empty_squares?(char_one)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when testing a character that does not represent contiguous empty squares' do
+      subject(:char_white_king) { 'K' }
+
+      it 'returns false' do
+        result = dummy_class.char_represents_contiguous_empty_squares?(char_white_king)
+        expect(result).to be(false)
+      end
+    end
+  end
 end
