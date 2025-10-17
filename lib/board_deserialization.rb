@@ -48,20 +48,3 @@ module BoardDeserialization
     end
   end
 end
-
-# Test script
-
-class Dummy
-  extend BoardDeserialization
-end
-
-counter = 0
-Dummy.deserialize_board('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1').each do |coords, square|
-  print "#{coords}:"
-  p square
-  counter += 1
-  if counter == ChessConstants::BOARD_FILES.to_a.length
-    puts
-    counter = 0
-  end
-end
