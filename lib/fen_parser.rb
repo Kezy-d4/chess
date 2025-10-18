@@ -12,6 +12,26 @@ module FenParser
     parse_data_fields(fen)[0]
   end
 
+  def parse_active_color(fen)
+    parse_data_fields(fen)[1]
+  end
+
+  def parse_castling_availability(fen)
+    parse_data_fields(fen)[2]
+  end
+
+  def parse_en_passant_target_square(fen)
+    parse_data_fields(fen)[3]
+  end
+
+  def parse_half_move_clock(fen)
+    parse_data_fields(fen)[4]
+  end
+
+  def parse_full_move_number(fen)
+    parse_data_fields(fen)[5]
+  end
+
   def char_represents_white_piece?(char)
     ChessConstants::PIECE_FEN_CLASS_MAP[:white].key?(char)
   end
