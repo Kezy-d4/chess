@@ -5,6 +5,23 @@ require_relative '../lib/fen_parser'
 describe FenParser do
   let(:dummy_class) { Class.new { extend FenParser } }
 
+  describe '#parse_fen_record' do
+    context 'when parsing the default fen record' do
+      subject(:fen_default) { ChessConstants::DEFAULT_FEN }
+
+      it 'returns a hash' do
+        result = dummy_class.parse_fen_record(fen_default)
+        expect(result).to be_a(Hash)
+      end
+
+      it 'stores a substring of the piece placement data field' do
+        result = dummy_class.parse_fen_record(fen_default)[:piece_placement_data]
+        expected = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+        expect(result).to eq(expected)
+      end
+    end
+  end
+
   describe '#parse_data_fields' do
     context 'when parsing the default fen record' do
       subject(:fen_default) { ChessConstants::DEFAULT_FEN }

@@ -2,8 +2,17 @@
 
 require_relative 'chess_constants'
 
-# A mixin to parse a fen record
+# A mixin to parse a FEN record
 module FenParser
+  def parse_fen_record(fen)
+    { piece_placement_data: parse_piece_placement(fen),
+      active_color_data: parse_active_color(fen),
+      castling_availability_data: parse_castling_availability(fen),
+      en_passant_target_square_data: parse_en_passant_target_square(fen),
+      half_move_clock_data: parse_half_move_clock(fen),
+      full_move_number_data: parse_full_move_number(fen) }
+  end
+
   def parse_data_fields(fen)
     fen.split
   end
