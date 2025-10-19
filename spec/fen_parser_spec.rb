@@ -19,6 +19,36 @@ describe FenParser do
         expected = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
         expect(result).to eq(expected)
       end
+
+      it 'stores a substring of the active color data field' do
+        result = dummy_class.parse_fen_record(fen_default)[:active_color_data]
+        expected = 'w'
+        expect(result).to eq(expected)
+      end
+
+      it 'stores a substring of the castling availability data field' do
+        result = dummy_class.parse_fen_record(fen_default)[:castling_availability_data]
+        expected = 'KQkq'
+        expect(result).to eq(expected)
+      end
+
+      it 'stores a substring of the en passant target square data field' do
+        result = dummy_class.parse_fen_record(fen_default)[:en_passant_target_square_data]
+        expected = '-'
+        expect(result).to eq(expected)
+      end
+
+      it 'stores a substring of the half move clock data field' do
+        result = dummy_class.parse_fen_record(fen_default)[:half_move_clock_data]
+        expected = '0'
+        expect(result).to eq(expected)
+      end
+
+      it 'stores a substring of the full move number data field' do
+        result = dummy_class.parse_fen_record(fen_default)[:full_move_number_data]
+        expected = '1'
+        expect(result).to eq(expected)
+      end
     end
   end
 
