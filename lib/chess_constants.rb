@@ -8,6 +8,9 @@ module ChessConstants
   BOARD_FILES = ('a'..'h')
   DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
 
+  AMOUNT_OF_BOARD_RANKS = 8
+  AMOUNT_OF_BOARD_FILES = 8
+
   PIECE_UNICODE_MAP = {
     white: {
       king: "\u{2654}",
