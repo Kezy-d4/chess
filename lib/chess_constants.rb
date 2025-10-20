@@ -6,10 +6,19 @@ require_relative 'pieces'
 module ChessConstants
   BOARD_RANKS = (1..8)
   BOARD_FILES = ('a'..'h')
-  DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
-
   AMOUNT_OF_BOARD_RANKS = 8
   AMOUNT_OF_BOARD_FILES = 8
+  DEFAULT_FEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+
+  COLOR_RGB_MAP = {
+    white: '255, 255, 255',
+    black: '0, 0, 0',
+    muted_yellow: '199, 194, 99',
+    muted_green: '119, 163, 109',
+    intense_red: '232, 39, 32',
+    muted_purple: '99, 83, 92',
+    mid_purple: '128, 73, 102'
+  }
 
   PIECE_UNICODE_MAP = {
     white: {
