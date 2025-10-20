@@ -19,22 +19,12 @@ module ChessConstants
   }.freeze
 
   PIECE_UNICODE_MAP = {
-    white: {
-      king: "\u{2654}",
-      queen: "\u{2655}",
-      rook: "\u{2656}",
-      bishop: "\u{2657}",
-      knight: "\u{2658}",
-      pawn: "\u{2659}"
-    },
-    black: {
-      king: "\u{265A}",
-      queen: "\u{265B}",
-      rook: "\u{265C}",
-      bishop: "\u{265D}",
-      knight: "\u{265E}",
-      pawn: "\u{265F}"
-    }
+    king: "\u{265A}",
+    queen: "\u{265B}",
+    rook: "\u{265C}",
+    bishop: "\u{265D}",
+    knight: "\u{265E}",
+    pawn: "\u{2659}"
   }.freeze
 
   PIECE_FEN_MAP = {
