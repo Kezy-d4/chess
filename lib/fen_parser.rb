@@ -42,11 +42,11 @@ module FenParser
   end
 
   def char_represents_white_piece?(char)
-    ChessConstants::PIECE_FEN_CLASS_MAP[:white].key?(char)
+    ChessConstants::PIECE_FEN_MAP[:white].value?(char)
   end
 
   def char_represents_black_piece?(char)
-    ChessConstants::PIECE_FEN_CLASS_MAP[:black].key?(char)
+    ChessConstants::PIECE_FEN_MAP[:black].value?(char)
   end
 
   def char_represents_contiguous_empty_squares?(char)
