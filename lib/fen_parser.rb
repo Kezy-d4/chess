@@ -50,6 +50,6 @@ module FenParser
   end
 
   def char_represents_contiguous_empty_squares?(char)
-    char.to_i.between?(1, ChessConstants::BOARD_FILES.to_a.length)
+    char.to_i.between?(1, ChessConstants::AMOUNT_OF_BOARD_FILES)
   end
 end

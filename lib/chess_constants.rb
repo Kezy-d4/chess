@@ -18,7 +18,7 @@ module ChessConstants
     intense_red: '232, 39, 32',
     muted_purple: '99, 83, 92',
     mid_purple: '128, 73, 102'
-  }
+  }.freeze
 
   PIECE_UNICODE_MAP = {
     white: {
