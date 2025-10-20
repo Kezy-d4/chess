@@ -5,8 +5,4 @@ require_relative '../chess_constants'
 
 # A rook chess piece
 class Rook < Piece
-  def initialize(color)
-    super
-    @icon = ChessConstants::PIECE_ICON_MAP[:rook]
-  end
 end

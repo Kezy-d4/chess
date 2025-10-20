@@ -4,7 +4,10 @@ require_relative 'chess_constants'
 
 # Parent to each of the chess pieces
 class Piece
-  def initialize(color)
+  attr_reader :color, :icon
+
+  def initialize(color, icon)
     @color = color
+    @icon = icon
   end
 end
