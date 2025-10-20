@@ -36,4 +36,23 @@ module ChessConstants
       pawn: "\u{265F}"
     }
   }.freeze
+
+  PIECE_FEN_MAP = {
+    white: {
+      king: 'K',
+      queen: 'Q',
+      rook: 'R',
+      bishop: 'B',
+      knight: 'N',
+      pawn: 'P'
+    },
+    black: {
+      king: 'k',
+      queen: 'q',
+      rook: 'r',
+      bishop: 'b',
+      knight: 'n',
+      pawn: 'p'
+    }
+  }.freeze
 end
