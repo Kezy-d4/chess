@@ -6,8 +6,7 @@ require_relative 'chess_constants'
 class Piece
   attr_reader :color, :icon
 
-  def initialize(color, icon)
+  def initialize(color)
     @color = color
-    @icon = icon
   end
 end
