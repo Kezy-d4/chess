@@ -75,4 +75,43 @@ describe Board do
       end
     end
   end
+
+  describe '#access_square' do
+    context 'when constructed from the default fen record and passed coordinates e8' do
+      subject(:board_default) { described_class.from_fen(ChessConstants::DEFAULT_FEN) }
+
+      let(:algebraic_e8) { 'e8' }
+
+      it 'returns a square object' do
+        result = board_default.access_square(algebraic_e8)
+        expect(result).to be_a(Square)
+      end
+
+      it 'the square contains a king object' do
+        result = board_default.access_square(algebraic_e8)
+        expect(result.occupant).to be_a(King)
+      end
+
+      it 'the king has a black color' do
+        result = board_default.access_square(algebraic_e8)
+        expect(result.occupant.color).to eq(:black)
+      end
+    end
+
+    context 'when constructed from the default fen record and passed coordinates a6' do
+      subject(:board_default) { described_class.from_fen(ChessConstants::DEFAULT_FEN) }
+
+      let(:algebraic_a6) { 'a6' }
+
+      it 'returns a square object' do
+        result = board_default.access_square(algebraic_a6)
+        expect(result).to be_a(Square)
+      end
+
+      it 'the square is empty' do
+        result = board_default.access_square(algebraic_a6)
+        expect(result.occupant).to be_nil
+      end
+    end
+  end
 end

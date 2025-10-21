@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require_relative 'fen_parser'
+require_relative 'square'
+require_relative 'pieces'
 require_relative 'chess_constants'
 
 # A chess board
@@ -27,22 +29,8 @@ class Board
       end
     end
   end
-end
 
-# Test script
-system('clear')
-
-fen = ChessConstants::DEFAULT_FEN
-board = Board.from_fen(fen)
-counter = 0
-board.instance_variable_get(:@squares).each do |coords, square|
-  print "#{coords}:"
-  p square
-  counter += 1
-  if counter == ChessConstants::AMOUNT_OF_BOARD_FILES
-    puts
-    counter = 0
+  def access_square(algebraic_coords)
+    @squares[algebraic_coords]
   end
 end
-
-gets
