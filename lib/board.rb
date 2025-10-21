@@ -13,7 +13,12 @@ class Board
 
   class << self
     def from_fen(fen)
-
+      squares = construct_squares(fen)
+      named_squares = Board.generate_algebraic_coords.each_with_object({}) do |coords, hash|
+        squares.shift if squares.first == '/'
+        hash[coords] = squares.shift
+      end
+      new(named_squares)
     end
 
     def generate_algebraic_coords
@@ -23,3 +28,21 @@ class Board
     end
   end
 end
+
+# Test script
+system('clear')
+
+fen = ChessConstants::DEFAULT_FEN
+board = Board.from_fen(fen)
+counter = 0
+board.instance_variable_get(:@squares).each do |coords, square|
+  print "#{coords}:"
+  p square
+  counter += 1
+  if counter == ChessConstants::AMOUNT_OF_BOARD_FILES
+    puts
+    counter = 0
+  end
+end
+
+gets
