@@ -5,6 +5,101 @@ require_relative '../lib/fen_parser'
 describe FenParser do
   let(:dummy_class) { Class.new { extend FenParser } }
 
+  describe '#construct_piece' do
+    context 'when passed a character that represents a white king' do
+      subject(:char_white_king) { 'K' }
+
+      it 'returns a king' do
+        result = dummy_class.construct_piece(char_white_king)
+        expect(result).to be_a(King)
+      end
+
+      it 'assigns the king a white color' do
+        result = dummy_class.construct_piece(char_white_king)
+        expect(result.color).to eq(:white)
+      end
+    end
+
+    context 'when passed a character that represents a black queen' do
+      subject(:char_black_queen) { 'q' }
+
+      it 'returns a queen' do
+        result = dummy_class.construct_piece(char_black_queen)
+        expect(result).to be_a(Queen)
+      end
+
+      it 'assigns the queen a black color' do
+        result = dummy_class.construct_piece(char_black_queen)
+        expect(result.color).to eq(:black)
+      end
+    end
+  end
+
+  describe '#construct_squares' do
+    context 'when passed a simple endgame fen record' do
+      subject(:fen_simple_endgame) { 'k7/8/8/8/8/8/6P1/7K w - - 0 65' }
+
+      it 'returns an array' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result).to be_an(Array)
+      end
+
+      it 'the array has a length of sixty-four' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expected_length =
+          ChessConstants::AMOUNT_OF_BOARD_RANKS * ChessConstants::AMOUNT_OF_BOARD_FILES
+        expect(result.length).to eq(expected_length)
+      end
+
+      it 'the array is composed entirely of square objects' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result).to all be_a(Square)
+      end
+
+      it 'the square at index zero contains a king object' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result[0].occupant).to be_a(King)
+      end
+
+      it 'the king at index zero has a black color' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result[0].occupant.color).to eq(:black)
+      end
+
+      it 'the square at index fifty-four contains a pawn object' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result[54].occupant).to be_a(Pawn)
+      end
+
+      it 'the pawn at index fifty-four has a white color' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result[54].occupant.color).to eq(:white)
+      end
+
+      it 'the square at index sixty-three contains a king object' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result[63].occupant).to be_a(King)
+      end
+
+      it 'the king at index sixty-three has a white color' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        expect(result[63].occupant.color).to eq(:white)
+      end
+
+      it 'the squares at index one through fifty-three are all empty' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        occupants = result[1..53].map(&:occupant)
+        expect(occupants).to all be_nil
+      end
+
+      it 'the squares at index fifty-five through sixty-two are all empty' do
+        result = dummy_class.construct_squares(fen_simple_endgame)
+        occupants = result[55..62].map(&:occupant)
+        expect(occupants).to all be_nil
+      end
+    end
+  end
+
   describe '#parse_fen_record' do
     context 'when parsing the default fen record' do
       subject(:fen_default) { ChessConstants::DEFAULT_FEN }
