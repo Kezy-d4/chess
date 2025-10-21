@@ -110,39 +110,39 @@ describe FenParser do
       end
 
       it 'stores a substring of the piece placement data field' do
-        result = dummy_class.parse_fen_record(fen_default)[:piece_placement_data]
+        result = dummy_class.parse_fen_record(fen_default)
         expected = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
-        expect(result).to eq(expected)
+        expect(result[:piece_placement_data]).to eq(expected)
       end
 
       it 'stores a substring of the active color data field' do
-        result = dummy_class.parse_fen_record(fen_default)[:active_color_data]
+        result = dummy_class.parse_fen_record(fen_default)
         expected = 'w'
-        expect(result).to eq(expected)
+        expect(result[:active_color_data]).to eq(expected)
       end
 
       it 'stores a substring of the castling availability data field' do
-        result = dummy_class.parse_fen_record(fen_default)[:castling_availability_data]
+        result = dummy_class.parse_fen_record(fen_default)
         expected = 'KQkq'
-        expect(result).to eq(expected)
+        expect(result[:castling_availability_data]).to eq(expected)
       end
 
       it 'stores a substring of the en passant target square data field' do
-        result = dummy_class.parse_fen_record(fen_default)[:en_passant_target_square_data]
+        result = dummy_class.parse_fen_record(fen_default)
         expected = '-'
-        expect(result).to eq(expected)
+        expect(result[:en_passant_target_square_data]).to eq(expected)
       end
 
       it 'stores a substring of the half move clock data field' do
-        result = dummy_class.parse_fen_record(fen_default)[:half_move_clock_data]
+        result = dummy_class.parse_fen_record(fen_default)
         expected = '0'
-        expect(result).to eq(expected)
+        expect(result[:half_move_clock_data]).to eq(expected)
       end
 
       it 'stores a substring of the full move number data field' do
-        result = dummy_class.parse_fen_record(fen_default)[:full_move_number_data]
+        result = dummy_class.parse_fen_record(fen_default)
         expected = '1'
-        expect(result).to eq(expected)
+        expect(result[:full_move_number_data]).to eq(expected)
       end
     end
   end
