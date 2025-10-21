@@ -161,4 +161,46 @@ describe Board do
       end
     end
   end
+
+  describe '#square_empty?' do
+    subject(:board_empty) do
+      squares = described_class.generate_algebraic_coords.each_with_object({}) do |coords, hash|
+        hash[coords] = square
+      end
+      described_class.new(squares)
+    end
+
+    context 'when passed coordinates a8' do
+      before do
+        allow(square).to receive(:empty?)
+        algebraic_a8 = 'a8'
+        board_empty.square_empty?(algebraic_a8)
+      end
+
+      it 'sends the empty? message to the square' do
+        expect(square).to have_received(:empty?)
+      end
+    end
+  end
+
+  describe '#square_occupied?' do
+    subject(:board_empty) do
+      squares = described_class.generate_algebraic_coords.each_with_object({}) do |coords, hash|
+        hash[coords] = square
+      end
+      described_class.new(squares)
+    end
+
+    context 'when passed coordinates a8' do
+      before do
+        allow(square).to receive(:occupied?)
+        algebraic_a8 = 'a8'
+        board_empty.square_occupied?(algebraic_a8)
+      end
+
+      it 'sends the occupied? message to the square' do
+        expect(square).to have_received(:occupied?)
+      end
+    end
+  end
 end

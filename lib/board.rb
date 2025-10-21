@@ -41,4 +41,12 @@ class Board
   def remove_square_occupant(algebraic_coords)
     access_square(algebraic_coords).remove_occupant
   end
+
+  def square_empty?(algebraic_coords)
+    access_square(algebraic_coords).empty?
+  end
+
+  def square_occupied?(algebraic_coords)
+    access_square(algebraic_coords).occupied?
+  end
 end
