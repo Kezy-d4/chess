@@ -37,4 +37,8 @@ class Board
   def update_square_occupant(algebraic_coords, new_occupant)
     access_square(algebraic_coords).update_occupant(new_occupant)
   end
+
+  def remove_square_occupant(algebraic_coords)
+    access_square(algebraic_coords).remove_occupant
+  end
 end
