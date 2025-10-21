@@ -33,4 +33,8 @@ class Board
   def access_square(algebraic_coords)
     @squares[algebraic_coords]
   end
+
+  def update_square_occupant(algebraic_coords, new_occupant)
+    access_square(algebraic_coords).update_occupant(new_occupant)
+  end
 end

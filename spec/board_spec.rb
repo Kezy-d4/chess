@@ -13,6 +13,8 @@ describe Board do
        a2 b2 c2 d2 e2 f2 g2 h2
        a1 b1 c1 d1 e1 f1 g1 h1]
   end
+  let(:square) { double('square') }
+  let(:piece) { double('piece') }
 
   describe '#generate_algebraic_coords' do
     it 'returns an array of algebraic coords as strings in standard fen order' do
@@ -111,6 +113,29 @@ describe Board do
       it 'the square is empty' do
         result = board_default.access_square(algebraic_a6)
         expect(result.occupant).to be_nil
+      end
+    end
+  end
+
+  describe '#update_square_occupant' do
+    subject(:board_empty) do
+      squares = described_class.generate_algebraic_coords.each_with_object({}) do |coords, hash|
+        hash[coords] = square
+      end
+      described_class.new(squares)
+    end
+
+    let(:algebraic_a8) { 'a8' }
+    let(:new_occupant) { piece }
+
+    context 'when passed coordinates a8 and new occupant piece' do
+      before do
+        allow(square).to receive(:update_occupant).with(new_occupant)
+        board_empty.update_square_occupant(algebraic_a8, new_occupant)
+      end
+
+      it 'sends the update occupant message to the square' do
+        expect(square).to have_received(:update_occupant).with(new_occupant)
       end
     end
   end
