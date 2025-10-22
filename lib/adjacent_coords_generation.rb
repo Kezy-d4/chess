@@ -9,6 +9,10 @@ module AdjacentCoordsGeneration
     generate_stepwise_adjacent_coords(algebraic_coords, 0, 1)
   end
 
+  def generate_stepwise_southern_adjacent_coords(algebraic_coords)
+    generate_stepwise_adjacent_coords(algebraic_coords, 0, -1)
+  end
+
   private
 
   def generate_stepwise_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
