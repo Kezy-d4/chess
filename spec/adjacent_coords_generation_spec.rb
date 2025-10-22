@@ -67,4 +67,25 @@ describe AdjacentCoordsGeneration do
       end
     end
   end
+
+  describe '#generate_stepwise_eastern_adjacent_coords' do
+    context 'when passed coordinates a8' do
+      subject(:algebraic_a8) { 'a8' }
+
+      it 'returns an array of eastern adjacent coordinates in stepwise order' do
+        result = dummy_class.generate_stepwise_eastern_adjacent_coords(algebraic_a8)
+        expected = %w[b8 c8 d8 e8 f8 g8 h8]
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when passed coordinates h8' do
+      subject(:algebraic_h8) { 'h8' }
+
+      it 'returns an empty array' do
+        result = dummy_class.generate_stepwise_eastern_adjacent_coords(algebraic_h8)
+        expect(result).to be_empty
+      end
+    end
+  end
 end
