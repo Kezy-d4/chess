@@ -37,6 +37,19 @@ module AdjacentCoordsGeneration
     generate_stepwise_adjacent_coords(algebraic_coords, 1, -1)
   end
 
+  def generate_knight_adjacent_coords(algebraic_coords)
+    [adjust_algebraic_coords(algebraic_coords, -2, 1),
+     adjust_algebraic_coords(algebraic_coords, -1, 2),
+     adjust_algebraic_coords(algebraic_coords, 2, 1),
+     adjust_algebraic_coords(algebraic_coords, 1, 2),
+     adjust_algebraic_coords(algebraic_coords, -2, -1),
+     adjust_algebraic_coords(algebraic_coords, -1, -2),
+     adjust_algebraic_coords(algebraic_coords, 2, -1),
+     adjust_algebraic_coords(algebraic_coords, 1, -2)].select do |algebraic_coords|
+       algebraic_coords_in_bounds?(algebraic_coords)
+     end
+  end
+
   private
 
   def generate_stepwise_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
@@ -61,7 +74,7 @@ module AdjacentCoordsGeneration
   end
 
   def algebraic_coords_in_bounds?(algebraic_coords)
-    return false if algebraic_coords == :out_of_bounds
+    return false if algebraic_coords == :out_of_bounds || algebraic_coords.length != 2
 
     board_file_coord = parse_board_file_coord(algebraic_coords)
     board_rank_coord = parse_board_rank_coord(algebraic_coords)
