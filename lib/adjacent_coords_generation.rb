@@ -21,6 +21,22 @@ module AdjacentCoordsGeneration
     generate_stepwise_adjacent_coords(algebraic_coords, 1, 0)
   end
 
+  def generate_stepwise_north_western_adjacent_coords(algebraic_coords)
+    generate_stepwise_adjacent_coords(algebraic_coords, -1, 1)
+  end
+
+  def generate_stepwise_north_eastern_adjacent_coords(algebraic_coords)
+    generate_stepwise_adjacent_coords(algebraic_coords, 1, 1)
+  end
+
+  def generate_stepwise_south_western_adjacent_coords(algebraic_coords)
+    generate_stepwise_adjacent_coords(algebraic_coords, -1, -1)
+  end
+
+  def generate_stepwise_south_eastern_adjacent_coords(algebraic_coords)
+    generate_stepwise_adjacent_coords(algebraic_coords, 1, -1)
+  end
+
   private
 
   def generate_stepwise_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
