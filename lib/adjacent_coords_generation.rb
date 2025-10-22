@@ -37,6 +37,8 @@ module AdjacentCoordsGeneration
   end
 
   def algebraic_coords_in_bounds?(algebraic_coords)
+    return false if algebraic_coords == :out_of_bounds
+
     board_file_coord = parse_board_file_coord(algebraic_coords)
     board_rank_coord = parse_board_rank_coord(algebraic_coords)
     ChessConstants::BOARD_FILES.include?(board_file_coord) &&
@@ -46,12 +48,16 @@ module AdjacentCoordsGeneration
   def translate_algebraic_to_numeric(algebraic_coords)
     board_file_coord = parse_board_file_coord(algebraic_coords)
     new_board_file_coord = ChessConstants::BOARD_FILE_NUMBER_MAP[board_file_coord]
+    return :out_of_bounds if new_board_file_coord.nil?
+
     algebraic_coords.sub(board_file_coord, new_board_file_coord)
   end
 
   def translate_numeric_to_algebraic(numeric_coords)
     board_file_coord = parse_board_file_coord(numeric_coords)
     new_board_file_coord = ChessConstants::NUMBER_BOARD_FILE_MAP[board_file_coord]
+    return :out_of_bounds if new_board_file_coord.nil?
+
     numeric_coords.sub(board_file_coord, new_board_file_coord)
   end
 
