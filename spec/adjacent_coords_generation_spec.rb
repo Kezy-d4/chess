@@ -46,4 +46,25 @@ describe AdjacentCoordsGeneration do
       end
     end
   end
+
+  describe '#generate_stepwise_western_adjacent_coords' do
+    context 'when passed coordinates h4' do
+      subject(:algebraic_h4) { 'h4' }
+
+      it 'returns an array of western adjacent coordinates in stepwise order' do
+        result = dummy_class.generate_stepwise_western_adjacent_coords(algebraic_h4)
+        expected = %w[g4 f4 e4 d4 c4 b4 a4]
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when passed coordinates a4' do
+      subject(:algebraic_a4) { 'a4' }
+
+      it 'returns an empty array' do
+        result = dummy_class.generate_stepwise_western_adjacent_coords(algebraic_a4)
+        expect(result).to be_empty
+      end
+    end
+  end
 end
