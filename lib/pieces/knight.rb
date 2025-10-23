@@ -9,4 +9,8 @@ class Knight < Piece
     super
     @icon = ChessConstants::PIECE_UNICODE_MAP[:knight]
   end
+
+  def generate_adjacent_coords(algebraic_coords)
+    generate_knight_adjacent_coords(algebraic_coords)
+  end
 end
