@@ -9,4 +9,15 @@ class King < Piece
     super
     @icon = ChessConstants::PIECE_UNICODE_MAP[:king]
   end
+
+  def generate_adjacent_coords(algebraic_coords)
+    [generate_stepwise_northern_adjacent_coords(algebraic_coords).first,
+     generate_stepwise_north_western_adjacent_coords(algebraic_coords).first,
+     generate_stepwise_north_eastern_adjacent_coords(algebraic_coords).first,
+     generate_stepwise_western_adjacent_coords(algebraic_coords).first,
+     generate_stepwise_eastern_adjacent_coords(algebraic_coords).first,
+     generate_stepwise_southern_adjacent_coords(algebraic_coords).first,
+     generate_stepwise_south_western_adjacent_coords(algebraic_coords).first,
+     generate_stepwise_south_eastern_adjacent_coords(algebraic_coords).first].compact
+  end
 end
