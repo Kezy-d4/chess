@@ -24,4 +24,8 @@ class King < Piece
       north_western: [generate_stepwise_north_western_adjacent_coords(algebraic_coords).first]
     }.delete_if { |_direction, adjacent_coords| adjacent_coords.compact.empty? }
   end
+
+  def moves_stepwise?
+    false
+  end
 end

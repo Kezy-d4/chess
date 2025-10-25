@@ -25,4 +25,8 @@ class Pawn < Piece
       }.delete_if { |_direction, adjacent_coords| adjacent_coords.compact.empty? }
     end
   end
+
+  def moves_stepwise?
+    false
+  end
 end

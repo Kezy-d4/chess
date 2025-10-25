@@ -13,4 +13,8 @@ class Knight < Piece
   def generate_adjacent_coords(algebraic_coords)
     generate_knight_adjacent_coords(algebraic_coords)
   end
+
+  def moves_stepwise?
+    false
+  end
 end

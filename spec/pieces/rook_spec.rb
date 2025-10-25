@@ -34,4 +34,13 @@ describe Rook do
       end
     end
   end
+
+  describe '#moves_stepwise?' do
+    subject(:rook) { described_class.new(:white) }
+
+    it 'returns true' do
+      result = rook.moves_stepwise?
+      expect(result).to be(true)
+    end
+  end
 end

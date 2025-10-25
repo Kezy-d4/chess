@@ -25,4 +25,13 @@ describe Knight do
       end
     end
   end
+
+  describe '#moves_stepwise?' do
+    subject(:knight) { described_class.new(:white) }
+
+    it 'returns false' do
+      result = knight.moves_stepwise?
+      expect(result).to be(false)
+    end
+  end
 end

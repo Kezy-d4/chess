@@ -82,4 +82,13 @@ describe Pawn do
       end
     end
   end
+
+  describe '#moves_stepwise?' do
+    subject(:pawn) { described_class.new(:white) }
+
+    it 'returns false' do
+      result = pawn.moves_stepwise?
+      expect(result).to be(false)
+    end
+  end
 end

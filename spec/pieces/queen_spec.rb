@@ -39,4 +39,13 @@ describe Queen do
       end
     end
   end
+
+  describe '#moves_stepwise?' do
+    subject(:queen) { described_class.new(:white) }
+
+    it 'returns true' do
+      result = queen.moves_stepwise?
+      expect(result).to be(true)
+    end
+  end
 end

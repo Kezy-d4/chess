@@ -39,4 +39,13 @@ describe King do
       end
     end
   end
+
+  describe '#moves_stepwise?' do
+    subject(:king) { described_class.new(:white) }
+
+    it 'returns false' do
+      result = king.moves_stepwise?
+      expect(result).to be(false)
+    end
+  end
 end

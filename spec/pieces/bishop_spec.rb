@@ -33,4 +33,13 @@ describe Bishop do
       end
     end
   end
+
+  describe '#moves_stepwise?' do
+    subject(:bishop) { described_class.new(:white) }
+
+    it 'returns true' do
+      result = bishop.moves_stepwise?
+      expect(result).to be(true)
+    end
+  end
 end

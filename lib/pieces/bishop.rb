@@ -18,4 +18,8 @@ class Bishop < Piece
       north_western: generate_stepwise_north_western_adjacent_coords(algebraic_coords)
     }.delete_if { |_direction, adjacent_coords| adjacent_coords.empty? }
   end
+
+  def moves_stepwise?
+    true
+  end
 end
