@@ -2,8 +2,8 @@
 
 require_relative 'chess_constants'
 
-# A mixin to dynamically generate the algebraic coordinates adjacent to any
-# given algebraic coordinates on a chess board
+# A mixin to dynamically generate the stepwise, in bounds algebraic coordinates
+# adjacent to any given algebraic coordinates on a chess board
 module AdjacentCoordsGeneration
   def generate_stepwise_northern_adjacent_coords(algebraic_coords)
     generate_stepwise_adjacent_coords(algebraic_coords, 0, 1)

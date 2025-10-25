@@ -7,18 +7,35 @@ describe King do
     subject(:king) { described_class.new(:white) }
 
     context 'when passed coordinates a8' do
-      it 'returns an array of the king\'s adjacent coordinates' do
+      let(:expected) do
+        { eastern: ['b8'],
+          south_eastern: ['b7'],
+          southern: ['a7'] }
+      end
+
+      it 'returns a hash of the king\'s in bounds adjacent coordinates per direction' do
         algebraic_a8 = 'a8'
         result = king.generate_adjacent_coords(algebraic_a8)
-        expect(result).to match_array(%w[a7 b7 b8])
+        expect(result).to eq(expected)
       end
     end
 
     context 'when passed coordinates e4' do
-      it 'returns an array of the king\'s adjacent coordinates' do
+      let(:expected) do
+        { northern: ['e5'],
+          north_eastern: ['f5'],
+          eastern: ['f4'],
+          south_eastern: ['f3'],
+          southern: ['e3'],
+          south_western: ['d3'],
+          western: ['d4'],
+          north_western: ['d5'] }
+      end
+
+      it 'returns a hash of the king\'s in bounds adjacent coordinates per direction' do
         algebraic_e4 = 'e4'
         result = king.generate_adjacent_coords(algebraic_e4)
-        expect(result).to match_array(%w[d5 e5 f5 d4 f4 d3 e3 f3])
+        expect(result).to eq(expected)
       end
     end
   end

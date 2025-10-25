@@ -11,9 +11,11 @@ class Bishop < Piece
   end
 
   def generate_adjacent_coords(algebraic_coords)
-    [generate_stepwise_north_western_adjacent_coords(algebraic_coords),
-     generate_stepwise_north_eastern_adjacent_coords(algebraic_coords),
-     generate_stepwise_south_western_adjacent_coords(algebraic_coords),
-     generate_stepwise_south_eastern_adjacent_coords(algebraic_coords)].flatten
+    {
+      north_eastern: generate_stepwise_north_eastern_adjacent_coords(algebraic_coords),
+      south_eastern: generate_stepwise_south_eastern_adjacent_coords(algebraic_coords),
+      south_western: generate_stepwise_south_western_adjacent_coords(algebraic_coords),
+      north_western: generate_stepwise_north_western_adjacent_coords(algebraic_coords)
+    }.delete_if { |_direction, adjacent_coords| adjacent_coords.empty? }
   end
 end
