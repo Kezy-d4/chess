@@ -2,8 +2,8 @@
 
 require_relative 'chess_constants'
 
-# A mixin to dynamically generate the stepwise, in bounds algebraic coordinates
-# adjacent to any given algebraic coordinates on a chess board
+# A mixin to dynamically generate the in bounds algebraic coordinates adjacent
+# to any given algebraic coordinates on a chess board
 module AdjacentCoordsGeneration
   def generate_stepwise_northern_adjacent_coords(algebraic_coords)
     generate_stepwise_adjacent_coords(algebraic_coords, 0, 1)
@@ -35,19 +35,6 @@ module AdjacentCoordsGeneration
 
   def generate_stepwise_south_eastern_adjacent_coords(algebraic_coords)
     generate_stepwise_adjacent_coords(algebraic_coords, 1, -1)
-  end
-
-  def generate_knight_adjacent_coords(algebraic_coords)
-    [adjust_algebraic_coords(algebraic_coords, -2, 1),
-     adjust_algebraic_coords(algebraic_coords, -1, 2),
-     adjust_algebraic_coords(algebraic_coords, 2, 1),
-     adjust_algebraic_coords(algebraic_coords, 1, 2),
-     adjust_algebraic_coords(algebraic_coords, -2, -1),
-     adjust_algebraic_coords(algebraic_coords, -1, -2),
-     adjust_algebraic_coords(algebraic_coords, 2, -1),
-     adjust_algebraic_coords(algebraic_coords, 1, -2)].select do |algebraic_coords|
-       algebraic_coords_in_bounds?(algebraic_coords)
-     end
   end
 
   private

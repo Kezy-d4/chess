@@ -7,21 +7,34 @@ describe Knight do
     subject(:knight) { described_class.new(:white) }
 
     context 'when passed coordinates a8' do
-      it 'returns an array of the knight\'s in bounds adjacent coordinates' do
+      let(:expected) do
+        { south_eastern_one: 'b6',
+          south_eastern_two: 'c7' }
+      end
+
+      it 'returns a hash of the knight\'s in bounds adjacent coordinates per direction' do
         algebraic_a8 = 'a8'
         result = knight.generate_adjacent_coords(algebraic_a8)
-        expect(result).to match_array(%w[b6 c7])
+        expect(result).to eq(expected)
       end
     end
 
     context 'when passed coordinates e4' do
-      it 'returns an array of the knight\'s in bounds adjacent coordinates' do # rubocop:disable RSpec/ExampleLength
+      let(:expected) do
+        { north_western_one: 'c5',
+          north_western_two: 'd6',
+          north_eastern_one: 'f6',
+          north_eastern_two: 'g5',
+          south_eastern_one: 'f2',
+          south_eastern_two: 'g3',
+          south_western_one: 'c3',
+          south_western_two: 'd2' }
+      end
+
+      it 'returns a hash of the knight\'s in bounds adjacent coordinates per direction' do
         algebraic_e4 = 'e4'
         result = knight.generate_adjacent_coords(algebraic_e4)
-        expect(result).to match_array(%w[c5 d6
-                                         f6 g5
-                                         c3 d2
-                                         g3 f2])
+        expect(result).to eq(expected)
       end
     end
   end

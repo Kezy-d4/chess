@@ -172,24 +172,4 @@ describe AdjacentCoordsGeneration do
       end
     end
   end
-
-  describe '#generate_knight_adjacent_coords' do
-    context 'when passed coordinates e4' do
-      subject(:algebraic_e4) { 'e4' }
-
-      it 'returns an array of the in bounds adjacent knight coordinates' do
-        result = dummy_class.generate_knight_adjacent_coords(algebraic_e4)
-        expect(result).to match_array(%w[c5 d6 f6 g5 g3 f2 c3 d2])
-      end
-    end
-
-    context 'when passed coordinates a8' do
-      subject(:algebraic_a8) { 'a8' }
-
-      it 'returns an array of the in bounds adjacent knight coordinates' do
-        result = dummy_class.generate_knight_adjacent_coords(algebraic_a8)
-        expect(result).to match_array(%w[b6 c7])
-      end
-    end
-  end
 end
