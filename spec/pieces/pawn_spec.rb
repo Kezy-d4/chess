@@ -8,7 +8,7 @@ describe Pawn do
       subject(:pawn_white) { described_class.new(:white) }
 
       let(:expected) do
-        { north_eastern: ['b8'] }
+        { north_eastern: 'b8' }
       end
 
       it 'returns a hash of the pawn\'s in bounds adjacent coordinates per direction' do
@@ -22,8 +22,8 @@ describe Pawn do
       subject(:pawn_white) { described_class.new(:white) }
 
       let(:expected) do
-        { north_western: ['a8'],
-          north_eastern: ['c8'] }
+        { north_western: 'a8',
+          north_eastern: 'c8' }
       end
 
       it 'returns a hash of the pawn\'s in bounds adjacent coordinates per direction' do
@@ -47,7 +47,7 @@ describe Pawn do
       subject(:pawn_black) { described_class.new(:black) }
 
       let(:expected) do
-        { south_eastern: ['b1'] }
+        { south_eastern: 'b1' }
       end
 
       it 'returns a hash of the pawn\'s in bounds adjacent coordinates per direction' do
@@ -61,8 +61,8 @@ describe Pawn do
       subject(:pawn_black) { described_class.new(:black) }
 
       let(:expected) do
-        { south_western: ['a1'],
-          south_eastern: ['c1'] }
+        { south_western: 'a1',
+          south_eastern: 'c1' }
       end
 
       it 'returns a hash of the pawn\'s in bounds adjacent coordinates per direction' do

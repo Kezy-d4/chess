@@ -10,19 +10,17 @@ class Pawn < Piece
     @icon = ChessConstants::PIECE_UNICODE_MAP[:pawn]
   end
 
-  # While seemingly unnecessary here, we format the adjacent coordinates into
-  # arrays to maintain an identical interface as the other pieces.
   def generate_adjacent_coords(algebraic_coords) # rubocop:disable Metrics/MethodLength
     if white?
       {
-        north_western: [generate_stepwise_north_western_adjacent_coords(algebraic_coords).first],
-        north_eastern: [generate_stepwise_north_eastern_adjacent_coords(algebraic_coords).first]
-      }.delete_if { |_direction, adjacent_coords| adjacent_coords.compact.empty? }
+        north_western: generate_stepwise_north_western_adjacent_coords(algebraic_coords).first,
+        north_eastern: generate_stepwise_north_eastern_adjacent_coords(algebraic_coords).first
+      }.delete_if { |_direction, adjacent_coords| adjacent_coords.nil? }
     elsif black?
       {
-        south_western: [generate_stepwise_south_western_adjacent_coords(algebraic_coords).first],
-        south_eastern: [generate_stepwise_south_eastern_adjacent_coords(algebraic_coords).first]
-      }.delete_if { |_direction, adjacent_coords| adjacent_coords.compact.empty? }
+        south_western: generate_stepwise_south_western_adjacent_coords(algebraic_coords).first,
+        south_eastern: generate_stepwise_south_eastern_adjacent_coords(algebraic_coords).first
+      }.delete_if { |_direction, adjacent_coords| adjacent_coords.nil? }
     end
   end
 
