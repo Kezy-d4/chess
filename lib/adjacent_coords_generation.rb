@@ -37,8 +37,6 @@ module AdjacentCoordsGeneration
     generate_stepwise_adjacent_coords(algebraic_coords, 1, -1)
   end
 
-  private
-
   def generate_stepwise_adjacent_coords(algebraic_coords, board_file_deviation, board_rank_deviation)
     arr = []
     loop do
