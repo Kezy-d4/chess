@@ -40,7 +40,7 @@ class FenParser
   end
 
   # untested
-  def construct_squares_from_fen
+  def parse_fen
     current_rank = number_of_ranks
     hash = {}
     while current_rank.positive?
