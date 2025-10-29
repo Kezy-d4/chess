@@ -39,12 +39,11 @@ class FenParser
       full_move_number: split_data[5] }
   end
 
-  # untested
-  def parse_fen
+  def parse_piece_placement
     current_rank = number_of_ranks
     hash = {}
     while current_rank.positive?
-      hash[current_rank] = construct_rank(current_rank)
+      hash[current_rank] = parse_rank(current_rank)
       current_rank -= 1
     end
     hash
@@ -52,21 +51,13 @@ class FenParser
 
   private
 
-  def construct_rank(num)
+  def parse_rank(num)
     access_rank(num).chars.each_with_object([]) do |char, arr|
       if contiguous_empty_char?(char)
-        char.to_i.times { arr << Square.new }
+        char.to_i.times { arr << '-' }
       elsif white_char?(char) || black_char?(char)
-        arr << Square.new(construct_piece(char))
+        arr << char
       end
-    end
-  end
-
-  def construct_piece(char)
-    if white_char?(char)
-      FenParser::FEN_PIECE_MAP[:white][char].new(:white)
-    elsif black_char?(char)
-      FenParser::FEN_PIECE_MAP[:black][char].new(:black)
     end
   end
 
@@ -83,7 +74,7 @@ class FenParser
   end
 
   def split_ranks
-    parse_fen[:piece_placement].split('/')
+    split_fen[:piece_placement].split('/')
   end
 
   def access_rank(num)

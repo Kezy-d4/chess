@@ -16,8 +16,31 @@ describe FenParser do
           full_move_number: '1' }
       end
 
-      it 'returns a hash storing each data field as a string' do
+      it 'returns a hash storing each data field' do
         result = fen_parser_default.split_fen
+        expect(result).to eq(expected)
+      end
+    end
+  end
+
+  describe '#parse_piece_placement' do
+    context 'when testing with a simple endgame fen record' do
+      subject(:fen_parser_simple) { described_class.new(simple_fen) }
+
+      let(:simple_fen) { 'k7/8/8/8/8/8/8/7K w - - 0 65' }
+      let(:expected) do
+        { 8 => %w[k - - - - - - -],
+          7 => %w[- - - - - - - -],
+          6 => %w[- - - - - - - -],
+          5 => %w[- - - - - - - -],
+          4 => %w[- - - - - - - -],
+          3 => %w[- - - - - - - -],
+          2 => %w[- - - - - - - -],
+          1 => %w[- - - - - - - K] }
+      end
+
+      it 'returns a hash storing the parsed piece placement data' do
+        result = fen_parser_simple.parse_piece_placement
         expect(result).to eq(expected)
       end
     end
