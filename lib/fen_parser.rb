@@ -29,7 +29,7 @@ class FenParser
     @fen = fen
   end
 
-  def parse_fen
+  def split_fen
     split_data = @fen.split
     { piece_placement: split_data[0],
       active_color: split_data[1],
