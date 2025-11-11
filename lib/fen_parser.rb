@@ -29,7 +29,7 @@ class FenParser
     @fen = fen
   end
 
-  def split_fen
+  def parse_data_fields
     split_data = @fen.split
     { piece_placement: split_data[0],
       active_color: split_data[1],
@@ -74,7 +74,7 @@ class FenParser
   end
 
   def split_ranks
-    split_fen[:piece_placement].split('/')
+    parse_data_fields[:piece_placement].split('/')
   end
 
   def access_rank(num)

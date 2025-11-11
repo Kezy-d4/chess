@@ -3,7 +3,7 @@
 require_relative '../lib/fen_parser'
 
 describe FenParser do
-  describe '#split_fen' do
+  describe '#parse_data_fields' do
     context 'when testing with the default fen record' do
       subject(:fen_parser_default) { described_class.new(Constants::DEFAULT_FEN) }
 
@@ -17,7 +17,7 @@ describe FenParser do
       end
 
       it 'returns a hash storing each data field' do
-        result = fen_parser_default.split_fen
+        result = fen_parser_default.parse_data_fields
         expect(result).to eq(expected)
       end
     end
