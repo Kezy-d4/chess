@@ -45,4 +45,57 @@ describe FenParser do
       end
     end
   end
+
+  describe '#construct_piece_placement' do
+    context 'when testing with a simple endgame fen record' do
+      subject(:fen_parser_simple) { described_class.new(simple_fen) }
+
+      let(:simple_fen) { 'k7/8/8/8/8/8/8/7K w - - 0 65' }
+
+      it 'returns a hash with the expected keys representing each rank' do
+        result = fen_parser_simple.construct_piece_placement
+        expect(result.keys).to eq([8, 7, 6, 5, 4, 3, 2, 1])
+      end
+
+      it 'returns a hash where each value is an array representing a rank\'s contents in order' do
+        result = fen_parser_simple.construct_piece_placement
+        expect(result.values).to all be_an(Array)
+      end
+
+      it 'the piece at coordinates a8 is a king object' do
+        rank_key = 8
+        file_idx = 0
+        result = fen_parser_simple.construct_piece_placement
+        expect(result[rank_key][file_idx]).to be_a(King)
+      end
+
+      it 'the king at coordinates a8 has a black color' do
+        rank_key = 8
+        file_idx = 0
+        result = fen_parser_simple.construct_piece_placement
+        expect(result[rank_key][file_idx].instance_variable_get(:@color)).to eq(:black)
+      end
+
+      it 'the piece at coordinates h1 is a king object' do
+        rank_key = 1
+        file_idx = 7
+        result = fen_parser_simple.construct_piece_placement
+        expect(result[rank_key][file_idx]).to be_a(King)
+      end
+
+      it 'the king at coordinates h1 has a white color' do
+        rank_key = 1
+        file_idx = 7
+        result = fen_parser_simple.construct_piece_placement
+        expect(result[rank_key][file_idx].instance_variable_get(:@color)).to eq(:white)
+      end
+
+      it 'coordinates b8 through g1 are empty' do
+        b8_idx = 1
+        g1_idx = 62
+        result = fen_parser_simple.construct_piece_placement
+        expect(result.values.flatten[b8_idx..g1_idx]).to all eq('-')
+      end
+    end
+  end
 end
