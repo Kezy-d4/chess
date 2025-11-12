@@ -7,6 +7,9 @@ require_relative 'constants'
 class Board
   def initialize(squares)
     @squares = squares
+    @selected_square = nil
+    @source_square = nil
+    @destination_square = nil
   end
 
   class << self
@@ -19,6 +22,24 @@ class Board
   def access_square(algebraic_coords)
     coords = parse_algebraic_coords(algebraic_coords)
     @squares[coords[:rank_key]][coords[:file_idx]]
+  end
+
+  def update_selected_square(selected_square)
+    @selected_square = selected_square
+  end
+
+  def reset_selected_square
+    @selected_square = nil
+  end
+
+  def update_source_and_destination_squares(source_square, destination_square)
+    @source_square = source_square
+    @destination_square = destination_square
+  end
+
+  def reset_source_and_destination_squares
+    @source_square = nil
+    @destination_square = nil
   end
 
   private

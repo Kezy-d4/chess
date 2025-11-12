@@ -43,4 +43,61 @@ describe Board do
       end
     end
   end
+
+  describe '#update_selected_square' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+    let(:square) { double('square') }
+
+    it 'updates the selected square' do
+      board.update_selected_square(square)
+      expect(board.instance_variable_get(:@selected_square)).to be(square)
+    end
+  end
+
+  describe '#reset_selected_square' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+
+    it 'resets the selected square' do
+      board.reset_selected_square
+      expect(board.instance_variable_get(:@selected_square)).to be_nil
+    end
+  end
+
+  describe '#update_source_and_destination_squares' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+    let(:source_square) { double('source_square') }
+    let(:destination_square) { double('destination_square') }
+
+    it 'updates the source square' do
+      board.update_source_and_destination_squares(source_square, destination_square)
+      expect(board.instance_variable_get(:@source_square)).to be(source_square)
+    end
+
+    it 'updates the destination square' do
+      board.update_source_and_destination_squares(source_square, destination_square)
+      expect(board.instance_variable_get(:@destination_square)).to be(destination_square)
+    end
+  end
+
+  describe '#reset_source_and_destination_squares' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+
+    it 'resets the source square' do
+      board.reset_source_and_destination_squares
+      expect(board.instance_variable_get(:@source_square)).to be_nil
+    end
+
+    it 'resets the destination square' do
+      board.reset_source_and_destination_squares
+      expect(board.instance_variable_get(:@destination_square)).to be_nil
+    end
+  end
 end
