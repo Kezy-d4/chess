@@ -17,4 +17,16 @@ class Square
   def remove_occupant
     @occupant = nil
   end
+
+  def occupant_is_white?
+    return false unless occupied?
+
+    @occupant.white?
+  end
+
+  def occupant_is_black?
+    return false unless occupied?
+
+    @occupant.black?
+  end
 end
