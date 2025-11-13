@@ -7,4 +7,12 @@ class Piece
   def initialize(color)
     @color = color
   end
+
+  def white?
+    @color == :white
+  end
+
+  def black?
+    @color == :black
+  end
 end
