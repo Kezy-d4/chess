@@ -22,4 +22,26 @@ describe Square do
       end
     end
   end
+
+  describe '#update_occupant' do
+    subject(:square_empty) { described_class.new }
+
+    let(:piece) { double('piece') }
+
+    it 'updates the occupant' do
+      square_empty.update_occupant(piece)
+      expect(square_empty.instance_variable_get(:@occupant)).to be(piece)
+    end
+  end
+
+  describe '#remove occupant' do
+    subject(:square_occupied) { described_class.new(piece) }
+
+    let(:piece) { double('piece') }
+
+    it 'removes any occupant' do
+      square_occupied.remove_occupant
+      expect(square_occupied.instance_variable_get(:@occupant)).to be_nil
+    end
+  end
 end

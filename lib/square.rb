@@ -9,4 +9,12 @@ class Square
   def occupied?
     @occupant != nil
   end
+
+  def update_occupant(new_occupant)
+    @occupant = new_occupant
+  end
+
+  def remove_occupant
+    @occupant = nil
+  end
 end
