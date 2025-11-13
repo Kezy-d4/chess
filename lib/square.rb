@@ -15,7 +15,9 @@ class Square
   end
 
   def remove_occupant
+    occupant_to_remove = @occupant
     @occupant = nil
+    occupant_to_remove
   end
 
   def occupant_is_white?
