@@ -37,6 +37,31 @@ module AdjacentCoordsGenerator
     generate_adjacent_coords(algebraic_coords, -1, 1)
   end
 
+  # This is the one method in this public interface for which direction and
+  # order are not particularly relevant. That being said, the array of adjacent
+  # coordinates is built clockwise beginning with the leftmost north eastern
+  # adjacency. For example, for coordinates e4, the order of the adjacencies
+  # would be: [f6, g5, g3, f2, d2, c3, c5, d6]. As with the other public
+  # methods, only in bounds adjacencies are included.
+  #
+  # rubocop:disable Metrics/MethodLength
+  def generate_knight_adjacent_coords(algebraic_coords)
+    numeric_coords = convert_algebraic_coords_to_numeric(algebraic_coords)
+    arr = [
+      adjust_numeric_coords(numeric_coords, 1, 2),
+      adjust_numeric_coords(numeric_coords, 2, 1),
+      adjust_numeric_coords(numeric_coords, 2, -1),
+      adjust_numeric_coords(numeric_coords, 1, -2),
+      adjust_numeric_coords(numeric_coords, -1, -2),
+      adjust_numeric_coords(numeric_coords, -2, -1),
+      adjust_numeric_coords(numeric_coords, -2, 1),
+      adjust_numeric_coords(numeric_coords, -1, 2)
+    ]
+    arr.delete_if { |numeric_coords| !numeric_coords_in_bounds?(numeric_coords) }
+    arr.map { |numeric_coords| convert_numeric_coords_to_algebraic(numeric_coords) }
+  end
+  # rubocop:enable all
+
   private
 
   def generate_adjacent_coords(algebraic_coords, file_deviation, rank_deviation)
