@@ -23,10 +23,11 @@ module AdjacentCoordsGenerator
     file_coord = algebraic_coords[0]
     rank_coord = algebraic_coords[-1]
     file_idx = ('a'..'z').to_a.index(file_coord).to_s
-    "#{file_idx}#{rank_coord}"
+    "#{file_idx} #{rank_coord}"
   end
 
   def convert_numeric_coords_to_algebraic(numeric_coords)
+    numeric_coords = numeric_coords.split
     file_idx = numeric_coords[0]
     rank_coord = numeric_coords[-1]
     file_coord = ('a'..'z').to_a[file_idx.to_i]
@@ -34,12 +35,14 @@ module AdjacentCoordsGenerator
   end
 
   def adjust_numeric_coords(numeric_coords, file_deviation, rank_deviation)
+    numeric_coords = numeric_coords.split
     new_file_idx = (numeric_coords[0].to_i + file_deviation).to_s
     new_rank_coord = (numeric_coords[-1].to_i + rank_deviation).to_s
-    "#{new_file_idx}#{new_rank_coord}"
+    "#{new_file_idx} #{new_rank_coord}"
   end
 
   def numeric_coords_in_bounds?(numeric_coords)
+    numeric_coords = numeric_coords.split
     file_idx = numeric_coords[0]
     rank_coord = numeric_coords[-1]
     file_idx.to_i.between?(0, Constants::NUMBER_OF_BOARD_FILES - 1) &&
