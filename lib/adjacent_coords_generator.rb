@@ -5,6 +5,38 @@ require_relative 'constants'
 # In the context of a chess board, generates the in bounds algebraic coordinates
 # adjacent to any given algebraic coordinates in stepwise order
 module AdjacentCoordsGenerator
+  def generate_northern_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, 0, 1)
+  end
+
+  def generate_north_eastern_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, 1, 1)
+  end
+
+  def generate_eastern_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, 1, 0)
+  end
+
+  def generate_south_eastern_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, 1, -1)
+  end
+
+  def generate_southern_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, 0, -1)
+  end
+
+  def generate_south_western_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, -1, -1)
+  end
+
+  def generate_western_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, -1, 0)
+  end
+
+  def generate_north_western_coords(algebraic_coords)
+    generate_adjacent_coords(algebraic_coords, -1, 1)
+  end
+
   private
 
   def generate_adjacent_coords(algebraic_coords, file_deviation, rank_deviation)
