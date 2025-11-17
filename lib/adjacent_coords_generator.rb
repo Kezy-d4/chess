@@ -4,37 +4,41 @@ require_relative 'constants'
 
 # In the context of a chess board, generates the in bounds algebraic coordinates
 # adjacent to any given algebraic coordinates in stepwise order
-module AdjacentCoordsGenerator
-  def generate_northern_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, 0, 1)
+class AdjacentCoordsGenerator
+  def initialize(algebraic_coords)
+    @algebraic_coords = algebraic_coords
   end
 
-  def generate_north_eastern_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, 1, 1)
+  def generate_northern_coords
+    generate_adjacent_coords(0, 1)
   end
 
-  def generate_eastern_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, 1, 0)
+  def generate_north_eastern_coords
+    generate_adjacent_coords(1, 1)
   end
 
-  def generate_south_eastern_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, 1, -1)
+  def generate_eastern_coords
+    generate_adjacent_coords(1, 0)
   end
 
-  def generate_southern_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, 0, -1)
+  def generate_south_eastern_coords
+    generate_adjacent_coords(1, -1)
   end
 
-  def generate_south_western_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, -1, -1)
+  def generate_southern_coords
+    generate_adjacent_coords(0, -1)
   end
 
-  def generate_western_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, -1, 0)
+  def generate_south_western_coords
+    generate_adjacent_coords(-1, -1)
   end
 
-  def generate_north_western_coords(algebraic_coords)
-    generate_adjacent_coords(algebraic_coords, -1, 1)
+  def generate_western_coords
+    generate_adjacent_coords(-1, 0)
+  end
+
+  def generate_north_western_coords
+    generate_adjacent_coords(-1, 1)
   end
 
   # This is the one method in this public interface for which direction and
@@ -45,8 +49,8 @@ module AdjacentCoordsGenerator
   # methods, only in bounds adjacencies are included.
   #
   # rubocop:disable Metrics/MethodLength
-  def generate_knight_adjacent_coords(algebraic_coords)
-    numeric_coords = convert_algebraic_coords_to_numeric(algebraic_coords)
+  def generate_knight_adjacent_coords
+    numeric_coords = convert_algebraic_coords_to_numeric
     arr = [
       adjust_numeric_coords(numeric_coords, 1, 2),
       adjust_numeric_coords(numeric_coords, 2, 1),
@@ -64,8 +68,8 @@ module AdjacentCoordsGenerator
 
   private
 
-  def generate_adjacent_coords(algebraic_coords, file_deviation, rank_deviation)
-    numeric_coords = convert_algebraic_coords_to_numeric(algebraic_coords)
+  def generate_adjacent_coords(file_deviation, rank_deviation)
+    numeric_coords = convert_algebraic_coords_to_numeric
     arr = []
     loop do
       numeric_coords = adjust_numeric_coords(numeric_coords, file_deviation, rank_deviation)
@@ -76,9 +80,9 @@ module AdjacentCoordsGenerator
     arr
   end
 
-  def convert_algebraic_coords_to_numeric(algebraic_coords)
-    file_coord = algebraic_coords[0]
-    rank_coord = algebraic_coords[-1]
+  def convert_algebraic_coords_to_numeric
+    file_coord = @algebraic_coords[0]
+    rank_coord = @algebraic_coords[-1]
     file_idx = ('a'..'z').to_a.index(file_coord).to_s
     "#{file_idx} #{rank_coord}"
   end
