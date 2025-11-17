@@ -167,18 +167,38 @@ describe AdjacentCoordsGenerator do
     context 'when testing with coordinates e4' do
       subject(:adjacent_coords_generator_e4) { described_class.new('e4') }
 
-      it 'returns an array of the in bounds adjacent knight coordinates' do
+      let(:expected) do
+        { north_east_one: 'f6',
+          north_east_two: 'g5',
+          south_east_one: 'f2',
+          south_east_two: 'g3',
+          south_west_one: 'c3',
+          south_west_two: 'd2',
+          north_west_one: 'c5',
+          north_west_two: 'd6' }
+      end
+
+      it 'returns a hash of the in bounds knight adjacent coordinates in each direction' do
         result = adjacent_coords_generator_e4.generate_knight_adjacent_coords
-        expect(result).to eq(%w[f6 g5 g3 f2 d2 c3 c5 d6])
+        expect(result).to eq(expected)
       end
     end
 
     context 'when testing with coordinates b6' do
       subject(:adjacent_coords_generator_b6) { described_class.new('b6') }
 
-      it 'returns an array of the in bounds adjacent knight coordinates' do
+      let(:expected) do
+        { north_east_one: 'c8',
+          north_east_two: 'd7',
+          south_east_one: 'c4',
+          south_east_two: 'd5',
+          south_west_two: 'a4',
+          north_west_two: 'a8' }
+      end
+
+      it 'returns a hash of the in bounds knight adjacent coordinates in each direction' do
         result = adjacent_coords_generator_b6.generate_knight_adjacent_coords
-        expect(result).to eq(%w[c8 d7 d5 c4 a4 a8])
+        expect(result).to eq(expected)
       end
     end
   end

@@ -41,28 +41,24 @@ class AdjacentCoordsGenerator
     generate_adjacent_coords(-1, 1)
   end
 
-  # This is the one method in this public interface for which direction and
-  # order are not particularly relevant. That being said, the array of adjacent
-  # coordinates is built clockwise beginning with the leftmost north eastern
-  # adjacency. For example, for coordinates e4, the order of the adjacencies
-  # would be: [f6, g5, g3, f2, d2, c3, c5, d6]. As with the other public
-  # methods, only in bounds adjacencies are included.
-  #
   # rubocop:disable Metrics/MethodLength
   def generate_knight_adjacent_coords
     numeric_coords = convert_algebraic_coords_to_numeric
-    arr = [
-      adjust_numeric_coords(numeric_coords, 1, 2),
-      adjust_numeric_coords(numeric_coords, 2, 1),
-      adjust_numeric_coords(numeric_coords, 2, -1),
-      adjust_numeric_coords(numeric_coords, 1, -2),
-      adjust_numeric_coords(numeric_coords, -1, -2),
-      adjust_numeric_coords(numeric_coords, -2, -1),
-      adjust_numeric_coords(numeric_coords, -2, 1),
-      adjust_numeric_coords(numeric_coords, -1, 2)
-    ]
-    arr.delete_if { |numeric_coords| !numeric_coords_in_bounds?(numeric_coords) }
-    arr.map { |numeric_coords| convert_numeric_coords_to_algebraic(numeric_coords) }
+    # The keys in this hash adhere to the following naming convention:
+    # <direction>one: the leftmost coordinate in the given direction
+    # <direction>two: the rightmost coordinate in the given direction
+    hash = {
+      north_east_one: adjust_numeric_coords(numeric_coords, 1, 2),
+      north_east_two: adjust_numeric_coords(numeric_coords, 2, 1),
+      south_east_one: adjust_numeric_coords(numeric_coords, 1, -2),
+      south_east_two: adjust_numeric_coords(numeric_coords, 2, -1),
+      south_west_one: adjust_numeric_coords(numeric_coords, -2, -1),
+      south_west_two: adjust_numeric_coords(numeric_coords, -1, -2),
+      north_west_one: adjust_numeric_coords(numeric_coords, -2, 1),
+      north_west_two: adjust_numeric_coords(numeric_coords, -1, 2)
+    }
+    hash.delete_if { |_direction, numeric_coords| !numeric_coords_in_bounds?(numeric_coords) }
+    hash.transform_values { |numeric_coords| convert_numeric_coords_to_algebraic(numeric_coords) }
   end
   # rubocop:enable all
 
