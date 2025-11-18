@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'pieces'
-require_relative 'square'
 require_relative 'constants'
 
 # Parses a FEN record
@@ -49,21 +48,7 @@ class FenParser
     hash
   end
 
-  def construct_piece_placement_with_squares
-    construct_piece_placement.transform_values do |rank|
-      rank.map { |piece| piece == '-' ? Square.new : Square.new(piece) }
-    end
-  end
-
   private
-
-  def construct_piece_placement
-    parse_piece_placement.transform_values do |rank|
-      rank.map do |char|
-        white_char?(char) || black_char?(char) ? parse_char(char) : char
-      end
-    end
-  end
 
   def parse_rank(num)
     access_rank(num).chars.each_with_object([]) do |char, arr|
@@ -72,14 +57,6 @@ class FenParser
       elsif white_char?(char) || black_char?(char)
         arr << char
       end
-    end
-  end
-
-  def parse_char(char)
-    if white_char?(char)
-      FenParser::CHAR_PIECE_MAP[:white][char].new(:white)
-    elsif black_char?(char)
-      FenParser::CHAR_PIECE_MAP[:black][char].new(:black)
     end
   end
 
