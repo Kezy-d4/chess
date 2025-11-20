@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'square'
 require_relative 'pieces'
 require_relative 'constants'
 
-# Parses a FEN record
+# Parses a chess FEN record
 class FenParser
   CHAR_PIECE_MAP = {
     white: {
@@ -48,7 +49,38 @@ class FenParser
     hash
   end
 
+  def construct_squares
+    current_rank = number_of_ranks
+    hash = {}
+    while current_rank.positive?
+      hash[current_rank] = construct_rank(current_rank, parse_rank(current_rank))
+      current_rank -= 1
+    end
+    hash
+  end
+
   private
+
+  def construct_rank(rank_num, rank_data)
+    rank_data.map.with_index do |char, idx|
+      file_coord = ('a'..'z').to_a[idx]
+      algebraic_coords = "#{file_coord}#{rank_num}"
+      if char == '-'
+        Square.new(algebraic_coords)
+      elsif white_char?(char) || black_char?(char)
+        piece = construct_piece(char, algebraic_coords)
+        Square.new(algebraic_coords, piece)
+      end
+    end
+  end
+
+  def construct_piece(char, algebraic_coords)
+    if white_char?(char)
+      FenParser::CHAR_PIECE_MAP[:white][char].new(algebraic_coords, :white, 0)
+    elsif black_char?(char)
+      FenParser::CHAR_PIECE_MAP[:black][char].new(algebraic_coords, :black, 0)
+    end
+  end
 
   def parse_rank(num)
     access_rank(num).chars.each_with_object([]) do |char, arr|
@@ -77,7 +109,8 @@ class FenParser
   end
 
   def access_rank(num)
-    split_ranks.reverse[num - 1]
+    idx = num - 1
+    split_ranks.reverse[idx]
   end
 
   def number_of_ranks
