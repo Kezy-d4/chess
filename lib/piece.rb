@@ -2,9 +2,11 @@
 
 require_relative 'constants'
 
-# Superclass to each of the pieces
+# Superclass to each of the chess pieces
 class Piece
-  def initialize(color)
+  def initialize(algebraic_coords, color, total_moves)
+    @algebraic_coords = algebraic_coords
     @color = color
+    @total_moves = total_moves
   end
 end
