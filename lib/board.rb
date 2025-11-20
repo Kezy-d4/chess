@@ -15,4 +15,10 @@ class Board
       new(squares)
     end
   end
+
+  def access_square(algebraic_coords)
+    rank_key = algebraic_coords[-1].to_i
+    file_idx = ('a'..'z').to_a.index(algebraic_coords[0])
+    @squares[rank_key][file_idx]
+  end
 end

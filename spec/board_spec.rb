@@ -26,4 +26,26 @@ describe Board do
       expect(board_squares).to be(squares)
     end
   end
+
+  describe '#access_square' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { { 1 => [square, square_b1, square] } }
+    let(:square_b1) { double('square_b1') }
+    let(:square) { double('square') }
+
+    context 'when passed in bounds coordinates' do
+      it 'returns the square at those coordinates' do
+        result = board.access_square('b1')
+        expect(result).to be(square_b1)
+      end
+    end
+
+    context 'when passed out of bounds coordinates' do
+      it 'returns nil' do
+        result = board.access_square('d1')
+        expect(result).to be_nil
+      end
+    end
+  end
 end
