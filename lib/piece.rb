@@ -9,4 +9,20 @@ class Piece
     @color = color
     @total_moves = total_moves
   end
+
+  def increment_total_moves
+    @total_moves += 1
+  end
+
+  def update_algebraic_coords(new_algebraic_coords)
+    @algebraic_coords = new_algebraic_coords
+  end
+
+  def white?
+    @color == :white
+  end
+
+  def black?
+    @color == :black
+  end
 end
