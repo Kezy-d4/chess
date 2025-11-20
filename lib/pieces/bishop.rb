@@ -3,5 +3,5 @@
 require_relative '../piece'
 require_relative '../constants'
 
-# A bishop piece
+# A bishop chess piece
 class Bishop < Piece; end
