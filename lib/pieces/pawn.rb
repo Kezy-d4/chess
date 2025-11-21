@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 require_relative '../piece'
-require_relative '../constants'
 
 # A pawn chess piece
-class Pawn < Piece; end
+class Pawn < Piece
+  def initialize(algebraic_coords, color, total_moves)
+    super
+    @material_value = 1
+  end
+end

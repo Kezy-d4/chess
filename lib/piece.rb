@@ -14,8 +14,8 @@ class Piece
     @total_moves += 1
   end
 
-  def update_algebraic_coords(new_algebraic_coords)
-    @algebraic_coords = new_algebraic_coords
+  def moved?
+    @total_moves.positive?
   end
 
   def white?

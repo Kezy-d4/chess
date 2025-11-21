@@ -6,27 +6,30 @@ describe Piece do
   describe '#increment_total_moves' do
     subject(:piece) { described_class.new('a8', :white, 0) }
 
-    it 'increments the total moves' do
+    it 'increments the piece\'s total moves by one' do
       piece.increment_total_moves
       incremented_total_moves = piece.instance_variable_get(:@total_moves)
       expect(incremented_total_moves).to eq(1)
     end
   end
 
-  describe '#update_algebraic_coords' do
-    subject(:piece) { described_class.new('a8', :white, 0) }
+  describe '#moved?' do
+    context 'when the piece has moved at least once' do
+      subject(:piece_moved) { described_class.new('a8', :white, 1) }
 
-    it 'updates the algebraic coordinates' do
-      new_algebraic_coords = 'b8'
-      piece.update_algebraic_coords(new_algebraic_coords)
-      updated_algebraic_coords = piece.instance_variable_get(:@algebraic_coords)
-      expect(updated_algebraic_coords).to be(new_algebraic_coords)
+      it 'returns true' do
+        result = piece_moved.moved?
+        expect(result).to be(true)
+      end
     end
 
-    it 'returns the new algebraic coordinates' do
-      new_algebraic_coords = 'b8'
-      result = piece.update_algebraic_coords(new_algebraic_coords)
-      expect(result).to be(new_algebraic_coords)
+    context 'when the piece has not moved' do
+      subject(:piece_unmoved) { described_class.new('a8', :white, 0) }
+
+      it 'returns false' do
+        result = piece_unmoved.moved?
+        expect(result).to be(false)
+      end
     end
   end
 
