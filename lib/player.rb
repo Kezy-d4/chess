@@ -9,4 +9,12 @@ class Player
     @color = color
     @owned_pieces = owned_pieces
   end
+
+  def white?
+    @color == :white
+  end
+
+  def black?
+    @color == :black
+  end
 end
