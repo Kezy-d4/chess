@@ -35,7 +35,7 @@ class FenParser
   def parse_and_label_rank(rank, rank_num)
     hash = {}
     parse_rank(rank).each_with_index do |char, idx|
-      algebraic_file = Constants::LOWERCASE_ALPHABET.to_a[idx]
+      algebraic_file = Constants::BOARD_FILES[idx]
       algebraic_rank = rank_num
       algebraic_coords = :"#{algebraic_file}#{algebraic_rank}"
       hash[algebraic_coords] = char
