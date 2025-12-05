@@ -102,6 +102,18 @@ describe Board do
     end
   end
 
+  describe '#access_square' do
+    context 'when accessing the square at coordinates e4 on a default board' do
+      subject(:board_default) { described_class.from_piece_placement(default_piece_placement) }
+
+      it 'returns the square at coordinates e4' do
+        result = board_default.access_square('e4')
+        string = result.to_s
+        expect(string).to eq('<Square>: [@algebraic_coords: e4, @occupant: ]')
+      end
+    end
+  end
+
   describe '#to_s' do
     context 'when testing with a default board' do
       subject(:board_default) { described_class.from_piece_placement(default_piece_placement) }

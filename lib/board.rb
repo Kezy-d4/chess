@@ -80,6 +80,11 @@ class Board
     end
   end
 
+  def access_square(algebraic_coords)
+    rank_num = algebraic_coords[1].to_i
+    @squares[rank_num][algebraic_coords.to_sym]
+  end
+
   def to_s
     arr = []
     @squares.each do |rank_num, rank|
