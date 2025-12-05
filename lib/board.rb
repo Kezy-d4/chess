@@ -37,7 +37,7 @@ class Board
       piece_placement.each do |rank_num, rank|
         inner_hash = {}
         rank.each do |algebraic_coords, char|
-          inner_hash[algebraic_coords] = construct_square(algebraic_coords, char)
+          inner_hash[algebraic_coords] = construct_square(algebraic_coords.to_s, char)
         end
         outer_hash[rank_num] = inner_hash
       end
@@ -57,9 +57,9 @@ class Board
 
     def construct_piece(algebraic_coords, char)
       if char_represents_white_piece?(char)
-        FEN_CHAR_PIECE_MAP[:white][char].new(algebraic_coords.to_s, :white)
+        FEN_CHAR_PIECE_MAP[:white][char].new(algebraic_coords, :white)
       elsif char_represents_black_piece?(char)
-        FEN_CHAR_PIECE_MAP[:black][char].new(algebraic_coords.to_s, :black)
+        FEN_CHAR_PIECE_MAP[:black][char].new(algebraic_coords, :black)
       end
     end
 
