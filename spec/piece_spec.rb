@@ -66,6 +66,46 @@ describe Piece do
     end
   end
 
+  describe '#moved?' do
+    context 'when the piece has moved at least once' do
+      subject(:piece_moved) { described_class.new('a8', :white, 1) }
+
+      it 'returns true' do
+        result = piece_moved.moved?
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the piece has not moved' do
+      subject(:piece_unmoved) { described_class.new('a8', :white) }
+
+      it 'returns false' do
+        result = piece_unmoved.moved?
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#unmoved?' do
+    context 'when the piece has not moved' do
+      subject(:piece_unmoved) { described_class.new('a8', :white) }
+
+      it 'returns true' do
+        result = piece_unmoved.unmoved?
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the piece has moved at least once' do
+      subject(:piece_moved) { described_class.new('a8', :white, 1) }
+
+      it 'returns false' do
+        result = piece_moved.unmoved?
+        expect(result).to be(false)
+      end
+    end
+  end
+
   describe '#to_s' do
     subject(:piece) { described_class.new('a8', :white) }
 
