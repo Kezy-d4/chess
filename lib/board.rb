@@ -28,6 +28,9 @@ class Board
   # @param squares [Hash<Integer, Hash<Symbol, Square>>] the squares
   def initialize(squares)
     @squares = squares
+    @selected_square = nil
+    @most_recent_source_square = nil
+    @most_recent_destination_square = nil
   end
 
   class << self
@@ -83,6 +86,24 @@ class Board
   def access_square(algebraic_coords)
     rank_num = algebraic_coords[1].to_i
     @squares[rank_num][algebraic_coords.to_sym]
+  end
+
+  def select_square(square)
+    @selected_square = square
+  end
+
+  def deselect_square
+    square_to_deselect = @selected_square
+    @selected_square = nil
+    square_to_deselect
+  end
+
+  def update_most_recent_source_square(square)
+    @most_recent_source_square = square
+  end
+
+  def update_most_recent_destination_square(square)
+    @most_recent_destination_square = square
   end
 
   def to_s

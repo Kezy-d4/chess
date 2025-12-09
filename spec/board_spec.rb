@@ -114,6 +114,76 @@ describe Board do
     end
   end
 
+  describe '#select_square' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+    let(:square) { double('square') }
+
+    it 'updates the selected square' do
+      expect { board.select_square(square) }.to change \
+        { board.instance_variable_get(:@selected_square) }.from(nil).to(square)
+    end
+
+    it 'returns the selected square' do
+      result = board.select_square(square)
+      expect(result).to be(square)
+    end
+  end
+
+  describe '#deselect_square' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+    let(:square) { double('square') }
+
+    before { board.instance_variable_set(:@selected_square, square) }
+
+    it 'deselects the selected square' do
+      expect { board.deselect_square }.to change \
+        { board.instance_variable_get(:@selected_square) }.from(square).to(nil)
+    end
+
+    it 'returns the deselected square' do
+      result = board.deselect_square
+      expect(result).to be(square)
+    end
+  end
+
+  describe '#update_most_recent_source_square' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+    let(:square) { double('square') }
+
+    it 'updates the most recent source square' do
+      expect { board.update_most_recent_source_square(square) }.to change \
+        { board.instance_variable_get(:@most_recent_source_square) }.from(nil).to(square)
+    end
+
+    it 'returns the new most recent source square' do
+      result = board.update_most_recent_source_square(square)
+      expect(result).to be(square)
+    end
+  end
+
+  describe '#update_most_recent_destination_square' do
+    subject(:board) { described_class.new(squares) }
+
+    let(:squares) { double('squares') }
+    let(:square) { double('square') }
+
+    it 'updates the most recent destination square' do
+      expect { board.update_most_recent_destination_square(square) }.to change \
+        { board.instance_variable_get(:@most_recent_destination_square) }.from(nil).to(square)
+    end
+
+    it 'returns the new most recent destination square' do
+      result = board.update_most_recent_destination_square(square)
+      expect(result).to be(square)
+    end
+  end
+
   describe '#to_s' do
     context 'when testing with a default board' do
       subject(:board_default) { described_class.from_piece_placement(default_piece_placement) }
