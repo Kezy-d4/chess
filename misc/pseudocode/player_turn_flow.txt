@@ -1,0 +1,34 @@
+VARIABLES
+Player = the player who currently has the move
+Opponent = Player's opponent
+King = Player's king
+
+METHODS
+King_In_Check?
+To determine if King is in check, first, the program must locate each of 
+Opponent's pieces. For each of these, it must examine the piece's attacked 
+adjacencies. If any of Opponent's pieces are attacking King, then King is in 
+check. If the program has iterated over each of Opponent's pieces and none of 
+them are attacking King, then King is not in check.
+
+Stalemate?
+To do this, first, it must locate each of Player's pieces on the 
+board. Then, it must generate every possible move Player has and for each one
+simulate a position where Player makes that move. For each of these simulated
+positions, it must determine if King is in check using the logic described
+above. If any of these simulated positions have do not have King in check, 
+then there is no stalemate. Otherwise if the program iterates through each 
+simulated position and each one has King in check, then there is a stalemate. 
+
+TURN START, IS KING IN CHECK?:
+Invoke King_In_Check?
+
+  IF KING IS NOT IN CHECK, IS THERE A STALEMATE?:
+  Invoke Stalemate?
+
+    IF THERE IS A STALEMATE:
+    If there is a stalemate, then the game is a draw.
+
+    IF THERE IS NO STALEMATE:
+    If there is no stalemate, then Player can choose to make any of their
+    available legal moves before passing control to Opponent.
