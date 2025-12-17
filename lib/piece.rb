@@ -4,6 +4,8 @@ require_relative 'constants'
 
 # A superclass to each of the chess pieces
 class Piece
+  attr_reader :color, :total_moves
+
   # @param color [Symbol]
   # @param total_moves [Integer]
   def initialize(color, total_moves = 0)
@@ -33,6 +35,10 @@ class Piece
 
   def unmoved?
     @total_moves.zero?
+  end
+
+  def increment_total_moves
+    @total_moves += 1
   end
 
   def to_s

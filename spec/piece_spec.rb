@@ -145,6 +145,15 @@ describe Piece do
     end
   end
 
+  describe '#increment_total_moves' do
+    subject(:piece) { described_class.new(:white) }
+
+    it 'increments the total moves by one' do
+      expect { piece.increment_total_moves }.to change \
+        { piece.instance_variable_get(:@total_moves) }.from(0).to(1)
+    end
+  end
+
   describe '#to_s' do
     context 'when the piece has not moved' do
       subject(:piece_unmoved) { described_class.new(:white) }
