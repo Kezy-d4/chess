@@ -4,8 +4,8 @@ require_relative 'constants'
 
 # A superclass to each of the chess pieces
 class Piece
-  # @param color [Symbol] the color
-  # @param total_moves [Integer] the total moves
+  # @param color [Symbol]
+  # @param total_moves [Integer]
   def initialize(color, total_moves = 0)
     @color = color
     @total_moves = total_moves
