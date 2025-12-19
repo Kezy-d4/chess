@@ -30,4 +30,13 @@ class Square
     @occupant = '-'
     occupant_to_remove
   end
+
+  def to_s
+    if occupied?
+      "The #{self.class} at coordinates #{@algebraic_coords} is occupied by a #{@occupant.class}.\n" \
+        "\s\s#{@occupant}"
+    elsif unoccupied?
+      "The #{self.class} at coordinates #{@algebraic_coords} is unoccupied."
+    end
+  end
 end

@@ -86,4 +86,34 @@ describe Square do
       expect(result).to be(piece)
     end
   end
+
+  describe '#to_s' do
+    context 'when the square is occupied' do
+      subject(:square_occupied) { described_class.new(algebraic_coords, piece) }
+
+      let(:algebraic_coords) { double('AlgebraicCoords', to_s: 'a8') }
+      let(:piece) { double('Piece', to_s: 'The Piece is white and has not moved.') }
+      let(:expected) do
+        "The Square at coordinates a8 is occupied by a RSpec::Mocks::Double.\n" \
+          "\s\sThe Piece is white and has not moved."
+      end
+
+      it 'returns a string describing the state' do
+        result = square_occupied.to_s
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when the square is unoccupied' do
+      subject(:square_unoccupied) { described_class.new(algebraic_coords, '-') }
+
+      let(:algebraic_coords) { double('AlgebraicCoords', to_s: 'a8') }
+      let(:expected) { 'The Square at coordinates a8 is unoccupied.' }
+
+      it 'returns a string describing the state' do
+        result = square_unoccupied.to_s
+        expect(result).to eq(expected)
+      end
+    end
+  end
 end
