@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'constants'
+require_relative 'chess_constants'
 
 # A square on a chess board
 class Square

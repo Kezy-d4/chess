@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'constants'
+require_relative 'chess_constants'
 
 # Parses a chess FEN record
 class FenParser
@@ -33,7 +33,7 @@ class FenParser
   def parse_rank_with_coords(rank_arr, rank_int)
     hash = {}
     rank_arr.each_with_index do |char, idx|
-      algebraic_file = Constants::BOARD_FILE_MARKERS[idx]
+      algebraic_file = ChessConstants::BOARD_FILE_MARKERS[idx]
       algebraic_rank = rank_int
       algebraic_coords = :"#{algebraic_file}#{algebraic_rank}"
       hash[algebraic_coords] = char

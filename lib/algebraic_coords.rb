@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'constants'
+require_relative 'chess_constants'
 
 # TODO(low priority): Refactor this class to function identically as now but by
 # adjusting the coordinates of the existing object rather than constructing new
@@ -28,7 +28,7 @@ class AlgebraicCoords
     return unless adjustment_in_bounds?(file_adjustment, rank_adjustment)
 
     adjacent_file_idx = file_to_i + file_adjustment - 1
-    adjacent_file = Constants::BOARD_FILE_MARKERS[adjacent_file_idx]
+    adjacent_file = ChessConstants::BOARD_FILE_MARKERS[adjacent_file_idx]
     adjacent_rank = @rank + rank_adjustment
     AlgebraicCoords.new(adjacent_file, adjacent_rank)
   end
@@ -75,7 +75,7 @@ class AlgebraicCoords
   end
 
   def file_to_i
-    Constants::BOARD_FILE_MARKERS.index(@file) + 1
+    ChessConstants::BOARD_FILE_MARKERS.index(@file) + 1
   end
 
   def to_s
@@ -101,11 +101,11 @@ class AlgebraicCoords
 
   def file_adjustment_in_bounds?(file_adjustment)
     adjusted = file_to_i + file_adjustment
-    adjusted.between?(1, Constants::BOARD_FILE_MARKERS.length)
+    adjusted.between?(1, ChessConstants::BOARD_FILE_MARKERS.length)
   end
 
   def rank_adjustment_in_bounds?(rank_adjustment)
     adjusted = @rank + rank_adjustment
-    adjusted.between?(1, Constants::BOARD_RANK_MARKERS.length)
+    adjusted.between?(1, ChessConstants::BOARD_RANK_MARKERS.length)
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'constants'
+require_relative 'chess_constants'
 
 # A superclass to each of the chess players
 class Player

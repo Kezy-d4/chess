@@ -5,7 +5,7 @@ require_relative '../lib/fen_parser'
 describe FenParser do
   describe '#parse_piece_placement' do
     context 'when testing with the default fen record' do
-      subject(:fen_parser_default) { described_class.new(Constants::DEFAULT_FEN) }
+      subject(:fen_parser_default) { described_class.new(ChessConstants::DEFAULT_FEN) }
 
       let(:expected) do
         { 8 => { a8: 'r', b8: 'n', c8: 'b', d8: 'q', e8: 'k', f8: 'b', g8: 'n', h8: 'r' },
@@ -49,7 +49,7 @@ describe FenParser do
 
   describe '#parse_data_fields' do
     context 'when testing with the default fen record' do
-      subject(:fen_parser_default) { described_class.new(Constants::DEFAULT_FEN) }
+      subject(:fen_parser_default) { described_class.new(ChessConstants::DEFAULT_FEN) }
 
       let(:expected) do
         { piece_placement: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',

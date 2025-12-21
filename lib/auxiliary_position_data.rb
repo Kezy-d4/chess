@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'constants'
+require_relative 'chess_constants'
 
 # Data representing a chess position excluding piece placement
 class AuxiliaryPositionData
