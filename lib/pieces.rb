@@ -6,10 +6,14 @@ require_relative 'pieces/rook'
 require_relative 'pieces/bishop'
 require_relative 'pieces/knight'
 require_relative 'pieces/pawn'
+require_relative 'fen_char_analysis'
+require_relative 'chess_constants'
 
 # A mixin to construct chess pieces from their corresponding FEN character and
 # convert existing pieces back into said character
 module Pieces
+  include FENCharAnalysis
+
   FEN_CHAR_PIECE_MAP = {
     white: {
       'K' => King,
@@ -62,13 +66,5 @@ module Pieces
     elsif piece.black?
       PIECE_FEN_CHAR_MAP[:black][piece.class]
     end
-  end
-
-  def fen_char_represents_white_piece?(fen_char)
-    FEN_CHAR_PIECE_MAP[:white].key?(fen_char)
-  end
-
-  def fen_char_represents_black_piece?(fen_char)
-    FEN_CHAR_PIECE_MAP[:black].key?(fen_char)
   end
 end

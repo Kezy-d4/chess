@@ -4,7 +4,7 @@ require_relative '../lib/square'
 
 describe Square do
   describe '#occupied?' do
-    context 'when the square is occupied' do
+    context 'when the Square is occupied' do
       subject(:square_occupied) { described_class.new(algebraic_coords, piece) }
 
       let(:algebraic_coords) { double('AlgebraicCoords') }
@@ -16,7 +16,7 @@ describe Square do
       end
     end
 
-    context 'when the square is unoccupied' do
+    context 'when the Square is unoccupied' do
       subject(:square_unoccupied) { described_class.new(algebraic_coords, '-') }
 
       let(:algebraic_coords) { double('AlgebraicCoords') }
@@ -29,7 +29,7 @@ describe Square do
   end
 
   describe '#unoccupied?' do
-    context 'when the square is unoccupied' do
+    context 'when the Square is unoccupied' do
       subject(:square_unoccupied) { described_class.new(algebraic_coords, '-') }
 
       let(:algebraic_coords) { double('AlgebraicCoords') }
@@ -40,7 +40,7 @@ describe Square do
       end
     end
 
-    context 'when the square is occupied' do
+    context 'when the Square is occupied' do
       subject(:square_occupied) { described_class.new(algebraic_coords, piece) }
 
       let(:algebraic_coords) { double('AlgebraicCoords') }
@@ -88,7 +88,7 @@ describe Square do
   end
 
   describe '#to_s' do
-    context 'when the square is occupied' do
+    context 'when the Square is occupied' do
       subject(:square_occupied) { described_class.new(algebraic_coords, piece) }
 
       let(:algebraic_coords) { double('AlgebraicCoords', to_s: 'a8') }
@@ -104,7 +104,7 @@ describe Square do
       end
     end
 
-    context 'when the square is unoccupied' do
+    context 'when the Square is unoccupied' do
       subject(:square_unoccupied) { described_class.new(algebraic_coords, '-') }
 
       let(:algebraic_coords) { double('AlgebraicCoords', to_s: 'a8') }

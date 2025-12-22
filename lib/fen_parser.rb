@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+require_relative 'fen_char_analysis'
 require_relative 'chess_constants'
 
 # Parses a chess FEN record
-class FenParser
-  # @param fen [String] the valid fen record
+class FENParser
+  include FENCharAnalysis
+
+  # @param fen [String] the valid FEN record
   def initialize(fen)
     @fen = fen
   end
@@ -32,21 +35,21 @@ class FenParser
 
   def parse_rank_with_coords(rank_arr, rank_int)
     hash = {}
-    rank_arr.each_with_index do |char, idx|
+    rank_arr.each_with_index do |fen_char, idx|
       algebraic_file = ChessConstants::BOARD_FILE_MARKERS[idx]
       algebraic_rank = rank_int
-      algebraic_coords = :"#{algebraic_file}#{algebraic_rank}"
-      hash[algebraic_coords] = char
+      algebraic_coords_sym = :"#{algebraic_file}#{algebraic_rank}"
+      hash[algebraic_coords_sym] = fen_char
     end
     hash
   end
 
   def parse_rank(rank_str)
-    rank_str.chars.each_with_object([]) do |char, arr|
-      if char_represents_piece?(char)
-        arr << char
-      elsif char_represents_contiguous_empty_squares?(char)
-        char.to_i.times { arr << '-' }
+    rank_str.chars.each_with_object([]) do |fen_char, arr|
+      if fen_char_represents_piece?(fen_char)
+        arr << fen_char
+      elsif fen_char_represents_contiguous_empty_squares?(fen_char)
+        fen_char.to_i.times { arr << '-' }
       end
     end
   end
@@ -57,13 +60,5 @@ class FenParser
 
   def determine_number_of_ranks
     split_ranks.length
-  end
-
-  def char_represents_piece?(char)
-    char.match?(/^[a-zA-Z]$/)
-  end
-
-  def char_represents_contiguous_empty_squares?(char)
-    char.to_i.positive?
   end
 end

@@ -2,7 +2,7 @@
 
 require_relative '../lib/fen_parser'
 
-describe FenParser do
+describe FENParser do
   describe '#parse_piece_placement' do
     context 'when testing with the default fen record' do
       subject(:fen_parser_default) { described_class.new(ChessConstants::DEFAULT_FEN) }

@@ -8,7 +8,7 @@ require_relative '../lib/piece'
 # defaults to 0.
 describe Piece do
   describe '#white?' do
-    context 'when the piece is white' do
+    context 'when the Piece is white' do
       subject(:piece_white) { described_class.new(:white) }
 
       it 'returns true' do
@@ -17,7 +17,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece is black' do
+    context 'when the Piece is black' do
       subject(:piece_black) { described_class.new(:black) }
 
       it 'returns false' do
@@ -28,7 +28,7 @@ describe Piece do
   end
 
   describe '#black?' do
-    context 'when the piece is black' do
+    context 'when the Piece is black' do
       subject(:piece_black) { described_class.new(:black) }
 
       it 'returns true' do
@@ -37,7 +37,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece is white' do
+    context 'when the Piece is white' do
       subject(:piece_white) { described_class.new(:white) }
 
       it 'returns false' do
@@ -48,7 +48,7 @@ describe Piece do
   end
 
   describe '#moved?' do
-    context 'when the piece has moved at least once' do
+    context 'when the Piece has moved at least once' do
       subject(:piece_moved) { described_class.new(:white, 1) }
 
       it 'returns true' do
@@ -57,7 +57,7 @@ describe Piece do
       end
     end
 
-    context 'when the the piece has not moved' do
+    context 'when the the Piece has not moved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns false' do
@@ -68,7 +68,7 @@ describe Piece do
   end
 
   describe '#moved_once?' do
-    context 'when the piece has moved exactly once' do
+    context 'when the Piece has moved exactly once' do
       subject(:piece_moved_once) { described_class.new(:white, 1) }
 
       it 'returns true' do
@@ -77,7 +77,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece has moved more than once' do
+    context 'when the Piece has moved more than once' do
       subject(:piece_moved_multiple_times) { described_class.new(:white, 2) }
 
       it 'returns false' do
@@ -86,7 +86,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece has not moved' do
+    context 'when the Piece has not moved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns false' do
@@ -97,7 +97,7 @@ describe Piece do
   end
 
   describe '#moved_more_than_once?' do
-    context 'when the piece has moved more than once' do
+    context 'when the Piece has moved more than once' do
       subject(:piece_moved_multiple_times) { described_class.new(:white, 2) }
 
       it 'returns true' do
@@ -106,7 +106,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece has moved exactly once' do
+    context 'when the Piece has moved exactly once' do
       subject(:piece_moved_once) { described_class.new(:white, 1) }
 
       it 'returns false' do
@@ -115,7 +115,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece has not moved' do
+    context 'when the Piece has not moved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns false' do
@@ -126,7 +126,7 @@ describe Piece do
   end
 
   describe '#unmoved?' do
-    context 'when the piece has not moved' do
+    context 'when the Piece has not moved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns true' do
@@ -135,7 +135,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece has moved at least once' do
+    context 'when the Piece has moved at least once' do
       subject(:piece_moved) { described_class.new(:white, 1) }
 
       it 'returns false' do
@@ -155,7 +155,7 @@ describe Piece do
   end
 
   describe '#to_s' do
-    context 'when the piece has not moved' do
+    context 'when the Piece has not moved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns a string describing the state' do
@@ -164,7 +164,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece has moved exactly once' do
+    context 'when the Piece has moved exactly once' do
       subject(:piece_moved_once) { described_class.new(:white, 1) }
 
       it 'returns a string describing the state' do
@@ -173,7 +173,7 @@ describe Piece do
       end
     end
 
-    context 'when the piece has moved more than once' do
+    context 'when the Piece has moved more than once' do
       subject(:piece_moved_multiple_times) { described_class.new(:white, 8) }
 
       it 'returns a string describing the state' do

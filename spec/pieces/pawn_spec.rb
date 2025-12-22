@@ -4,7 +4,7 @@ require_relative '../../lib/pieces/pawn'
 
 describe Pawn do
   describe '#generate_adjacent_movement_coords' do
-    context 'when the pawn is white, has not moved, and is passed AlgebraicCoords e2' do
+    context 'when the Pawn is white, has not moved, and is passed AlgebraicCoords e2' do
       subject(:pawn_white_unmoved) { described_class.new(:white) }
 
       let(:algebraic_coords_e2) do
@@ -22,7 +22,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is white, has moved, and is passed AlgebraicCoords e4' do
+    context 'when the Pawn is white, has moved, and is passed AlgebraicCoords e4' do
       subject(:pawn_white_moved) { described_class.new(:white, 1) }
 
       let(:algebraic_coords_e4) do
@@ -40,7 +40,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is white, has moved, and is passed AlgebraicCoords e8' do
+    context 'when the Pawn is white, has moved, and is passed AlgebraicCoords e8' do
       subject(:pawn_white_edge) { described_class.new(:white, 5) }
 
       let(:algebraic_coords_e8) do
@@ -56,7 +56,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is black, has not moved, and is passed AlgebraicCoords e7' do
+    context 'when the Pawn is black, has not moved, and is passed AlgebraicCoords e7' do
       subject(:pawn_black_unmoved) { described_class.new(:black) }
 
       let(:algebraic_coords_e7) do
@@ -74,7 +74,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is black, has moved, and is passed AlgebraicCoords e5' do
+    context 'when the Pawn is black, has moved, and is passed AlgebraicCoords e5' do
       subject(:pawn_black_moved) { described_class.new(:black, 1) }
 
       let(:algebraic_coords_e5) do
@@ -92,7 +92,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is black, has moved, and is passed AlgebraicCoords e1' do
+    context 'when the Pawn is black, has moved, and is passed AlgebraicCoords e1' do
       subject(:pawn_black_edge) { described_class.new(:black, 5) }
 
       let(:algebraic_coords_e1) do
@@ -110,7 +110,7 @@ describe Pawn do
   end
 
   describe '#generate_adjacent_capture_coords' do
-    context 'when the pawn is white and is passed AlgebraicCoords e4' do
+    context 'when the Pawn is white and is passed AlgebraicCoords e4' do
       subject(:pawn_white_full_cap) { described_class.new(:white, 1) }
 
       let(:algebraic_coords_e4) do
@@ -132,7 +132,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is white and is passed AlgebraicCoords a4' do
+    context 'when the Pawn is white and is passed AlgebraicCoords a4' do
       subject(:pawn_white_right_cap) { described_class.new(:white, 1) }
 
       let(:algebraic_coords_a4) do
@@ -151,7 +151,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is white and is passed AlgebraicCoords h4' do
+    context 'when the Pawn is white and is passed AlgebraicCoords h4' do
       subject(:pawn_white_left_cap) { described_class.new(:white, 1) }
 
       let(:algebraic_coords_h4) do
@@ -170,7 +170,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is white and is passed AlgebraicCoords e8' do
+    context 'when the Pawn is white and is passed AlgebraicCoords e8' do
       subject(:pawn_white_edge) { described_class.new(:white, 5) }
 
       let(:algebraic_coords_e8) do
@@ -187,7 +187,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is black and is passed AlgebraicCoords e5' do
+    context 'when the Pawn is black and is passed AlgebraicCoords e5' do
       subject(:pawn_black_full_cap) { described_class.new(:black, 1) }
 
       let(:algebraic_coords_e5) do
@@ -209,7 +209,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is black and is passed AlgebraicCoords a5' do
+    context 'when the Pawn is black and is passed AlgebraicCoords a5' do
       subject(:pawn_black_right_cap) { described_class.new(:black, 1) }
 
       let(:algebraic_coords_a5) do
@@ -228,7 +228,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is black and is passed AlgebraicCoords h5' do
+    context 'when the Pawn is black and is passed AlgebraicCoords h5' do
       subject(:pawn_black_left_cap) { described_class.new(:black, 1) }
 
       let(:algebraic_coords_h5) do
@@ -247,7 +247,7 @@ describe Pawn do
       end
     end
 
-    context 'when the pawn is black and is passed AlgebraicCoords e1' do
+    context 'when the Pawn is black and is passed AlgebraicCoords e1' do
       subject(:pawn_black_edge) { described_class.new(:black, 5) }
 
       let(:algebraic_coords_e1) do
