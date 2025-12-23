@@ -9,13 +9,13 @@ describe AlgebraicCoords do
 
       let(:string) { 'a8' }
 
-      it 'returns an AlgebraicCoords object with the expected file coordinate' do
+      it 'returns an AlgebraicCoords with the expected file coordinate' do
         result = described_class.from_s(string)
         file = result.instance_variable_get(:@file)
         expect(file).to eq('a')
       end
 
-      it 'returns an AlgebraicCoords object with the expected rank coordinate' do
+      it 'returns an AlgebraicCoords with the expected rank coordinate' do
         result = described_class.from_s(string)
         rank = result.instance_variable_get(:@rank)
         expect(rank).to eq(8)
@@ -31,14 +31,14 @@ describe AlgebraicCoords do
       let(:rank_adjustment) { -1 }
 
       # rubocop: disable RSpec/MultipleExpectations
-      it 'returns a new AlgebraicCoords object with the adjusted file coordinate' do
+      it 'returns a new AlgebraicCoords with the adjusted file coordinate' do
         result = algebraic_coords_a8.to_adjacency(file_adjustment, rank_adjustment)
         file = result.instance_variable_get(:@file)
         expect(result).not_to be(algebraic_coords_a8)
         expect(file).to eq('b')
       end
 
-      it 'returns a new AlgebraicCoords object with the adjusted rank coordinate' do
+      it 'returns a new AlgebraicCoords with the adjusted rank coordinate' do
         result = algebraic_coords_a8.to_adjacency(file_adjustment, rank_adjustment)
         rank = result.instance_variable_get(:@rank)
         expect(result).not_to be(algebraic_coords_a8)

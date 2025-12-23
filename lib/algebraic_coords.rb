@@ -2,10 +2,6 @@
 
 require_relative 'chess_constants'
 
-# TODO(low priority): Refactor this class to function identically as now but by
-# adjusting the coordinates of the existing object rather than constructing new
-# objects via #to_adjacency.
-
 # Algebraic coordinates corresponding to a location on a chess board
 class AlgebraicCoords
   # @param file [String] the file coordinate between a and h
@@ -38,35 +34,35 @@ class AlgebraicCoords
   end
 
   def to_northern_adjacencies
-    to_directional_adjacencies(0, 1).map(&:to_s)
+    to_directional_adjacencies(0, 1)
   end
 
   def to_eastern_adjacencies
-    to_directional_adjacencies(1, 0).map(&:to_s)
+    to_directional_adjacencies(1, 0)
   end
 
   def to_southern_adjacencies
-    to_directional_adjacencies(0, -1).map(&:to_s)
+    to_directional_adjacencies(0, -1)
   end
 
   def to_western_adjacencies
-    to_directional_adjacencies(-1, 0).map(&:to_s)
+    to_directional_adjacencies(-1, 0)
   end
 
   def to_north_eastern_adjacencies
-    to_directional_adjacencies(1, 1).map(&:to_s)
+    to_directional_adjacencies(1, 1)
   end
 
   def to_south_eastern_adjacencies
-    to_directional_adjacencies(1, -1).map(&:to_s)
+    to_directional_adjacencies(1, -1)
   end
 
   def to_south_western_adjacencies
-    to_directional_adjacencies(-1, -1).map(&:to_s)
+    to_directional_adjacencies(-1, -1)
   end
 
   def to_north_western_adjacencies
-    to_directional_adjacencies(-1, 1).map(&:to_s)
+    to_directional_adjacencies(-1, 1)
   end
 
   def adjustment_in_bounds?(file_adjustment, rank_adjustment)
@@ -96,7 +92,7 @@ class AlgebraicCoords
       next_adjacency = arr.last.to_adjacency(file_adjustment, rank_adjustment)
       arr << next_adjacency
     end
-    arr
+    arr.map(&:to_s)
   end
 
   def file_adjustment_in_bounds?(file_adjustment)
