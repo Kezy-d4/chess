@@ -4,7 +4,7 @@ require_relative '../lib/fen_parser'
 
 describe FENParser do
   describe '#parse_piece_placement' do
-    context 'when testing with the default fen record' do
+    context 'when testing with the default FEN record' do
       subject(:fen_parser_default) { described_class.new(ChessConstants::DEFAULT_FEN) }
 
       let(:expected) do
@@ -24,7 +24,7 @@ describe FENParser do
       end
     end
 
-    context 'when testing with an endgame fen record' do
+    context 'when testing with an endgame FEN record' do
       subject(:fen_parser_endgame) { described_class.new(endgame_fen) }
 
       let(:endgame_fen) { 'kq6/8/8/8/8/8/7P/7K w - - 0 65' }
@@ -48,7 +48,7 @@ describe FENParser do
   end
 
   describe '#parse_data_fields' do
-    context 'when testing with the default fen record' do
+    context 'when testing with the default FEN record' do
       subject(:fen_parser_default) { described_class.new(ChessConstants::DEFAULT_FEN) }
 
       let(:expected) do
@@ -66,7 +66,7 @@ describe FENParser do
       end
     end
 
-    context 'when testing with an endgame fen record' do
+    context 'when testing with an endgame FEN record' do
       subject(:fen_parser_endgame) { described_class.new(endgame_fen) }
 
       let(:endgame_fen) { 'kq6/8/8/8/8/8/7P/7K w - - 0 65' }
