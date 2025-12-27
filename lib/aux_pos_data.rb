@@ -2,8 +2,9 @@
 
 require_relative 'chess_constants'
 
-# Data representing a chess position excluding piece placement
-class AuxiliaryPositionData
+# Auxiliary data representing a chess position excluding piece placement--
+# the auxiliary position data
+class AuxPosData
   # @param data_fields [Hash{Symbol => String}]
   def initialize(data_fields)
     @data_fields = data_fields
@@ -55,28 +56,28 @@ class AuxiliaryPositionData
     @data_fields[:castling_availability].include?('q')
   end
 
-  def remove_white_kingside_castling_availability
+  def remove_white_kingside_castle
     return unless white_kingside_castle_available?
 
-    remove_castling_availability('K')
+    remove_castle('K')
   end
 
-  def remove_white_queenside_castling_availability
+  def remove_white_queenside_castle
     return unless white_queenside_castle_available?
 
-    remove_castling_availability('Q')
+    remove_castle('Q')
   end
 
-  def remove_black_kingside_castling_availability
+  def remove_black_kingside_castle
     return unless black_kingside_castle_available?
 
-    remove_castling_availability('k')
+    remove_castle('k')
   end
 
-  def remove_black_queenside_castling_availability
+  def remove_black_queenside_castle
     return unless black_queenside_castle_available?
 
-    remove_castling_availability('q')
+    remove_castle('q')
   end
 
   def en_passant_target_available?
@@ -87,6 +88,14 @@ class AuxiliaryPositionData
     return unless en_passant_target_available?
 
     @data_fields[:en_passant_target]
+  end
+
+  def update_en_passant_target(new_coords)
+    @data_fields[:en_passant_target] = new_coords
+  end
+
+  def reset_en_passant_target
+    @data_fields[:en_passant_target] = '-'
   end
 
   def fifty_move_rule_satisfied?
@@ -113,8 +122,11 @@ class AuxiliaryPositionData
 
   private
 
-  def remove_castling_availability(castle)
+  def remove_castle(castle)
     arr = @data_fields[:castling_availability].chars.reject { |char| char == castle }
     @data_fields[:castling_availability] = arr.join
+    return unless @data_fields[:castling_availability].empty?
+
+    @data_fields[:castling_availability] = '-'
   end
 end
