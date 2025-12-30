@@ -842,4 +842,30 @@ describe AuxPosData do
         .from('1').to('2')
     end
   end
+
+  describe '#to_s' do
+    subject(:aux_pos_data_default) { described_class.new(default_data_fields) }
+
+    let(:default_data_fields) do
+      { active_color: 'w',
+        castling_availability: 'KQkq',
+        en_passant_target: '-',
+        half_move_clock: '0',
+        full_move_number: '1' }
+    end
+    let(:expected) do
+      <<~HEREDOC
+        Active color: w
+        Castling availability: KQkq
+        En passant target: -
+        Half move clock: 0
+        Full move number: 1
+      HEREDOC
+    end
+
+    it 'returns a string describing the state' do
+      result = aux_pos_data_default.to_s
+      expect(result).to eq(expected)
+    end
+  end
 end
