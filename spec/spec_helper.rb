@@ -1,3 +1,5 @@
+require_relative "../lib/chess"
+
 require 'simplecov'
 SimpleCov.start
 
