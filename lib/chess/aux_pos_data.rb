@@ -19,8 +19,7 @@ module Chess
     end
 
     def to_partial_fen
-      partial_fen = @data_fields.values.each_with_object([]) { |val, arr| arr << val }
-      partial_fen.join(' ')
+      @data_fields.values.join(' ')
     end
 
     def white_has_the_move?
