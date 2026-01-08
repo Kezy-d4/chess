@@ -13,8 +13,9 @@ module Chess
     def parse_piece_placement
       current_rank_int = determine_number_of_ranks
       split_ranks.each_with_object({}) do |rank_str, hash|
-        rank_arr = parse_rank(rank_str)
-        hash[current_rank_int] = parse_rank_with_coords(rank_arr, current_rank_int)
+        rank_arr = parse_rank_str(rank_str)
+        rank_arr_assoc = parse_rank_arr_with_coords(rank_arr, current_rank_int)
+        rank_arr_assoc.each { |assoc| hash[assoc[0]] = assoc[1] }
         current_rank_int -= 1
       end
     end
@@ -31,18 +32,16 @@ module Chess
 
     private
 
-    def parse_rank_with_coords(rank_arr, rank_int)
-      hash = {}
-      rank_arr.each_with_index do |fen_char, idx|
+    def parse_rank_arr_with_coords(rank_arr, rank_int)
+      rank_arr.map.with_index do |char, idx|
         algebraic_file = ChessConstants::BOARD_FILE_MARKERS[idx]
         algebraic_rank = rank_int
         algebraic_coords_sym = :"#{algebraic_file}#{algebraic_rank}"
-        hash[algebraic_coords_sym] = fen_char
+        [algebraic_coords_sym, char]
       end
-      hash
     end
 
-    def parse_rank(rank_str)
+    def parse_rank_str(rank_str)
       rank_str.chars.each_with_object([]) do |fen_char, arr|
         if fen_char_represents_piece?(fen_char)
           arr << fen_char
