@@ -3,12 +3,10 @@
 module Chess
   # A square on a chess board
   class Square
-    attr_reader :algebraic_coords, :occupant
+    attr_reader :occupant
 
-    # @param algebraic_coords [AlgebraicCoords]
     # @param occupant [Piece, String]
-    def initialize(algebraic_coords, occupant)
-      @algebraic_coords = algebraic_coords
+    def initialize(occupant)
       @occupant = occupant
     end
 
@@ -38,10 +36,10 @@ module Chess
 
     def to_s
       if occupied?
-        "The #{to_class_s} at coordinates #{@algebraic_coords} is occupied by a #{@occupant.to_class_s}.\n" \
+        "The #{to_class_s} is occupied by a #{@occupant.to_class_s}.\n" \
           "\s\s#{@occupant}"
       elsif unoccupied?
-        "The #{to_class_s} at coordinates #{@algebraic_coords} is unoccupied."
+        "The #{to_class_s} is unoccupied."
       end
     end
   end

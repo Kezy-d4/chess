@@ -3,9 +3,8 @@
 describe Chess::Square do
   describe '#occupied?' do
     context 'when the Square is occupied' do
-      subject(:square_occupied) { described_class.new(algebraic_coords, piece) }
+      subject(:square_occupied) { described_class.new(piece) }
 
-      let(:algebraic_coords) { double('AlgebraicCoords') }
       let(:piece) { double('Piece') }
 
       it 'returns true' do
@@ -15,9 +14,7 @@ describe Chess::Square do
     end
 
     context 'when the Square is unoccupied' do
-      subject(:square_unoccupied) { described_class.new(algebraic_coords, '-') }
-
-      let(:algebraic_coords) { double('AlgebraicCoords') }
+      subject(:square_unoccupied) { described_class.new('-') }
 
       it 'returns false' do
         result = square_unoccupied.occupied?
@@ -28,9 +25,7 @@ describe Chess::Square do
 
   describe '#unoccupied?' do
     context 'when the Square is unoccupied' do
-      subject(:square_unoccupied) { described_class.new(algebraic_coords, '-') }
-
-      let(:algebraic_coords) { double('AlgebraicCoords') }
+      subject(:square_unoccupied) { described_class.new('-') }
 
       it 'returns true' do
         result = square_unoccupied.unoccupied?
@@ -39,9 +34,8 @@ describe Chess::Square do
     end
 
     context 'when the Square is occupied' do
-      subject(:square_occupied) { described_class.new(algebraic_coords, piece) }
+      subject(:square_occupied) { described_class.new(piece) }
 
-      let(:algebraic_coords) { double('AlgebraicCoords') }
       let(:piece) { double('Piece') }
 
       it 'returns false' do
@@ -52,9 +46,8 @@ describe Chess::Square do
   end
 
   describe '#update_occupant' do
-    subject(:square) { described_class.new(algebraic_coords, '-') }
+    subject(:square) { described_class.new('-') }
 
-    let(:algebraic_coords) { double('AlgebraicCoords') }
     let(:piece) { double('Piece') }
 
     it 'updates the occupant' do
@@ -69,9 +62,8 @@ describe Chess::Square do
   end
 
   describe '#remove_occupant' do
-    subject(:square) { described_class.new(algebraic_coords, piece) }
+    subject(:square) { described_class.new(piece) }
 
-    let(:algebraic_coords) { double('AlgebraicCoords') }
     let(:piece) { double('Piece') }
 
     it 'removes the occupant' do
@@ -86,9 +78,7 @@ describe Chess::Square do
   end
 
   describe '#to_class_s' do
-    subject(:square) { described_class.new(algebraic_coords, '-') }
-
-    let(:algebraic_coords) { double('AlgebraicCoords') }
+    subject(:square) { described_class.new('-') }
 
     it 'returns a class string' do
       result = square.to_class_s
@@ -98,12 +88,11 @@ describe Chess::Square do
 
   describe '#to_s' do
     context 'when the Square is occupied' do
-      subject(:square_occupied) { described_class.new(algebraic_coords, piece) }
+      subject(:square_occupied) { described_class.new(piece) }
 
-      let(:algebraic_coords) { double('AlgebraicCoords', to_s: 'a8') }
       let(:piece) { Chess::Piece.new(:white) }
       let(:expected) do
-        "The Square at coordinates a8 is occupied by a Piece.\n" \
+        "The Square is occupied by a Piece.\n" \
           "\s\sThe Piece is white and has not moved."
       end
 
@@ -114,10 +103,9 @@ describe Chess::Square do
     end
 
     context 'when the Square is unoccupied' do
-      subject(:square_unoccupied) { described_class.new(algebraic_coords, '-') }
+      subject(:square_unoccupied) { described_class.new('-') }
 
-      let(:algebraic_coords) { double('AlgebraicCoords', to_s: 'a8') }
-      let(:expected) { 'The Square at coordinates a8 is unoccupied.' }
+      let(:expected) { 'The Square is unoccupied.' }
 
       it 'returns a string describing the state' do
         result = square_unoccupied.to_s
