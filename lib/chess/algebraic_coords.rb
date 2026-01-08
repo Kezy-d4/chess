@@ -19,6 +19,18 @@ module Chess
       end
     end
 
+    def ==(other)
+      other.is_a?(self.class) &&
+        other.instance_variable_get(:@file) == @file &&
+        other.instance_variable_get(:@rank) == @rank
+    end
+
+    alias eql? ==
+
+    def hash
+      [self.class, @file, @rank].hash
+    end
+
     def to_adjacency(file_adjustment, rank_adjustment)
       return unless adjustment_in_bounds?(file_adjustment, rank_adjustment)
 

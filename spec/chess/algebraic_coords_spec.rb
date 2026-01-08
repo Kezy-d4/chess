@@ -21,6 +21,28 @@ describe Chess::AlgebraicCoords do
     end
   end
 
+  describe '#==' do
+    subject(:algebraic_coords_a8) { described_class.new('a', 8) }
+
+    context 'when other is a different coord object with identical state' do
+      let(:other_algebraic_coords_a8) { described_class.new('a', 8) }
+
+      it 'returns true' do
+        result = algebraic_coords_a8 == other_algebraic_coords_a8
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when other is a different coord object with different state' do
+      let(:algebraic_coords_b7) { described_class.new('b', 7) }
+
+      it 'returns false' do
+        result = algebraic_coords_a8 == algebraic_coords_b7
+        expect(result).to be(false)
+      end
+    end
+  end
+
   describe '#to_adjacency' do
     subject(:algebraic_coords_a8) { described_class.new('a', 8) }
 
