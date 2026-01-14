@@ -6,18 +6,21 @@ module Chess
     extend Pieces
     extend FENCharAnalysis
 
-    # @param squares [Hash{Integer => Hash{Symbol => Square}}]
+    # @param squares [Hash{Integer => Hash{AlgebraicCoords => Square}}]
     def initialize(squares)
       @squares = squares
     end
 
     class << self
-      # @param fen_parser [FenParser]
+      # @param fen_parser [FENParser]
       def from_fen_parser(fen_parser)
-        squares = fen_parser.parse_piece_placement.each_value do |rank_hash|
-          rank_hash.each do |algebraic_coords_sym, char|
-            square = construct_square(algebraic_coords_sym, char)
-            rank_hash[algebraic_coords_sym] = square
+        parsed = fen_parser.parse_piece_placement
+        squares = parsed.transform_values do |rank_hash|
+          rank_hash.each_with_object({}) do |pair, hash|
+            algebraic_coords_sym = pair[0]
+            char = pair[1]
+            algebraic_coords = AlgebraicCoords.from_s(algebraic_coords_sym.to_s)
+            hash[algebraic_coords] = construct_square(char)
           end
         end
         new(squares)
@@ -25,44 +28,43 @@ module Chess
 
       private
 
-      def construct_square(algebraic_coords_sym, char)
-        algebraic_coords = AlgebraicCoords.from_s(algebraic_coords_sym.to_s)
-        if char == '-'
-          Square.new(algebraic_coords, char)
-        elsif fen_char_represents_piece?(char)
+      def construct_square(char)
+        if fen_char_represents_piece?(char)
           piece = construct_piece_from_fen_char(char)
-          Square.new(algebraic_coords, piece)
+          Square.new(piece)
+        elsif char == '-'
+          Square.new(char)
         end
       end
     end
 
     def to_partial_fen
-      arr = []
-      @squares.each_key do |rank_int|
-        arr << format_square_occupant_chars_by_rank(rank_int).join
+      partial_fen = @squares.each_key.with_object([]) do |rank_int, arr|
+        arr << format_rank_chars(rank_int)
       end
-      arr.join('/')
+      partial_fen.join('/')
     end
 
-    def access_square(algebraic_coords_str)
+    def access_association(algebraic_coords_str)
       rank_int = algebraic_coords_str[1].to_i
-      @squares[rank_int][algebraic_coords_str.to_sym]
+      algebraic_coords = AlgebraicCoords.from_s(algebraic_coords_str)
+      @squares[rank_int].assoc(algebraic_coords)
     end
 
-    def collect_white_occupied_squares
-      collect_occupied_squares(:white?)
+    def collect_white_occupied_associations
+      collect_occupied_associations(:white?)
     end
 
-    def collect_black_occupied_squares
-      collect_occupied_squares(:black?)
+    def collect_black_occupied_associations
+      collect_occupied_associations(:black?)
     end
 
     def to_s
       arr = []
       @squares.each do |rank_int, rank_hash|
         arr << "\nRank #{rank_int}:\n"
-        rank_hash.each_value do |square|
-          arr << "#{square}\n"
+        rank_hash.each do |algebraic_coords, square|
+          arr << "#{algebraic_coords}:\n#{square}\n"
         end
       end
       arr.join
@@ -70,42 +72,34 @@ module Chess
 
     private
 
-    def collect_squares_by_rank(rank_int)
-      @squares[rank_int].values
-    end
-
-    def collect_square_occupant_chars_by_rank(rank_int)
-      collect_squares_by_rank(rank_int).map do |square|
-        if square.occupied?
-          self.class.convert_piece_to_fen_char(square.occupant)
-        elsif square.unoccupied?
-          square.occupant
+    def collect_associations
+      @squares.each_value.with_object([]) do |rank_hash, arr|
+        rank_hash.each_key do |algebraic_coords|
+          arr << rank_hash.assoc(algebraic_coords)
         end
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
-    def format_square_occupant_chars_by_rank(rank_int)
+    def collect_occupied_associations(color_predicate)
+      collect_associations.select do |association|
+        square = association[1]
+        square.occupied? && square.occupant.public_send(color_predicate)
+      end
+    end
+
+    def format_rank_chars(rank_int) # rubocop:disable Metrics/MethodLength
       contiguous_empty_counter = 0
-      arr = []
-      collect_square_occupant_chars_by_rank(rank_int).each do |char|
-        if self.class.fen_char_represents_piece?(char)
+      rank_chars = @squares[rank_int].values.each_with_object([]) do |square, arr|
+        if square.occupied?
           arr << contiguous_empty_counter if contiguous_empty_counter.positive?
-          arr << char
+          arr << self.class.convert_piece_to_fen_char(square.occupant)
           contiguous_empty_counter = 0
-        elsif char == '-'
+        elsif square.unoccupied?
           contiguous_empty_counter += 1
         end
       end
-      arr << contiguous_empty_counter if contiguous_empty_counter.positive?
-      arr
-    end
-    # rubocop:enable all
-
-    def collect_occupied_squares(color)
-      arr = []
-      @squares.each_key { |rank_int| arr << collect_squares_by_rank(rank_int) }
-      arr.flatten.select { |square| square.occupied? && square.occupant.public_send(color) }
+      rank_chars << contiguous_empty_counter if contiguous_empty_counter.positive?
+      rank_chars.join
     end
   end
 end
