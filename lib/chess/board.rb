@@ -59,6 +59,16 @@ module Chess
       collect_occupied_associations(:black?)
     end
 
+    def update_association(algebraic_coords_str, piece)
+      square = access_association(algebraic_coords_str)[1]
+      square.update_occupant(piece)
+    end
+
+    def reset_association(algebraic_coords_str)
+      square = access_association(algebraic_coords_str)[1]
+      square.remove_occupant
+    end
+
     def to_s
       arr = []
       @squares.each do |rank_int, rank_hash|

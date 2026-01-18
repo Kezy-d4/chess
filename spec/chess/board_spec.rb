@@ -402,4 +402,55 @@ describe Chess::Board do
       expect(strings).to match_array(expected)
     end
   end
+
+  describe '#update_association' do
+    subject(:board_start) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
+    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:pawn_white) { Chess::Pawn.new(:white, 1) }
+    let(:pre_update) do
+      [
+        'e4',
+        'The Square is unoccupied.'
+      ]
+    end
+    let(:post_update) do
+      [
+        'e4',
+        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has moved 1 time."
+      ]
+    end
+
+    it 'updates the association located at the given coordinates with the given Piece' do
+      expect { board_start.update_association('e4', pawn_white) }.to change \
+        { board_start.access_association('e4').map(&:to_s) }
+        .from(pre_update).to(post_update)
+    end
+  end
+
+  describe '#reset_association' do
+    subject(:board_start) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
+    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:pre_reset) do
+      [
+        'e2',
+        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved."
+      ]
+    end
+    let(:post_reset) do
+      [
+        'e2',
+        'The Square is unoccupied.'
+      ]
+    end
+
+    it 'resets the association located at the given coordinates' do
+      expect { board_start.reset_association('e2') }.to change \
+        { board_start.access_association('e2').map(&:to_s) }
+        .from(pre_reset).to(post_reset)
+    end
+  end
 end
