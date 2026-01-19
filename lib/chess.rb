@@ -3,6 +3,7 @@
 # Top-level namespace for the project
 module Chess
   require_relative 'core_ext/numeric'
+  require_relative 'chess/helper'
   require_relative 'chess/fen_char_analysis'
   require_relative 'chess/chess_constants'
   require_relative 'chess/piece'
