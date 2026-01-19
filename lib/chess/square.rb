@@ -3,6 +3,8 @@
 module Chess
   # A square on a chess board
   class Square
+    include Helper
+
     attr_reader :occupant
 
     # @param occupant [Piece, String]
@@ -26,12 +28,6 @@ module Chess
       occupant_to_remove = @occupant
       @occupant = '-'
       occupant_to_remove
-    end
-
-    def to_class_s
-      class_string = self.class.to_s
-      class_string.slice!('Chess::')
-      class_string
     end
 
     def to_s
