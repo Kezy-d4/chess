@@ -47,6 +47,14 @@ module Chess
       @squares[algebraic_coords]
     end
 
+    def collect_white_occupied_squares
+      collect_occupied_squares.select { |square| square.occupant.white? }
+    end
+
+    def collect_black_occupied_squares
+      collect_occupied_squares.select { |square| square.occupant.black? }
+    end
+
     def to_s
       arr = []
       no_of_ranks = ChessConstants::BOARD_RANK_MARKERS.length
@@ -58,14 +66,6 @@ module Chess
         square_counter += 1
       end
       arr.join
-    end
-
-    def collect_white_occupied_squares
-      collect_occupied_squares.select { |square| square.occupant.white? }
-    end
-
-    def collect_black_occupied_squares
-      collect_occupied_squares.select { |square| square.occupant.black? }
     end
 
     private
