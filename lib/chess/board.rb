@@ -6,7 +6,7 @@ module Chess
     extend Pieces
     extend FENCharAnalysis
 
-    # @param squares [Hash{Integer => Hash{AlgebraicCoords => Square}}]
+    # @param squares [Hash{AlgebraicCoords => Square}]
     def initialize(squares)
       @squares = squares
     end
@@ -14,14 +14,10 @@ module Chess
     class << self
       # @param fen_parser [FENParser]
       def from_fen_parser(fen_parser)
-        parsed = fen_parser.parse_piece_placement
-        squares = parsed.transform_values do |rank_hash|
-          rank_hash.each_with_object({}) do |pair, hash|
-            algebraic_coords_sym = pair[0]
-            char = pair[1]
-            algebraic_coords = AlgebraicCoords.from_s(algebraic_coords_sym.to_s)
-            hash[algebraic_coords] = construct_square(char)
-          end
+        squares = {}
+        fen_parser.parse_piece_placement.each do |algebraic_coords_sym, char|
+          algebraic_coords = AlgebraicCoords.from_s(algebraic_coords_sym.to_s)
+          squares[algebraic_coords] = construct_square(char)
         end
         new(squares)
       end
@@ -39,77 +35,66 @@ module Chess
     end
 
     def to_partial_fen
-      partial_fen = @squares.each_key.with_object([]) do |rank_int, arr|
-        arr << format_rank_chars(rank_int)
+      arr = []
+      organize_into_ranks.each_value do |rank_arr|
+        arr << rank_arr_to_partial_fen(rank_arr).join
       end
-      partial_fen.join('/')
+      arr.join('/')
     end
 
-    def access_association(algebraic_coords_str)
-      rank_int = algebraic_coords_str[1].to_i
+    def access_square(algebraic_coords_str)
       algebraic_coords = AlgebraicCoords.from_s(algebraic_coords_str)
-      @squares[rank_int].assoc(algebraic_coords)
-    end
-
-    def collect_white_occupied_associations
-      collect_occupied_associations(:white?)
-    end
-
-    def collect_black_occupied_associations
-      collect_occupied_associations(:black?)
-    end
-
-    def update_association(algebraic_coords_str, piece)
-      square = access_association(algebraic_coords_str)[1]
-      square.update_occupant(piece)
-    end
-
-    def reset_association(algebraic_coords_str)
-      square = access_association(algebraic_coords_str)[1]
-      square.remove_occupant
+      @squares[algebraic_coords]
     end
 
     def to_s
       arr = []
-      @squares.each do |rank_int, rank_hash|
-        arr << "\nRank #{rank_int}:\n"
-        rank_hash.each do |algebraic_coords, square|
-          arr << "#{algebraic_coords}:\n#{square}\n"
-        end
+      no_of_ranks = ChessConstants::BOARD_RANK_MARKERS.length
+      square_counter = 1
+      @squares.each do |algebraic_coords, square|
+        arr << "#{algebraic_coords}:\n"
+        arr << "#{square}\n"
+        arr << "\n" if square_counter.multiple_of?(no_of_ranks)
+        square_counter += 1
       end
       arr.join
     end
 
+    def collect_white_occupied_squares
+      collect_occupied_squares.select { |square| square.occupant.white? }
+    end
+
+    def collect_black_occupied_squares
+      collect_occupied_squares.select { |square| square.occupant.black? }
+    end
+
     private
 
-    def collect_associations
-      @squares.each_value.with_object([]) do |rank_hash, arr|
-        rank_hash.each_key do |algebraic_coords|
-          arr << rank_hash.assoc(algebraic_coords)
-        end
+    def organize_into_ranks
+      vals = @squares.values
+      ChessConstants::BOARD_RANK_MARKERS.each_with_object({}) do |rank_int, hash|
+        rank = vals.slice!(0, ChessConstants::BOARD_FILE_MARKERS.length)
+        hash[rank_int] = rank
       end
     end
 
-    def collect_occupied_associations(color_predicate)
-      collect_associations.select do |association|
-        square = association[1]
-        square.occupied? && square.occupant.public_send(color_predicate)
-      end
-    end
-
-    def format_rank_chars(rank_int) # rubocop:disable Metrics/MethodLength
+    def rank_arr_to_partial_fen(rank_arr) # rubocop:disable Metrics/MethodLength
       contiguous_empty_counter = 0
-      rank_chars = @squares[rank_int].values.each_with_object([]) do |square, arr|
+      fen_arr = rank_arr.each_with_object([]) do |square, fen_arr|
         if square.occupied?
-          arr << contiguous_empty_counter if contiguous_empty_counter.positive?
-          arr << self.class.convert_piece_to_fen_char(square.occupant)
+          fen_arr << contiguous_empty_counter if contiguous_empty_counter.positive?
+          fen_arr << self.class.convert_piece_to_fen_char(square.occupant)
           contiguous_empty_counter = 0
         elsif square.unoccupied?
           contiguous_empty_counter += 1
         end
       end
-      rank_chars << contiguous_empty_counter if contiguous_empty_counter.positive?
-      rank_chars.join
+      fen_arr << contiguous_empty_counter if contiguous_empty_counter.positive?
+      fen_arr
+    end
+
+    def collect_occupied_squares
+      @squares.values.select(&:occupied?)
     end
   end
 end
