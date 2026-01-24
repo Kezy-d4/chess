@@ -42,17 +42,16 @@ module Chess
       arr.join('/')
     end
 
-    def access_square(algebraic_coords_str)
-      algebraic_coords = AlgebraicCoords.from_s(algebraic_coords_str)
-      @squares[algebraic_coords]
+    def access_assoc(algebraic_coords_str)
+      @squares.assoc(AlgebraicCoords.from_s(algebraic_coords_str))
     end
 
-    def collect_white_occupied_squares
-      collect_occupied_squares.select { |square| square.occupant.white? }
+    def select_white_occupied
+      select_occupied.select { |_algebraic_coords, square| square.occupant.white? }
     end
 
-    def collect_black_occupied_squares
-      collect_occupied_squares.select { |square| square.occupant.black? }
+    def select_black_occupied
+      select_occupied.select { |_algebraic_coords, square| square.occupant.black? }
     end
 
     def to_s
@@ -93,8 +92,10 @@ module Chess
       fen_arr
     end
 
-    def collect_occupied_squares
-      @squares.values.select(&:occupied?)
+    def select_occupied
+      @squares.select do |_algebraic_coords, square|
+        square.occupied?
+      end
     end
   end
 end

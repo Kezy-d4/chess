@@ -214,85 +214,90 @@ describe Chess::Board do
     end
   end
 
-  describe '#access_square' do
-    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
-
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
-    let(:expected) do
-      "The Square is occupied by a King.\n\s\sThe King is white and has not moved."
-    end
-
-    it 'returns the square located at the given coordinates' do
-      result = board_default.access_square('e1')
-      string = result.to_s
-      expect(string).to eq(expected)
-    end
-  end
-
-  describe '#collect_white_occupied_squares' do
+  describe '#access_assoc' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
     let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
     let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
     let(:expected) do
       [
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
-        "The Square is occupied by a Rook.\n\s\sThe Rook is white and has not moved.",
-        "The Square is occupied by a Knight.\n\s\sThe Knight is white and has not moved.",
-        "The Square is occupied by a Bishop.\n\s\sThe Bishop is white and has not moved.",
-        "The Square is occupied by a Queen.\n\s\sThe Queen is white and has not moved.",
-        "The Square is occupied by a King.\n\s\sThe King is white and has not moved.",
-        "The Square is occupied by a Bishop.\n\s\sThe Bishop is white and has not moved.",
-        "The Square is occupied by a Knight.\n\s\sThe Knight is white and has not moved.",
-        "The Square is occupied by a Rook.\n\s\sThe Rook is white and has not moved."
+        'e1',
+        "The Square is occupied by a King.\n\s\sThe King is white and has not moved."
       ]
     end
 
-    it 'returns an array of all the white-occupied squares' do
-      result = board_default.collect_white_occupied_squares
+    it 'returns the association located at the given coordinates' do
+      result = board_default.access_assoc('e1')
       strings = result.map(&:to_s)
-      expect(strings).to match_array(expected)
+      expect(strings).to eq(expected)
     end
   end
 
-  describe '#collect_black_occupied_squares' do
+  describe '#select_white_occupied' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
     let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
     let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
     let(:expected) do
-      [
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
-        "The Square is occupied by a Rook.\n\s\sThe Rook is black and has not moved.",
-        "The Square is occupied by a Knight.\n\s\sThe Knight is black and has not moved.",
-        "The Square is occupied by a Bishop.\n\s\sThe Bishop is black and has not moved.",
-        "The Square is occupied by a Queen.\n\s\sThe Queen is black and has not moved.",
-        "The Square is occupied by a King.\n\s\sThe King is black and has not moved.",
-        "The Square is occupied by a Bishop.\n\s\sThe Bishop is black and has not moved.",
-        "The Square is occupied by a Knight.\n\s\sThe Knight is black and has not moved.",
-        "The Square is occupied by a Rook.\n\s\sThe Rook is black and has not moved."
-      ]
+      {
+        'a2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'b2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'c2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'd2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'e2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'f2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'g2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'h2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+        'a1' => "The Square is occupied by a Rook.\n\s\sThe Rook is white and has not moved.",
+        'b1' => "The Square is occupied by a Knight.\n\s\sThe Knight is white and has not moved.",
+        'c1' => "The Square is occupied by a Bishop.\n\s\sThe Bishop is white and has not moved.",
+        'd1' => "The Square is occupied by a Queen.\n\s\sThe Queen is white and has not moved.",
+        'e1' => "The Square is occupied by a King.\n\s\sThe King is white and has not moved.",
+        'f1' => "The Square is occupied by a Bishop.\n\s\sThe Bishop is white and has not moved.",
+        'g1' => "The Square is occupied by a Knight.\n\s\sThe Knight is white and has not moved.",
+        'h1' => "The Square is occupied by a Rook.\n\s\sThe Rook is white and has not moved."
+      }
     end
 
-    it 'returns an array of all the black-occupied squares' do
-      result = board_default.collect_black_occupied_squares
-      strings = result.map(&:to_s)
-      expect(strings).to match_array(expected)
+    it 'returns a hash containing only white-occupied associations' do
+      result = board_default.select_white_occupied
+      result = result.transform_keys(&:to_s)
+      result = result.transform_values(&:to_s)
+      expect(result).to eq(expected)
+    end
+  end
+
+  describe '#select_black_occupied' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
+    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:expected) do
+      {
+        'a7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'b7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'c7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'd7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'e7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'f7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'g7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'h7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+        'a8' => "The Square is occupied by a Rook.\n\s\sThe Rook is black and has not moved.",
+        'b8' => "The Square is occupied by a Knight.\n\s\sThe Knight is black and has not moved.",
+        'c8' => "The Square is occupied by a Bishop.\n\s\sThe Bishop is black and has not moved.",
+        'd8' => "The Square is occupied by a Queen.\n\s\sThe Queen is black and has not moved.",
+        'e8' => "The Square is occupied by a King.\n\s\sThe King is black and has not moved.",
+        'f8' => "The Square is occupied by a Bishop.\n\s\sThe Bishop is black and has not moved.",
+        'g8' => "The Square is occupied by a Knight.\n\s\sThe Knight is black and has not moved.",
+        'h8' => "The Square is occupied by a Rook.\n\s\sThe Rook is black and has not moved."
+      }
+    end
+
+    it 'returns a hash containing only black-occupied associations' do
+      result = board_default.select_black_occupied
+      result = result.transform_keys(&:to_s)
+      result = result.transform_values(&:to_s)
+      expect(result).to eq(expected)
     end
   end
 end
