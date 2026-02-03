@@ -214,7 +214,7 @@ describe Chess::Board do
     end
   end
 
-  describe '#access_assoc' do
+  describe '#access_assoc_at' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
     let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
@@ -227,9 +227,90 @@ describe Chess::Board do
     end
 
     it 'returns the association located at the given coordinates' do
-      result = board_default.access_assoc('e1')
+      result = board_default.access_assoc_at('e1')
       strings = result.map(&:to_s)
       expect(strings).to eq(expected)
+    end
+  end
+
+  describe '#access_square_at' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
+    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:expected) do
+      "The Square is occupied by a King.\n\s\sThe King is white and has not moved."
+    end
+
+    it 'returns the Square located at the given coordinates' do
+      result = board_default.access_square_at('e1')
+      string = result.to_s
+      expect(string).to eq(expected)
+    end
+  end
+
+  describe '#access_coord_at' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
+    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:expected) { 'e1' }
+
+    it 'returns the AlgebraicCoords located at the given coordinates' do
+      result = board_default.access_coord_at('e1')
+      string = result.to_s
+      expect(string).to eq(expected)
+    end
+  end
+
+  describe '#update_at' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
+    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:queen) { Chess::Queen.new(:white) }
+    let(:before) do
+      [
+        'e4',
+        'The Square is unoccupied.'
+      ]
+    end
+    let(:after) do
+      [
+        'e4',
+        "The Square is occupied by a Queen.\n\s\sThe Queen is white and has not moved."
+      ]
+    end
+
+    it 'updates the occupant at the given coordinates' do
+      expect { board_default.update_at('e4', queen) }.to change \
+        { board_default.access_assoc_at('e4').map(&:to_s) }
+        .from(before).to(after)
+    end
+  end
+
+  describe '#empty_at' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
+    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:before) do
+      [
+        'e8',
+        "The Square is occupied by a King.\n\s\sThe King is black and has not moved."
+      ]
+    end
+    let(:after) do
+      [
+        'e8',
+        'The Square is unoccupied.'
+      ]
+    end
+
+    it 'empties the occupant at the given coordinates' do
+      expect { board_default.empty_at('e8') }.to change \
+        { board_default.access_assoc_at('e8').map(&:to_s) }
+        .from(before).to(after)
     end
   end
 

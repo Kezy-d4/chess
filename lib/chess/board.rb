@@ -42,8 +42,24 @@ module Chess
       arr.join('/')
     end
 
-    def access_assoc(algebraic_coords_str)
+    def access_assoc_at(algebraic_coords_str)
       @squares.assoc(AlgebraicCoords.from_s(algebraic_coords_str))
+    end
+
+    def access_square_at(algebraic_coords_str)
+      access_assoc_at(algebraic_coords_str)[1]
+    end
+
+    def access_coord_at(algebraic_coords_str)
+      access_assoc_at(algebraic_coords_str)[0]
+    end
+
+    def update_at(algebraic_coords_str, piece)
+      @squares[AlgebraicCoords.from_s(algebraic_coords_str)].update_occupant(piece)
+    end
+
+    def empty_at(algebraic_coords_str)
+      @squares[AlgebraicCoords.from_s(algebraic_coords_str)].remove_occupant
     end
 
     def select_white_occupied
