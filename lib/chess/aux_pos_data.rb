@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Chess
-  # Auxiliary data representing a chess position excluding piece placement--
-  # the auxiliary position data
+  # Auxiliary data representing a chess position excluding piece placement--the
+  # auxiliary position data
   class AuxPosData # rubocop:disable Metrics/ClassLength
     # @param data_fields [Hash{Symbol => String}]
     def initialize(data_fields)
@@ -10,9 +10,9 @@ module Chess
     end
 
     class << self
-      # @param fen_parser [FenParser]
+      # @param fen_parser [FENParser]
       def from_fen_parser(fen_parser)
-        data_fields = fen_parser.parse_data_fields
+        data_fields = fen_parser.to_data_fields
         data_fields.delete(:piece_placement)
         new(data_fields)
       end
@@ -82,14 +82,14 @@ module Chess
       @data_fields[:en_passant_target] != '-'
     end
 
-    def access_en_passant_target_coords
+    def access_en_passant_target
       return unless en_passant_target_available?
 
       @data_fields[:en_passant_target]
     end
 
-    def update_en_passant_target(new_coords)
-      @data_fields[:en_passant_target] = new_coords
+    def update_en_passant_target(coord_s)
+      @data_fields[:en_passant_target] = coord_s
     end
 
     def reset_en_passant_target

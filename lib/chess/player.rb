@@ -3,8 +3,6 @@
 module Chess
   # A chess player
   class Player
-    attr_reader :color
-
     # @param name [String]
     # @param color [Symbol]
     def initialize(name, color)

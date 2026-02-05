@@ -3,21 +3,19 @@
 module Chess
   # A square on a chess board
   class Square
-    include Helper
-
     attr_reader :occupant
 
-    # @param occupant [Piece, String]
-    def initialize(occupant)
+    # @param occupant [Piece, nil]
+    def initialize(occupant = nil)
       @occupant = occupant
     end
 
     def occupied?
-      @occupant != '-'
+      !!@occupant
     end
 
     def unoccupied?
-      @occupant == '-'
+      @occupant.nil?
     end
 
     def update_occupant(new_occupant)
@@ -26,7 +24,7 @@ module Chess
 
     def remove_occupant
       occupant_to_remove = @occupant
-      @occupant = '-'
+      @occupant = nil
       occupant_to_remove
     end
 

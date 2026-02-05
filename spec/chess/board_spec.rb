@@ -2,11 +2,11 @@
 
 describe Chess::Board do
   describe '::from_fen_parser' do
-    context 'when passed a FENParser with the default FEN record' do
+    context 'when passed a FENParser with a default FEN record' do
       subject { described_class }
 
-      let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-      let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+      let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+      let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
       let(:expected) do
         <<~HEREDOC
           a8:
@@ -192,8 +192,8 @@ describe Chess::Board do
     context 'when testing with a default Board' do
       subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-      let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-      let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+      let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+      let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
 
       it 'returns a partial FEN record based on the data' do
         result = board_default.to_partial_fen
@@ -204,8 +204,8 @@ describe Chess::Board do
     context 'when testing with an endgame Board' do
       subject(:board_endgame) { described_class.from_fen_parser(fen_parser_endgame) }
 
-      let(:endgame_fen) { 'kq6/8/8/8/8/8/7P/7K b - - 0 65' }
-      let(:fen_parser_endgame) { Chess::FENParser.new(endgame_fen) }
+      let(:fen_endgame) { 'kq6/8/8/8/8/8/7P/7K b - - 0 65' }
+      let(:fen_parser_endgame) { Chess::FENParser.new(fen_endgame) }
 
       it 'returns a partial FEN record based on the data' do
         result = board_endgame.to_partial_fen
@@ -214,11 +214,11 @@ describe Chess::Board do
     end
   end
 
-  describe '#access_assoc_at' do
+  describe '#assoc_at' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
     let(:expected) do
       [
         'e1',
@@ -227,37 +227,37 @@ describe Chess::Board do
     end
 
     it 'returns the association located at the given coordinates' do
-      result = board_default.access_assoc_at('e1')
+      result = board_default.assoc_at('e1')
       strings = result.map(&:to_s)
       expect(strings).to eq(expected)
     end
   end
 
-  describe '#access_square_at' do
+  describe '#square_at' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
     let(:expected) do
       "The Square is occupied by a King.\n\s\sThe King is white and has not moved."
     end
 
     it 'returns the Square located at the given coordinates' do
-      result = board_default.access_square_at('e1')
+      result = board_default.square_at('e1')
       string = result.to_s
       expect(string).to eq(expected)
     end
   end
 
-  describe '#access_coord_at' do
+  describe '#coord_at' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
     let(:expected) { 'e1' }
 
-    it 'returns the AlgebraicCoords located at the given coordinates' do
-      result = board_default.access_coord_at('e1')
+    it 'returns the Coord located at the given coordinates' do
+      result = board_default.coord_at('e1')
       string = result.to_s
       expect(string).to eq(expected)
     end
@@ -266,8 +266,8 @@ describe Chess::Board do
   describe '#update_at' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
     let(:queen) { Chess::Queen.new(:white) }
     let(:before) do
       [
@@ -284,7 +284,7 @@ describe Chess::Board do
 
     it 'updates the occupant at the given coordinates' do
       expect { board_default.update_at('e4', queen) }.to change \
-        { board_default.access_assoc_at('e4').map(&:to_s) }
+        { board_default.assoc_at('e4').map(&:to_s) }
         .from(before).to(after)
     end
   end
@@ -292,8 +292,8 @@ describe Chess::Board do
   describe '#empty_at' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
     let(:before) do
       [
         'e8',
@@ -309,16 +309,16 @@ describe Chess::Board do
 
     it 'empties the occupant at the given coordinates' do
       expect { board_default.empty_at('e8') }.to change \
-        { board_default.access_assoc_at('e8').map(&:to_s) }
+        { board_default.assoc_at('e8').map(&:to_s) }
         .from(before).to(after)
     end
   end
 
-  describe '#select_white_occupied' do
+  describe '#to_white_occupied_associations' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
     let(:expected) do
       {
         'a2' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
@@ -341,18 +341,18 @@ describe Chess::Board do
     end
 
     it 'returns a hash containing only white-occupied associations' do
-      result = board_default.select_white_occupied
+      result = board_default.to_white_occupied_associations
       result = result.transform_keys(&:to_s)
       result = result.transform_values(&:to_s)
       expect(result).to eq(expected)
     end
   end
 
-  describe '#select_black_occupied' do
+  describe '#to_black_occupied_associations' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
-    let(:default_fen) { Chess::ChessConstants::DEFAULT_FEN }
-    let(:fen_parser_default) { Chess::FENParser.new(default_fen) }
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
     let(:expected) do
       {
         'a7' => "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
@@ -375,7 +375,7 @@ describe Chess::Board do
     end
 
     it 'returns a hash containing only black-occupied associations' do
-      result = board_default.select_black_occupied
+      result = board_default.to_black_occupied_associations
       result = result.transform_keys(&:to_s)
       result = result.transform_values(&:to_s)
       expect(result).to eq(expected)

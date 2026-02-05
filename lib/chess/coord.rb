@@ -2,7 +2,18 @@
 
 module Chess
   # Algebraic coordinates corresponding to a location on a chess board
-  class AlgebraicCoords
+  class Coord
+    COORD_METHOD_MAP = {
+      north: :to_northern_adjacencies,
+      east: :to_eastern_adjacencies,
+      south: :to_southern_adjacencies,
+      west: :to_western_adjacencies,
+      north_east: :to_north_eastern_adjacencies,
+      south_east: :to_south_eastern_adjacencies,
+      south_west: :to_south_western_adjacencies,
+      north_west: :to_north_western_adjacencies
+    }.freeze
+
     # @param file [String] the file coordinate between a and h
     # @param rank [Integer] the rank coordinate between 1 and 8
     def initialize(file, rank)
@@ -37,10 +48,10 @@ module Chess
       adjacent_file_idx = file_to_i + file_adjustment - 1
       adjacent_file = ChessConstants::BOARD_FILE_MARKERS[adjacent_file_idx]
       adjacent_rank = @rank + rank_adjustment
-      AlgebraicCoords.new(adjacent_file, adjacent_rank)
+      Coord.new(adjacent_file, adjacent_rank)
     end
 
-    def to_adjacency_string(file_adjustment, rank_adjustment)
+    def to_adjacency_s(file_adjustment, rank_adjustment)
       to_adjacency(file_adjustment, rank_adjustment)&.to_s
     end
 

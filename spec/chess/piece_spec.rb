@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-# NOTE: For this spec and its sub-specs, if the color parameter is not relevant
+# NOTE: For this spec and its sub-specs, if the @color parameter is not relevant
 # to the specific test, then we always set it to :white as a placeholder.
-# Additionally, it's important to know that the total_moves parameter always
-# defaults to 0.
+# Additionally, it's important to know that the @total_moves parameter defaults
+# to 0.
 describe Chess::Piece do
   describe '#white?' do
-    context 'when the Piece is white' do
+    context 'when white' do
       subject(:piece_white) { described_class.new(:white) }
 
       it 'returns true' do
@@ -15,7 +15,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece is black' do
+    context 'when black' do
       subject(:piece_black) { described_class.new(:black) }
 
       it 'returns false' do
@@ -26,7 +26,7 @@ describe Chess::Piece do
   end
 
   describe '#black?' do
-    context 'when the Piece is black' do
+    context 'when black' do
       subject(:piece_black) { described_class.new(:black) }
 
       it 'returns true' do
@@ -35,7 +35,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece is white' do
+    context 'when white' do
       subject(:piece_white) { described_class.new(:white) }
 
       it 'returns false' do
@@ -46,7 +46,7 @@ describe Chess::Piece do
   end
 
   describe '#moved?' do
-    context 'when the Piece has moved at least once' do
+    context 'when moved at least once' do
       subject(:piece_moved) { described_class.new(:white, 1) }
 
       it 'returns true' do
@@ -55,7 +55,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the the Piece has not moved' do
+    context 'when unmoved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns false' do
@@ -66,7 +66,7 @@ describe Chess::Piece do
   end
 
   describe '#moved_once?' do
-    context 'when the Piece has moved exactly once' do
+    context 'when moved exactly once' do
       subject(:piece_moved_once) { described_class.new(:white, 1) }
 
       it 'returns true' do
@@ -75,7 +75,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece has moved more than once' do
+    context 'when moved more than once' do
       subject(:piece_moved_multiple_times) { described_class.new(:white, 2) }
 
       it 'returns false' do
@@ -84,7 +84,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece has not moved' do
+    context 'when unmoved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns false' do
@@ -95,7 +95,7 @@ describe Chess::Piece do
   end
 
   describe '#moved_more_than_once?' do
-    context 'when the Piece has moved more than once' do
+    context 'when moved more than once' do
       subject(:piece_moved_multiple_times) { described_class.new(:white, 2) }
 
       it 'returns true' do
@@ -104,7 +104,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece has moved exactly once' do
+    context 'when moved exactly once' do
       subject(:piece_moved_once) { described_class.new(:white, 1) }
 
       it 'returns false' do
@@ -113,7 +113,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece has not moved' do
+    context 'when unmoved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns false' do
@@ -124,7 +124,7 @@ describe Chess::Piece do
   end
 
   describe '#unmoved?' do
-    context 'when the Piece has not moved' do
+    context 'when unmoved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns true' do
@@ -133,7 +133,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece has moved at least once' do
+    context 'when moved at least once' do
       subject(:piece_moved) { described_class.new(:white, 1) }
 
       it 'returns false' do
@@ -146,7 +146,7 @@ describe Chess::Piece do
   describe '#increment_total_moves' do
     subject(:piece) { described_class.new(:white) }
 
-    it 'increments the total moves by one' do
+    it 'increments @total_moves by one' do
       expect { piece.increment_total_moves }.to change \
         { piece.instance_variable_get(:@total_moves) }.from(0).to(1)
     end
@@ -162,7 +162,7 @@ describe Chess::Piece do
   end
 
   describe '#to_s' do
-    context 'when the Piece has not moved' do
+    context 'when unmoved' do
       subject(:piece_unmoved) { described_class.new(:white) }
 
       it 'returns a string describing the state' do
@@ -171,7 +171,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece has moved exactly once' do
+    context 'when moved exactly once' do
       subject(:piece_moved_once) { described_class.new(:white, 1) }
 
       it 'returns a string describing the state' do
@@ -180,7 +180,7 @@ describe Chess::Piece do
       end
     end
 
-    context 'when the Piece has moved more than once' do
+    context 'when moved more than once' do
       subject(:piece_moved_multiple_times) { described_class.new(:white, 8) }
 
       it 'returns a string describing the state' do

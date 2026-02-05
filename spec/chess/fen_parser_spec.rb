@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 describe Chess::FENParser do
-  describe '#parse_piece_placement' do
-    context 'when testing with the default FEN record' do
-      subject(:fen_parser_default) { described_class.new(Chess::ChessConstants::DEFAULT_FEN) }
+  describe '#to_piece_placement' do
+    context 'when parsing a default FEN record' do
+      subject(:fen_parser_default) { described_class.new(fen_default) }
 
+      let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
       let(:expected) do
         { a8: 'r', b8: 'n', c8: 'b', d8: 'q', e8: 'k', f8: 'b', g8: 'n', h8: 'r',
           a7: 'p', b7: 'p', c7: 'p', d7: 'p', e7: 'p', f7: 'p', g7: 'p', h7: 'p',
@@ -17,16 +18,15 @@ describe Chess::FENParser do
       end
 
       it 'returns the piece placement data parsed into a hash' do
-        result = fen_parser_default.parse_piece_placement
+        result = fen_parser_default.to_piece_placement
         expect(result).to eq(expected)
       end
     end
 
-    context 'when testing with an endgame FEN record' do
-      subject(:fen_parser_endgame) { described_class.new(endgame_fen) }
+    context 'when parsing an endgame FEN record' do
+      subject(:fen_parser_endgame) { described_class.new(fen_endgame) }
 
-      let(:endgame_fen) { 'kq6/8/8/8/8/8/7P/7K w - - 0 65' }
-
+      let(:fen_endgame) { 'kq6/8/8/8/8/8/7P/7K w - - 0 65' }
       let(:expected) do
         { a8: 'k', b8: 'q', c8: '-', d8: '-', e8: '-', f8: '-', g8: '-', h8: '-',
           a7: '-', b7: '-', c7: '-', d7: '-', e7: '-', f7: '-', g7: '-', h7: '-',
@@ -39,16 +39,17 @@ describe Chess::FENParser do
       end
 
       it 'returns the piece placement data parsed into a hash' do
-        result = fen_parser_endgame.parse_piece_placement
+        result = fen_parser_endgame.to_piece_placement
         expect(result).to eq(expected)
       end
     end
   end
 
-  describe '#parse_data_fields' do
-    context 'when testing with the default FEN record' do
-      subject(:fen_parser_default) { described_class.new(Chess::ChessConstants::DEFAULT_FEN) }
+  describe '#to_data_fields' do
+    context 'when parsing a default FEN record' do
+      subject(:fen_parser_default) { described_class.new(fen_default) }
 
+      let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
       let(:expected) do
         { piece_placement: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR',
           active_color: 'w',
@@ -59,16 +60,15 @@ describe Chess::FENParser do
       end
 
       it 'returns the data fields parsed into a hash' do
-        result = fen_parser_default.parse_data_fields
+        result = fen_parser_default.to_data_fields
         expect(result).to eq(expected)
       end
     end
 
-    context 'when testing with an endgame FEN record' do
-      subject(:fen_parser_endgame) { described_class.new(endgame_fen) }
+    context 'when parsing an endgame FEN record' do
+      subject(:fen_parser_endgame) { described_class.new(fen_endgame) }
 
-      let(:endgame_fen) { 'kq6/8/8/8/8/8/7P/7K w - - 0 65' }
-
+      let(:fen_endgame) { 'kq6/8/8/8/8/8/7P/7K w - - 0 65' }
       let(:expected) do
         { piece_placement: 'kq6/8/8/8/8/8/7P/7K',
           active_color: 'w',
@@ -79,7 +79,7 @@ describe Chess::FENParser do
       end
 
       it 'returns the data fields parsed into a hash' do
-        result = fen_parser_endgame.parse_data_fields
+        result = fen_parser_endgame.to_data_fields
         expect(result).to eq(expected)
       end
     end

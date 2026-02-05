@@ -10,17 +10,17 @@ module Chess
       @fen = fen
     end
 
-    def parse_piece_placement
-      current_rank_int = determine_number_of_ranks
-      split_ranks.each_with_object({}) do |rank_str, hash|
-        rank_arr = parse_rank_str(rank_str)
-        rank_arr_assoc = parse_rank_arr_with_coords(rank_arr, current_rank_int)
-        rank_arr_assoc.each { |assoc| hash[assoc[0]] = assoc[1] }
-        current_rank_int -= 1
+    def to_piece_placement
+      current_rank_i = to_number_of_ranks
+      to_ranks.each_with_object({}) do |rank_s, hash|
+        rank_a = rank_s_to_rank_a(rank_s)
+        rank_a_assoc = rank_a_to_rank_a_with_coords(rank_a, current_rank_i)
+        rank_a_assoc.each { |assoc| hash[assoc[0]] = assoc[1] }
+        current_rank_i -= 1
       end
     end
 
-    def parse_data_fields
+    def to_data_fields
       split_data = @fen.split
       { piece_placement: split_data[0],
         active_color: split_data[1],
@@ -32,31 +32,31 @@ module Chess
 
     private
 
-    def parse_rank_arr_with_coords(rank_arr, rank_int)
-      rank_arr.map.with_index do |char, idx|
-        algebraic_file = ChessConstants::BOARD_FILE_MARKERS[idx]
-        algebraic_rank = rank_int
-        algebraic_coords_sym = :"#{algebraic_file}#{algebraic_rank}"
-        [algebraic_coords_sym, char]
+    def rank_a_to_rank_a_with_coords(rank_a, rank_i)
+      rank_a.map.with_index do |char, idx|
+        file = ChessConstants::BOARD_FILE_MARKERS[idx]
+        rank = rank_i
+        coord_sym = :"#{file}#{rank}"
+        [coord_sym, char]
       end
     end
 
-    def parse_rank_str(rank_str)
-      rank_str.chars.each_with_object([]) do |fen_char, arr|
-        if fen_char_represents_piece?(fen_char)
-          arr << fen_char
-        elsif fen_char_represents_contiguous_empty_squares?(fen_char)
-          fen_char.to_i.times { arr << '-' }
+    def rank_s_to_rank_a(rank_s)
+      rank_s.chars.each_with_object([]) do |char, arr|
+        if char_represents_piece?(char)
+          arr << char
+        elsif char_represents_contiguous_empty_squares?(char)
+          char.to_i.times { arr << '-' }
         end
       end
     end
 
-    def split_ranks
-      parse_data_fields[:piece_placement].split('/')
+    def to_ranks
+      to_data_fields[:piece_placement].split('/')
     end
 
-    def determine_number_of_ranks
-      split_ranks.length
+    def to_number_of_ranks
+      to_ranks.length
     end
   end
 end

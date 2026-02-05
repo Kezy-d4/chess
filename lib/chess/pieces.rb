@@ -2,7 +2,7 @@
 
 module Chess
   # A mixin to construct chess pieces from their corresponding FEN character and
-  # convert existing pieces back into said character
+  # convert existing pieces into said character
   module Pieces
     include FENCharAnalysis
 
@@ -44,15 +44,15 @@ module Chess
       }
     }.freeze
 
-    def construct_piece_from_fen_char(fen_char)
-      if fen_char_represents_white_piece?(fen_char)
-        FEN_CHAR_PIECE_MAP[:white][fen_char].new(:white)
-      elsif fen_char_represents_black_piece?(fen_char)
-        FEN_CHAR_PIECE_MAP[:black][fen_char].new(:black)
+    def construct_piece_from_char(char)
+      if char_represents_white_piece?(char)
+        FEN_CHAR_PIECE_MAP[:white][char].new(:white)
+      elsif char_represents_black_piece?(char)
+        FEN_CHAR_PIECE_MAP[:black][char].new(:black)
       end
     end
 
-    def convert_piece_to_fen_char(piece)
+    def convert_piece_to_char(piece)
       if piece.white?
         PIECE_FEN_CHAR_MAP[:white][piece.class]
       elsif piece.black?

@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+# Extending core class Object
+class Object
+  def to_class_s
+    class_s = self.class.to_s
+    class_s.slice!('Chess::')
+    class_s
+  end
+end
