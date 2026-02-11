@@ -3,6 +3,8 @@
 module Chess
   # A superclass to each of the chess pieces
   class Piece
+    attr_reader :color
+
     # @param color [Symbol]
     # @param total_moves [Integer]
     def initialize(color, total_moves = 0)
