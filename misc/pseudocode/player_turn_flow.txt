@@ -1,3 +1,7 @@
+--------------------------------------------------------------------------------
+
+CHECK DETECTION
+
 VARIABLES
 Player = the player who currently has the move
 Opponent = Player's opponent
@@ -32,3 +36,35 @@ Invoke King_In_Check?
     IF THERE IS NO STALEMATE:
     If there is no stalemate, then Player can choose to make any of their
     available legal moves before passing control to Opponent.
+  
+--------------------------------------------------------------------------------
+
+APPLICATION FLOW
+
+MAIN MENU
+1. present USER with main menu containing two options: "New Game" and "Exit"
+2. prompt USER to select an option
+3. if USER selects "New Game", start a new game
+4. if USER selects "Exit", exit the program
+5. if USER inputs anything else, repeat from step 1
+
+NEW GAME
+1. prompt USER to input a name for first player
+2. if name is valid, proceed to name next player
+3. if name is invalid, repeat from step 1
+4. prompt USER to input a name for second player
+5. if name is valid, proceed to game
+6. if name is invalid, repeat from step 4
+
+GAME
+1. present ACTIVE_PLAYER with position
+2. prompt ACTIVE_PLAYER to select one of their squares
+3. if ACTIVE_PLAYER input is valid, select that square
+4. if ACTIVE_PLAYER input is invalid, repeat from step 2
+5. prompt ACTIVE_PLAYER to select a movement destination or escape
+6. if ACTIVE_PLAYER escapes, repeat from step 2
+7. if ACTIVE_PLAYER input is valid, move selected piece to selected destination
+   and switch players, then repeat from step 1
+8. if ACTIVE_PLAYER input is invalid, repeat from step 5
+
+--------------------------------------------------------------------------------
