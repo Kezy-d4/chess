@@ -70,6 +70,14 @@ module Chess
       to_occupied_associations.select { |_coord, square| square.occupant.black? }
     end
 
+    def to_ranks
+      vals = @squares.values
+      ChessConstants::BOARD_RANK_MARKERS.each_with_object({}) do |rank_i, hash|
+        rank = vals.slice!(0, ChessConstants::BOARD_FILE_MARKERS.length)
+        hash[rank_i] = rank
+      end
+    end
+
     def to_s
       arr = []
       no_of_ranks = ChessConstants::BOARD_RANK_MARKERS.length
@@ -98,14 +106,6 @@ module Chess
       end
       fen_a << contiguous_empty_counter if contiguous_empty_counter.positive?
       fen_a.join
-    end
-
-    def to_ranks
-      vals = @squares.values
-      ChessConstants::BOARD_RANK_MARKERS.each_with_object({}) do |rank_i, hash|
-        rank = vals.slice!(0, ChessConstants::BOARD_FILE_MARKERS.length)
-        hash[rank_i] = rank
-      end
     end
 
     def to_occupied_associations
