@@ -22,5 +22,6 @@ module Chess
   require_relative 'chess/board'
   require_relative 'chess/fen_parser'
   require_relative 'chess/square'
+  require_relative 'chess/position'
   require_relative 'chess/display'
 end
