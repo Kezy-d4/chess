@@ -32,7 +32,7 @@ module Chess
         render_rank(rank_i, metadata)
         puts
       end
-      puts ' a  b  c  d  e  f  g  h'
+      puts '   a  b  c  d  e  f  g  h'
     end
 
     private
@@ -52,7 +52,7 @@ module Chess
     def render_square(square, coord_s, bg_color, metadata)
       if source_square?(coord_s, metadata)
         render_occupied_square(square.occupant, :orange)
-      elsif square_controlled?(coord_s, metadata)
+      elsif controlled_square?(coord_s, metadata)
         render_controlled_square(:orange, bg_color)
       elsif square.occupied?
         render_occupied_square(square.occupant, bg_color)
@@ -90,11 +90,15 @@ module Chess
       end
     end
 
-    def square_controlled?(coord_s, metadata)
+    def controlled_square?(coord_s, metadata)
+      return false unless metadata[:controlled]
+
       metadata[:controlled].include?(coord_s)
     end
 
     def source_square?(coord_s, metadata)
+      return false unless metadata[:source]
+
       metadata[:source] == coord_s
     end
   end
