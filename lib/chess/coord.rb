@@ -54,10 +54,6 @@ module Chess
       Coord.new(adjacent_file, adjacent_rank)
     end
 
-    def to_adjacency_s(file_adjustment, rank_adjustment)
-      to_adjacency(file_adjustment, rank_adjustment)&.to_s
-    end
-
     def to_northern_adjacencies
       to_directional_adjacencies(0, 1)
     end
@@ -117,7 +113,7 @@ module Chess
         next_adjacency = arr.last.to_adjacency(file_adjustment, rank_adjustment)
         arr << next_adjacency
       end
-      arr.map(&:to_s)
+      arr
     end
 
     def file_adjustment_in_bounds?(file_adjustment)

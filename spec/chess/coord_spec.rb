@@ -75,31 +75,19 @@ describe Chess::Coord do
     end
   end
 
-  describe '#to_adjacency_s' do
-    subject(:coord_a8) { described_class.new('a', 8) }
-
-    context 'when the adjacency would remain in bounds' do
-      it 'returns the adjusted coordinates as a string' do
-        result = coord_a8.to_adjacency_s(1, -1)
-        expect(result).to eq('b7')
-      end
-    end
-
-    context 'when the adjacency would fall out of bounds' do
-      it 'returns nil' do
-        result = coord_a8.to_adjacency_s(-1, 1)
-        expect(result).to be_nil
-      end
-    end
-  end
-
   describe '#to_northern_adjacencies' do
     context 'when testing with Coord a1' do
       subject(:coord_a1) { described_class.new('a', 1) }
 
-      it 'returns an array of northern string adjacencies' do
+      let(:expected) do
+        %w[a2 a3 a4 a5 a6 a7 a8].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of northern adjacencies' do
         result = coord_a1.to_northern_adjacencies
-        expect(result).to eq(%w[a2 a3 a4 a5 a6 a7 a8])
+        expect(result).to eq(expected)
       end
     end
 
@@ -117,9 +105,15 @@ describe Chess::Coord do
     context 'when testing with Coord a8' do
       subject(:coord_a8) { described_class.new('a', 8) }
 
-      it 'returns an array of eastern string adjacencies' do
+      let(:expected) do
+        %w[b8 c8 d8 e8 f8 g8 h8].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of eastern adjacencies' do
         result = coord_a8.to_eastern_adjacencies
-        expect(result).to eq(%w[b8 c8 d8 e8 f8 g8 h8])
+        expect(result).to eq(expected)
       end
     end
 
@@ -137,9 +131,15 @@ describe Chess::Coord do
     context 'when testing with Coord a8' do
       subject(:coord_a8) { described_class.new('a', 8) }
 
-      it 'returns an array of southern string adjacencies' do
+      let(:expected) do
+        %w[a7 a6 a5 a4 a3 a2 a1].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of southern adjacencies' do
         result = coord_a8.to_southern_adjacencies
-        expect(result).to eq(%w[a7 a6 a5 a4 a3 a2 a1])
+        expect(result).to eq(expected)
       end
     end
 
@@ -157,9 +157,15 @@ describe Chess::Coord do
     context 'when testing with Coord h8' do
       subject(:coord_h8) { described_class.new('h', 8) }
 
-      it 'returns an array of western string adjacencies' do
+      let(:expected) do
+        %w[g8 f8 e8 d8 c8 b8 a8].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of western adjacencies' do
         result = coord_h8.to_western_adjacencies
-        expect(result).to eq(%w[g8 f8 e8 d8 c8 b8 a8])
+        expect(result).to eq(expected)
       end
     end
 
@@ -177,9 +183,15 @@ describe Chess::Coord do
     context 'when testing with Coord a1' do
       subject(:coord_a1) { described_class.new('a', 1) }
 
-      it 'returns an array of north eastern string adjacencies' do
+      let(:expected) do
+        %w[b2 c3 d4 e5 f6 g7 h8].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of north eastern adjacencies' do
         result = coord_a1.to_north_eastern_adjacencies
-        expect(result).to eq(%w[b2 c3 d4 e5 f6 g7 h8])
+        expect(result).to eq(expected)
       end
     end
 
@@ -197,9 +209,15 @@ describe Chess::Coord do
     context 'when testing with Coord a8' do
       subject(:coord_a8) { described_class.new('a', 8) }
 
-      it 'returns an array of south eastern string adjacencies' do
+      let(:expected) do
+        %w[b7 c6 d5 e4 f3 g2 h1].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of south eastern adjacencies' do
         result = coord_a8.to_south_eastern_adjacencies
-        expect(result).to eq(%w[b7 c6 d5 e4 f3 g2 h1])
+        expect(result).to eq(expected)
       end
     end
 
@@ -217,9 +235,15 @@ describe Chess::Coord do
     context 'when testing with Coord h8' do
       subject(:coord_h8) { described_class.new('h', 8) }
 
-      it 'returns an array of south western string adjacencies' do
+      let(:expected) do
+        %w[g7 f6 e5 d4 c3 b2 a1].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of south western adjacencies' do
         result = coord_h8.to_south_western_adjacencies
-        expect(result).to eq(%w[g7 f6 e5 d4 c3 b2 a1])
+        expect(result).to eq(expected)
       end
     end
 
@@ -237,9 +261,15 @@ describe Chess::Coord do
     context 'when testing with Coord h1' do
       subject(:algebraic_coords_h1) { described_class.new('h', 1) }
 
-      it 'returns an array of north western string adjacencies' do
+      let(:expected) do
+        %w[g2 f3 e4 d5 c6 b7 a8].map do |coord_s|
+          described_class.from_s(coord_s)
+        end
+      end
+
+      it 'returns an array of north western adjacencies' do
         result = algebraic_coords_h1.to_north_western_adjacencies
-        expect(result).to eq(%w[g2 f3 e4 d5 c6 b7 a8])
+        expect(result).to eq(expected)
       end
     end
 
