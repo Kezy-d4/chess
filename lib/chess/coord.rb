@@ -3,6 +3,9 @@
 module Chess
   # Algebraic coordinates corresponding to a location on a chess board
   class Coord
+    attr_reader :file, :rank
+    protected :file, :rank
+
     COORD_METHOD_MAP = {
       north: :to_northern_adjacencies,
       east: :to_eastern_adjacencies,
@@ -32,8 +35,8 @@ module Chess
 
     def ==(other)
       other.is_a?(self.class) &&
-        other.instance_variable_get(:@file) == @file &&
-        other.instance_variable_get(:@rank) == @rank
+        other.file == @file &&
+        other.rank == @rank
     end
 
     alias eql? ==
