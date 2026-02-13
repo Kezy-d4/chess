@@ -36,8 +36,8 @@ module Chess
       rank_a.map.with_index do |char, idx|
         file = ChessConstants::BOARD_FILE_MARKERS[idx]
         rank = rank_i
-        coord_sym = :"#{file}#{rank}"
-        [coord_sym, char]
+        coord_s = "#{file}#{rank}"
+        [coord_s, char]
       end
     end
 
