@@ -3,7 +3,7 @@
 module Chess
   # A superclass to each of the chess pieces
   class Piece
-    attr_reader :color
+    attr_reader :color, :total_moves
 
     # @param color [Symbol]
     # @param total_moves [Integer]

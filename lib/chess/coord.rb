@@ -4,7 +4,6 @@ module Chess
   # Algebraic coordinates corresponding to a location on a chess board
   class Coord
     attr_reader :file, :rank
-    protected :file, :rank
 
     COORD_METHOD_MAP = {
       north: :to_northern_adjacencies,
