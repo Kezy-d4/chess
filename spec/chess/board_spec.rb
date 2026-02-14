@@ -227,7 +227,8 @@ describe Chess::Board do
     end
 
     it 'returns the association located at the given coordinates' do
-      result = board_default.assoc_at('e1')
+      coord_e1 = Chess::Coord.from_s('e1')
+      result = board_default.assoc_at(coord_e1)
       strings = result.map(&:to_s)
       expect(strings).to eq(expected)
     end
@@ -243,21 +244,8 @@ describe Chess::Board do
     end
 
     it 'returns the Square located at the given coordinates' do
-      result = board_default.square_at('e1')
-      string = result.to_s
-      expect(string).to eq(expected)
-    end
-  end
-
-  describe '#coord_at' do
-    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
-
-    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
-    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
-    let(:expected) { 'e1' }
-
-    it 'returns the Coord located at the given coordinates' do
-      result = board_default.coord_at('e1')
+      coord_e1 = Chess::Coord.from_s('e1')
+      result = board_default.square_at(coord_e1)
       string = result.to_s
       expect(string).to eq(expected)
     end
@@ -283,8 +271,9 @@ describe Chess::Board do
     end
 
     it 'updates the occupant at the given coordinates' do
-      expect { board_default.update_at('e4', queen) }.to change \
-        { board_default.assoc_at('e4').map(&:to_s) }
+      coord_e4 = Chess::Coord.from_s('e4')
+      expect { board_default.update_at(coord_e4, queen) }.to change \
+        { board_default.assoc_at(coord_e4).map(&:to_s) }
         .from(before).to(after)
     end
   end
@@ -308,8 +297,9 @@ describe Chess::Board do
     end
 
     it 'empties the occupant at the given coordinates' do
-      expect { board_default.empty_at('e8') }.to change \
-        { board_default.assoc_at('e8').map(&:to_s) }
+      coord_e8 = Chess::Coord.from_s('e8')
+      expect { board_default.empty_at(coord_e8) }.to change \
+        { board_default.assoc_at(coord_e8).map(&:to_s) }
         .from(before).to(after)
     end
   end

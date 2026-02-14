@@ -15,8 +15,8 @@ module Chess
       # @param fen_parser [FENParser]
       def from_fen_parser(fen_parser)
         squares = {}
-        fen_parser.to_piece_placement.each do |coord_sym, char|
-          coord = Coord.from_s(coord_sym.to_s)
+        fen_parser.to_piece_placement.each do |coord_s, char|
+          coord = Coord.from_s(coord_s)
           squares[coord] = construct_square(char)
         end
         new(squares)
@@ -42,24 +42,22 @@ module Chess
       arr.join('/')
     end
 
-    def assoc_at(coord_s)
-      @squares.assoc(Coord.from_s(coord_s))
+    def assoc_at(coord)
+      @squares.assoc(coord)
     end
 
-    def square_at(coord_s)
-      assoc_at(coord_s)[1]
+    def square_at(coord)
+      @squares[coord]
     end
 
-    def coord_at(coord_s)
-      assoc_at(coord_s)[0]
+    def update_at(coord, piece)
+      square_at(coord).update_occupant(piece)
     end
 
-    def update_at(coord_s, piece)
-      square_at(coord_s).update_occupant(piece)
+    def empty_at(coord)
+      square_at(coord).remove_occupant
     end
 
-    def empty_at(coord_s)
-      square_at(coord_s).remove_occupant
     end
 
     def to_white_occupied_associations
