@@ -7,14 +7,14 @@ module Chess
     # pieces.
     def to_adjacent_movement_coords(coord)
       {
-        north_east_left: [coord.to_adjacency_s(1, 2)],
-        north_east_right: [coord.to_adjacency_s(2, 1)],
-        south_east_left: [coord.to_adjacency_s(1, -2)],
-        south_east_right: [coord.to_adjacency_s(2, -1)],
-        south_west_left: [coord.to_adjacency_s(-2, -1)],
-        south_west_right: [coord.to_adjacency_s(-1, -2)],
-        north_west_left: [coord.to_adjacency_s(-2, 1)],
-        north_west_right: [coord.to_adjacency_s(-1, 2)]
+        north_east_left: [coord.to_adjacency(1, 2)],
+        north_east_right: [coord.to_adjacency(2, 1)],
+        south_east_left: [coord.to_adjacency(1, -2)],
+        south_east_right: [coord.to_adjacency(2, -1)],
+        south_west_left: [coord.to_adjacency(-2, -1)],
+        south_west_right: [coord.to_adjacency(-1, -2)],
+        north_west_left: [coord.to_adjacency(-2, 1)],
+        north_west_right: [coord.to_adjacency(-1, 2)]
       }.delete_empty_arr_vals
     end
 

@@ -7,14 +7,18 @@ describe Chess::King do
     context 'when passed Coord e4' do
       let(:coord_e4) { Chess::Coord.new('e', 4) }
       let(:expected) do
-        { north: %w[e5],
+        {
+          north: %w[e5],
           east: %w[f4],
           south: %w[e3],
           west: %w[d4],
           north_east: %w[f5],
           south_east: %w[f3],
           south_west: %w[d3],
-          north_west: %w[d5] }
+          north_west: %w[d5]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
       end
 
       it 'returns a hash of adjacencies per direction' do
@@ -26,9 +30,13 @@ describe Chess::King do
     context 'when passed Coord a8' do
       let(:coord_a8) { Chess::Coord.new('a', 8) }
       let(:expected) do
-        { east: %w[b8],
+        {
+          east: %w[b8],
           south: %w[a7],
-          south_east: %w[b7] }
+          south_east: %w[b7]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
       end
 
       it 'returns a hash of adjacencies per direction' do

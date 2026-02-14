@@ -7,10 +7,14 @@ describe Chess::Rook do
     context 'when passed Coord e4' do
       let(:coord_e4) { Chess::Coord.new('e', 4) }
       let(:expected) do
-        { north: %w[e5 e6 e7 e8],
+        {
+          north: %w[e5 e6 e7 e8],
           east: %w[f4 g4 h4],
           south: %w[e3 e2 e1],
-          west: %w[d4 c4 b4 a4] }
+          west: %w[d4 c4 b4 a4]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
       end
 
       it 'returns a hash of adjacencies per direction' do
@@ -22,8 +26,12 @@ describe Chess::Rook do
     context 'when passed Coord a8' do
       let(:coord_a8) { Chess::Coord.new('a', 8) }
       let(:expected) do
-        { east: %w[b8 c8 d8 e8 f8 g8 h8],
-          south: %w[a7 a6 a5 a4 a3 a2 a1] }
+        {
+          east: %w[b8 c8 d8 e8 f8 g8 h8],
+          south: %w[a7 a6 a5 a4 a3 a2 a1]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
       end
 
       it 'returns a hash of adjacencies per direction' do
