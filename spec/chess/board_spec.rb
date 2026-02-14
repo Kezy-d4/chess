@@ -304,6 +304,52 @@ describe Chess::Board do
     end
   end
 
+  describe '#occupied_at?' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
+
+    context 'when the Square at the given coordinates is occupied' do
+      it 'returns true' do
+        coord_e2 = Chess::Coord.from_s('e2')
+        result = board_default.occupied_at?(coord_e2)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the Square at the given coordinates is unoccupied' do
+      it 'returns false' do
+        coord_e3 = Chess::Coord.from_s('e3')
+        result = board_default.occupied_at?(coord_e3)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#unoccupied_at?' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
+
+    context 'when the Square at the given coordinates is unoccupied' do
+      it 'returns true' do
+        coord_e3 = Chess::Coord.from_s('e3')
+        result = board_default.unoccupied_at?(coord_e3)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the Square at the given coordinates is occupied' do
+      it 'returns false' do
+        coord_e2 = Chess::Coord.from_s('e2')
+        result = board_default.unoccupied_at?(coord_e2)
+        expect(result).to be(false)
+      end
+    end
+  end
+
   describe '#to_white_occupied_associations' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 

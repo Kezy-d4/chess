@@ -58,6 +58,12 @@ module Chess
       square_at(coord).remove_occupant
     end
 
+    def occupied_at?(coord)
+      square_at(coord).occupied?
+    end
+
+    def unoccupied_at?(coord)
+      square_at(coord).unoccupied?
     end
 
     def to_white_occupied_associations
