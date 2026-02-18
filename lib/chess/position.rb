@@ -75,26 +75,26 @@ module Chess
       controlled.delete_empty_arr_vals
     end
 
-    #
-    # def to_adjacent_attacked_coords_from(coord)
-    #   return unless @board.occupied_at?(coord)
+    # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    def to_adjacent_attacked_coords_from(coord)
+      return unless @board.occupied_at?(coord)
 
-    #   piece = @board.square_at(coord).occupant
-    #   movement = piece.to_adjacent_movement_coords(coord)
-    #   attacked = movement.transform_values do |coord_a|
-    #     result = coord_a.find do |adjacent_coord|
-    #       next unless @board.square_at(adjacent_coord).occupied?
+      piece = @board.square_at(coord).occupant
+      movement = piece.to_adjacent_movement_coords(coord)
+      attacked = movement.transform_values do |coord_a|
+        result = coord_a.find do |adjacent_coord|
+          next unless @board.square_at(adjacent_coord).occupied?
 
-    #       adjacent_occupant = @board.square_at(adjacent_coord).occupant
-    #       break if piece.color == adjacent_occupant.color
+          adjacent_occupant = @board.square_at(adjacent_coord).occupant
+          break if piece.color == adjacent_occupant.color
 
-    #       piece.color != adjacent_occupant.color
-    #     end
-    #     [result]
-    #   end
-    #   attacked.delete_empty_arr_vals
-    # end
-    #
+          piece.color != adjacent_occupant.color
+        end
+        [result]
+      end
+      attacked.delete_empty_arr_vals
+    end
+    # rubocop:enable all
 
     def update_source(coord)
       @metadata[:source] = coord

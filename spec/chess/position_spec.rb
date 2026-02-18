@@ -322,44 +322,44 @@ describe Chess::Position do
     end
   end
 
-  # describe '#to_adjacent_attacked_coords_from' do
-  #   subject(:position_default) { described_class.new_default('Player', 'Player') }
+  describe '#to_adjacent_attacked_coords_from' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
 
-  #   context 'when unoccupied at the given Coord' do
-  #     it 'returns nil' do
-  #       coord_e4 = Chess::Coord.from_s('e4')
-  #       result = position_default.to_adjacent_attacked_coords_from(coord_e4)
-  #       expect(result).to be_nil
-  #     end
-  #   end
+    context 'when unoccupied at the given Coord' do
+      it 'returns nil' do
+        coord_e4 = Chess::Coord.from_s('e4')
+        result = position_default.to_adjacent_attacked_coords_from(coord_e4)
+        expect(result).to be_nil
+      end
+    end
 
-  #   context 'when occupied at the given Coord' do
-  #     let(:coord_e4) { Chess::Coord.from_s('e4') }
-  #     let(:expected) do
-  #       {
-  #         north_west: %w[b7],
-  #         north_east: %w[h7]
-  #       }.transform_values do |coord_a|
-  #         coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
-  #       end
-  #     end
+    context 'when occupied at the given Coord' do
+      let(:coord_e4) { Chess::Coord.from_s('e4') }
+      let(:expected) do
+        {
+          north_west: %w[b7],
+          north_east: %w[h7]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
 
-  #     before do
-  #       queen = Chess::Queen.new(:white)
-  #       pawn1 = Chess::Pawn.new(:white)
-  #       pawn2 = Chess::Pawn.new(:white)
-  #       board = position_default.instance_variable_get(:@board)
-  #       board.update_at(coord_e4, queen)
-  #       board.update_at(Chess::Coord.from_s('e3'), pawn1)
-  #       board.update_at(Chess::Coord.from_s('e5'), pawn2)
-  #     end
+      before do
+        queen = Chess::Queen.new(:white)
+        pawn1 = Chess::Pawn.new(:white)
+        pawn2 = Chess::Pawn.new(:white)
+        board = position_default.instance_variable_get(:@board)
+        board.update_at(coord_e4, queen)
+        board.update_at(Chess::Coord.from_s('e3'), pawn1)
+        board.update_at(Chess::Coord.from_s('e5'), pawn2)
+      end
 
-  #     it 'returns a hash of attacked adjacencies per direction' do
-  #       result = position_default.to_adjacent_attacked_coords_from(coord_e4)
-  #       expect(result).to eq(expected)
-  #     end
-  #   end
-  # end
+      it 'returns a hash of attacked adjacencies per direction' do
+        result = position_default.to_adjacent_attacked_coords_from(coord_e4)
+        expect(result).to eq(expected)
+      end
+    end
+  end
 
   describe '#update_source' do
     subject(:position_default) { described_class.new_default('Player', 'Player') }
