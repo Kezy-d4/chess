@@ -7,7 +7,7 @@ module Chess
     # @param aux_pos_data [AuxPosData]
     # @param player_white [Player]
     # @param player_black [Player]
-    # @param metadata [Hash{Symbol => String, Array<String>, nil}]
+    # @param metadata [Hash{Symbol => Coord, Array<Coord>, nil}]
     #   the metadata detailing source, destination and other info
     def initialize(board, aux_pos_data, player_white, player_black, metadata)
       @board = board
@@ -33,7 +33,8 @@ module Chess
 
       def new_default_metadata
         { source: nil,
-          controlled: nil }
+          controlled: nil,
+          attacked: nil }
       end
     end
 
@@ -41,13 +42,86 @@ module Chess
       "#{@board.to_partial_fen} #{@aux_pos_data.to_partial_fen}"
     end
 
-    def move_from_source_to(coord_s)
-      return unless @metadata[:source] && valid_move_from_source_to?(coord_s)
+    def move(source_coord, destination_coord)
+      return unless valid_move?(source_coord, destination_coord)
 
-      piece = @board.square_at(@metadata[:source]).occupant
-      @board.empty_at(@metadata[:source])
-      @board.update_at(coord_s, piece)
+      piece = @board.square_at(source_coord).occupant
+      @board.empty_at(source_coord)
+      @board.update_at(destination_coord, piece)
       piece.increment_total_moves
+    end
+
+    def valid_move?(source_coord, destination_coord)
+      return false unless @board.occupied_at?(source_coord)
+
+      controlled = to_adjacent_controlled_coords_from(source_coord)
+      attacked = to_adjacent_attacked_coords_from(source_coord)
+      controlled.values.flatten.include?(destination_coord) ||
+        attacked.values.flatten.include?(destination_coord)
+    end
+
+    def valid_source?(coord)
+      to_player_associations(to_active_player).key?(coord)
+    end
+
+    def to_adjacent_controlled_coords_from(coord)
+      return unless @board.occupied_at?(coord)
+
+      piece = @board.square_at(coord).occupant
+      movement = piece.to_adjacent_movement_coords(coord)
+      controlled = movement.transform_values do |coord_a|
+        coord_a.take_while { |adjacent_coord| @board.unoccupied_at?(adjacent_coord) }
+      end
+      controlled.delete_empty_arr_vals
+    end
+
+    #
+    # def to_adjacent_attacked_coords_from(coord)
+    #   return unless @board.occupied_at?(coord)
+
+    #   piece = @board.square_at(coord).occupant
+    #   movement = piece.to_adjacent_movement_coords(coord)
+    #   attacked = movement.transform_values do |coord_a|
+    #     result = coord_a.find do |adjacent_coord|
+    #       next unless @board.square_at(adjacent_coord).occupied?
+
+    #       adjacent_occupant = @board.square_at(adjacent_coord).occupant
+    #       break if piece.color == adjacent_occupant.color
+
+    #       piece.color != adjacent_occupant.color
+    #     end
+    #     [result]
+    #   end
+    #   attacked.delete_empty_arr_vals
+    # end
+    #
+
+    def update_source(coord)
+      @metadata[:source] = coord
+    end
+
+    def reset_source
+      @metadata[:source] = nil
+    end
+
+    def update_controlled(coord_a)
+      @metadata[:controlled] = coord_a
+    end
+
+    def reset_controlled
+      @metadata[:controlled] = nil
+    end
+
+    def update_attacked(coord_a)
+      @metadata[:attacked] = coord_a
+    end
+
+    def reset_attacked
+      @metadata[:attacked] = nil
+    end
+
+    def to_metadata
+      @metadata.dup
     end
 
     def to_active_player
@@ -70,60 +144,6 @@ module Chess
       @aux_pos_data.swap_active_color
     end
 
-    def to_player_associations(player)
-      if player == @player_white
-        @board.to_white_occupied_associations
-      elsif player == @player_black
-        @board.to_black_occupied_associations
-      end
-    end
-
-    def select_source(coord_s)
-      return unless valid_source?(coord_s)
-
-      @metadata[:source] = coord_s
-      update_controlled(source_to_adjacent_controlled_coords.values.flatten)
-    end
-
-    def deselect_source
-      @metadata[:source] = nil
-      reset_controlled
-    end
-
-    def update_controlled(coord_a)
-      @metadata[:controlled] = coord_a
-    end
-
-    def reset_controlled
-      @metadata[:controlled] = nil
-    end
-
-    def to_metadata
-      @metadata.dup
-    end
-
-    def valid_source?(coord_s)
-      to_player_associations(to_active_player).keys.map(&:to_s).include?(coord_s)
-    end
-
-    def valid_move_from_source_to?(coord_s)
-      return false unless @metadata[:source]
-
-      source_to_adjacent_controlled_coords.values.flatten.include?(coord_s)
-    end
-
-    def source_to_adjacent_controlled_coords
-      return unless @metadata[:source]
-
-      piece = @board.square_at(@metadata[:source]).occupant
-      coord = @board.coord_at(@metadata[:source])
-      movement = piece.to_adjacent_movement_coords(coord)
-      controlled = movement.transform_values do |coord_a|
-        coord_a.take_while { |coord_s| @board.square_at(coord_s).unoccupied? }
-      end
-      controlled.delete_empty_arr_vals
-    end
-
     def to_s
       <<~HEREDOC
         Board:
@@ -135,17 +155,35 @@ module Chess
         Player playing black: #{@player_black}
 
         Metadata:
-        #{metadata_to_s}
+        #{to_metadata_s}
       HEREDOC
     end
 
-    def metadata_to_s
+    def to_metadata_s
       arr = []
       @metadata.each do |key, val|
         arr << "#{key.capitalize}: "
-        arr << "#{val}\n"
+        arr << "#{to_metadata_val_s(val)}\n"
       end
       arr.join
+    end
+
+    private
+
+    def to_metadata_val_s(val)
+      if val.is_a?(Array)
+        val.map(&:to_s)
+      else
+        val.to_s
+      end
+    end
+
+    def to_player_associations(player)
+      if player == @player_white
+        @board.to_white_occupied_associations
+      elsif player == @player_black
+        @board.to_black_occupied_associations
+      end
     end
   end
 end
