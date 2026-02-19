@@ -24,4 +24,5 @@ module Chess
   require_relative 'chess/position'
   require_relative 'chess/cli'
   require_relative 'chess/display'
+  require_relative 'chess/log'
 end
