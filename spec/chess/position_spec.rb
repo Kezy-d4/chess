@@ -187,10 +187,9 @@ describe Chess::Position do
 
         Player playing black: Player(black)
 
+        Log:
         Metadata:
-        Source:#{' '}
-        Controlled:#{' '}
-        Attacked:#{' '}
+
 
       HEREDOC
     end
@@ -219,8 +218,8 @@ describe Chess::Position do
         aux_pos_data = Chess::AuxPosData.from_fen_parser(f_p)
         player_white = Chess::Player.new('Player', :white)
         player_black = Chess::Player.new('Player', :black)
-        metadata = described_class.new_default_metadata
-        described_class.new(board, aux_pos_data, player_white, player_black, metadata)
+        log = Chess::Log.new({})
+        described_class.new(board, aux_pos_data, player_white, player_black, log)
       end
 
       let(:fen_endgame) { 'kq6/8/8/8/8/8/7P/7K b - - 0 65' }
@@ -361,126 +360,6 @@ describe Chess::Position do
     end
   end
 
-  describe '#update_source' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    let(:coord) { double('Coord') }
-
-    it 'updates the source metadata with the given Coord' do
-      expect { position_default.update_source(coord) }.to change \
-        { position_default.instance_variable_get(:@metadata)[:source] }
-        .from(nil).to(coord)
-    end
-
-    it 'returns the given Coord' do
-      result = position_default.update_source(coord)
-      expect(result).to be(coord)
-    end
-  end
-
-  describe '#reset_source' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    let(:coord) { double('Coord') }
-
-    before { position_default.update_source(coord) }
-
-    it 'resets the source metadata' do
-      expect { position_default.reset_source }.to change \
-        { position_default.instance_variable_get(:@metadata)[:source] }
-        .from(coord).to(nil)
-    end
-
-    it 'returns nil' do
-      result = position_default.reset_source
-      expect(result).to be_nil
-    end
-  end
-
-  describe '#update_controlled' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    let(:coord_a) { [Chess::Coord.from_s('e5'), Chess::Coord.from_s('e3')] }
-
-    it 'updates the controlled metadata with the given Coord array' do
-      expect { position_default.update_controlled(coord_a) }.to change \
-        { position_default.instance_variable_get(:@metadata)[:controlled] }
-        .from(nil).to(coord_a)
-    end
-
-    it 'returns the given Coord array' do
-      result = position_default.update_controlled(coord_a)
-      expect(result).to be(coord_a)
-    end
-  end
-
-  describe '#reset_controlled' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    let(:coord_a) { [Chess::Coord.from_s('e5'), Chess::Coord.from_s('e3')] }
-
-    before { position_default.update_controlled(coord_a) }
-
-    it 'resets the controlled metadata' do
-      expect { position_default.reset_controlled }.to change \
-        { position_default.instance_variable_get(:@metadata)[:controlled] }
-        .from(coord_a).to(nil)
-    end
-
-    it 'returns nil' do
-      result = position_default.reset_controlled
-      expect(result).to be_nil
-    end
-  end
-
-  describe '#update_attacked' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    let(:coord_a) { [Chess::Coord.from_s('e5'), Chess::Coord.from_s('e3')] }
-
-    it 'updates the attacked metadata with the given Coord array' do
-      expect { position_default.update_attacked(coord_a) }.to change \
-        { position_default.instance_variable_get(:@metadata)[:attacked] }
-        .from(nil).to(coord_a)
-    end
-
-    it 'returns the given Coord array' do
-      result = position_default.update_attacked(coord_a)
-      expect(result).to be(coord_a)
-    end
-  end
-
-  describe '#reset_attacked' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    let(:coord_a) { [Chess::Coord.from_s('e5'), Chess::Coord.from_s('e3')] }
-
-    before { position_default.update_attacked(coord_a) }
-
-    it 'resets the attacked metadata' do
-      expect { position_default.reset_attacked }.to change \
-        { position_default.instance_variable_get(:@metadata)[:attacked] }
-        .from(coord_a).to(nil)
-    end
-
-    it 'returns nil' do
-      result = position_default.reset_attacked
-      expect(result).to be_nil
-    end
-  end
-
-  describe '#to_metadata' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    let(:metadata) { position_default.instance_variable_get(:@metadata) }
-
-    it 'returns a duplicate of the metadata' do # rubocop:disable RSpec/MultipleExpectations
-      result = position_default.to_metadata
-      expect(result).to eq(metadata)
-      expect(result).not_to equal(metadata)
-    end
-  end
-
   describe '#to_active_player' do
     context 'when white is active' do
       subject(:position_white_active) { described_class.new_default('Player', 'Player') }
@@ -557,54 +436,5 @@ describe Chess::Position do
       end
     end
     # rubocop:enable all
-  end
-
-  describe '#to_metadata_s' do
-    context 'when testing a Position with empty metadata' do
-      subject(:position_empty_metadata) { described_class.new_default('Player', 'Player') }
-
-      let(:expected) do
-        <<~HEREDOC
-          Source:#{' '}
-          Controlled:#{' '}
-          Attacked:#{' '}
-        HEREDOC
-      end
-
-      it 'returns the expected string' do
-        result = position_empty_metadata.to_metadata_s
-        expect(result).to eq(expected)
-      end
-    end
-
-    context 'when testing a Position with populated metadata' do
-      subject(:position_populated_metadata) do
-        fen = Chess::ChessConstants::FEN_DEFAULT
-        f_p = Chess::FENParser.new(fen)
-        board = Chess::Board.from_fen_parser(f_p)
-        aux_pos_data = Chess::AuxPosData.from_fen_parser(f_p)
-        player_white = Chess::Player.new('Player', :white)
-        player_black = Chess::Player.new('Player', :black)
-        described_class.new(board, aux_pos_data, player_white, player_black, metadata)
-      end
-
-      let(:metadata) do
-        { source: Chess::Coord.from_s('e4'),
-          controlled: [Chess::Coord.from_s('e5'), Chess::Coord.from_s('e3')],
-          attacked: [Chess::Coord.from_s('e6'), Chess::Coord.from_s('e2')] }
-      end
-      let(:expected) do
-        <<~HEREDOC
-          Source: e4
-          Controlled: ["e5", "e3"]
-          Attacked: ["e6", "e2"]
-        HEREDOC
-      end
-
-      it 'returns the expected string' do
-        result = position_populated_metadata.to_metadata_s
-        expect(result).to eq(expected)
-      end
-    end
   end
 end

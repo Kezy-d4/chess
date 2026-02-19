@@ -2,19 +2,18 @@
 
 module Chess
   # A chess position
-  class Position # rubocop:disable Metrics/ClassLength
+  class Position
     # @param board [Board]
     # @param aux_pos_data [AuxPosData]
     # @param player_white [Player]
     # @param player_black [Player]
-    # @param metadata [Hash{Symbol => Coord, Array<Coord>, nil}]
-    #   the metadata detailing source, destination and other info
-    def initialize(board, aux_pos_data, player_white, player_black, metadata)
+    # @param log [Log]
+    def initialize(board, aux_pos_data, player_white, player_black, log)
       @board = board
       @aux_pos_data = aux_pos_data
       @player_white = player_white
       @player_black = player_black
-      @metadata = metadata
+      @log = log
     end
 
     class << self
@@ -27,28 +26,13 @@ module Chess
         aux_pos_data = AuxPosData.from_fen_parser(f_p)
         player_white = Player.new(player_white_name, :white)
         player_black = Player.new(player_black_name, :black)
-        metadata = new_default_metadata
-        new(board, aux_pos_data, player_white, player_black, metadata)
-      end
-
-      def new_default_metadata
-        { source: nil,
-          controlled: nil,
-          attacked: nil }
+        log = Log.new({})
+        new(board, aux_pos_data, player_white, player_black, log)
       end
     end
 
     def to_fen
       "#{@board.to_partial_fen} #{@aux_pos_data.to_partial_fen}"
-    end
-
-    def move(source_coord, destination_coord)
-      return unless valid_move?(source_coord, destination_coord)
-
-      piece = @board.square_at(source_coord).occupant
-      @board.empty_at(source_coord)
-      @board.update_at(destination_coord, piece)
-      piece.increment_total_moves
     end
 
     def valid_move?(source_coord, destination_coord)
@@ -96,34 +80,6 @@ module Chess
     end
     # rubocop:enable all
 
-    def update_source(coord)
-      @metadata[:source] = coord
-    end
-
-    def reset_source
-      @metadata[:source] = nil
-    end
-
-    def update_controlled(coord_a)
-      @metadata[:controlled] = coord_a
-    end
-
-    def reset_controlled
-      @metadata[:controlled] = nil
-    end
-
-    def update_attacked(coord_a)
-      @metadata[:attacked] = coord_a
-    end
-
-    def reset_attacked
-      @metadata[:attacked] = nil
-    end
-
-    def to_metadata
-      @metadata.dup
-    end
-
     def to_active_player
       if @aux_pos_data.white_has_the_move?
         @player_white
@@ -154,29 +110,12 @@ module Chess
 
         Player playing black: #{@player_black}
 
-        Metadata:
-        #{to_metadata_s}
+        Log:
+        #{@log}
       HEREDOC
     end
 
-    def to_metadata_s
-      arr = []
-      @metadata.each do |key, val|
-        arr << "#{key.capitalize}: "
-        arr << "#{to_metadata_val_s(val)}\n"
-      end
-      arr.join
-    end
-
     private
-
-    def to_metadata_val_s(val)
-      if val.is_a?(Array)
-        val.map(&:to_s)
-      else
-        val.to_s
-      end
-    end
 
     def to_player_associations(player)
       if player == @player_white
