@@ -2,40 +2,75 @@
 
 describe Chess::Log do
   describe '#update_metadata' do
-    let(:key) { :current_source }
-    let(:val) { double('Coord') }
-
-    context 'when setting a new key' do
+    context 'when setting new key(s)' do
       subject(:log_empty) { described_class.new({}) }
 
-      it 'sets the given key to the given value' do
-        log_empty.update_metadata(key, val)
-        set_key = log_empty.instance_variable_get(:@metadata)[:current_source]
-        expect(set_key).to be(val)
+      let(:associations) do
+        [
+          [:current_source, current_source_val],
+          [:previous_source, previous_source_val]
+        ]
       end
+      let(:current_source_val) { double('Coord') }
+      let(:previous_source_val) { double('Coord') }
+
+      # rubocop:disable RSpec/RepeatedDescription
+      it 'sets the given key(s) to the given values' do
+        log_empty.update_metadata(*associations)
+        expect(log_empty.instance_variable_get(:@metadata)[:current_source]).to be(current_source_val)
+      end
+
+      it 'sets the given key(s) to the given values' do
+        log_empty.update_metadata(*associations)
+        expect(log_empty.instance_variable_get(:@metadata)[:previous_source]).to be(previous_source_val)
+      end
+      # rubocop:enable all
     end
 
-    context 'when overwriting an existing key' do
+    context 'when overwriting existing key(s)' do
       subject(:log_populated) do
         log = described_class.new({})
-        log.update_metadata(key, val)
+        log.update_metadata(
+          [:current_source, current_source_val],
+          [:previous_source, previous_source_val]
+        )
         log
       end
 
-      it 'overwrites the given key to the given value' do
-        new_val = double('Coord')
-        log_populated.update_metadata(key, new_val)
-        overwritten_key = log_populated.instance_variable_get(:@metadata)[:current_source]
-        expect(overwritten_key).to be(new_val)
+      let(:associations) do
+        [
+          [:current_source, new_current_source_val],
+          [:previous_source, new_previous_source_val]
+        ]
       end
+      let(:current_source_val) { double('Coord') }
+      let(:previous_source_val) { double('Coord') }
+      let(:new_current_source_val) { double('Coord') }
+      let(:new_previous_source_val) { double('Coord') }
+
+      # rubocop:disable RSpec/RepeatedDescription
+      it 'overwrites the given key(s) with the given values' do
+        expect { log_populated.update_metadata(*associations) }.to change \
+          { log_populated.instance_variable_get(:@metadata)[:current_source] }
+          .from(current_source_val).to(new_current_source_val)
+      end
+
+      it 'overwrites the given key(s) with the given values' do
+        expect { log_populated.update_metadata(*associations) }.to change \
+          { log_populated.instance_variable_get(:@metadata)[:previous_source] }
+          .from(previous_source_val).to(new_previous_source_val)
+      end
+      # rubocop: enable all
     end
   end
 
   describe '#reset_metadata' do
     subject(:log_populated) do
       log = described_class.new({})
-      log.update_metadata(:current_source, current_source_val)
-      log.update_metadata(:previous_source, previous_source_val)
+      log.update_metadata(
+        [:current_source, current_source_val],
+        [:previous_source, previous_source_val]
+      )
       log
     end
 

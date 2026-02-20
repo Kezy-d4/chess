@@ -8,8 +8,12 @@ module Chess
       @metadata = metadata
     end
 
-    def update_metadata(key, val)
-      @metadata[key] = val
+    def update_metadata(*associations)
+      associations.each do |assoc|
+        key = assoc[0]
+        val = assoc[1]
+        @metadata[key] = val
+      end
     end
 
     def reset_metadata(*keys)
