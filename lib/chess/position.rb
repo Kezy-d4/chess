@@ -2,7 +2,7 @@
 
 module Chess
   # A chess position
-  class Position
+  class Position # rubocop:disable Metrics/ClassLength
     # @param board [Board]
     # @param aux_pos_data [AuxPosData]
     # @param player_white [Player]
@@ -35,13 +35,22 @@ module Chess
       "#{@board.to_partial_fen} #{@aux_pos_data.to_partial_fen}"
     end
 
+    def move(source_coord, destination_coord)
+      return unless valid_move?(source_coord, destination_coord)
+
+      update_log_metadata_on_move(source_coord, destination_coord)
+      piece = @board.square_at(source_coord).occupant
+      @board.empty_at(source_coord)
+      @board.update_at(destination_coord, piece)
+      piece.increment_total_moves
+    end
+
     def valid_move?(source_coord, destination_coord)
       return false unless @board.occupied_at?(source_coord)
 
-      controlled = to_adjacent_controlled_coords_from(source_coord)
-      attacked = to_adjacent_attacked_coords_from(source_coord)
-      controlled.values.flatten.include?(destination_coord) ||
-        attacked.values.flatten.include?(destination_coord)
+      controlled_a = to_adjacent_controlled_coords_from(source_coord).values.flatten
+      attacked_a = to_adjacent_attacked_coords_from(source_coord).values.flatten
+      controlled_a.include?(destination_coord) || attacked_a.include?(destination_coord)
     end
 
     def valid_source?(coord)
@@ -100,6 +109,26 @@ module Chess
       @aux_pos_data.swap_active_color
     end
 
+    def dump_log
+      @log.dump
+    end
+
+    def select_source(coord)
+      return unless valid_source?(coord)
+
+      controlled_a = to_adjacent_controlled_coords_from(coord).values.flatten
+      attacked_a = to_adjacent_attacked_coords_from(coord).values.flatten
+      @log.update_metadata(
+        [:current_source, coord],
+        [:currently_controlled, controlled_a],
+        [:currently_attacked, attacked_a]
+      )
+    end
+
+    def deselect_source
+      @log.reset_metadata(:current_source, :currently_controlled, :currently_attacked)
+    end
+
     def to_s
       <<~HEREDOC
         Board:
@@ -123,6 +152,19 @@ module Chess
       elsif player == @player_black
         @board.to_black_occupied_associations
       end
+    end
+
+    def update_log_metadata_on_move(source_coord, destination_coord)
+      if @board.occupied_at?(destination_coord)
+        captured_piece = @board.square_at(destination_coord).occupant
+        @log.update_metadata([:previous_capture, captured_piece])
+      elsif @board.unoccupied_at?(destination_coord)
+        @log.reset_metadata(:previous_capture)
+      end
+      @log.update_metadata(
+        [:previous_source, source_coord],
+        [:previous_destination, destination_coord]
+      )
     end
   end
 end

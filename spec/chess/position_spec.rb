@@ -437,4 +437,78 @@ describe Chess::Position do
     end
     # rubocop:enable all
   end
+
+  describe '#dump_log' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    let(:log) { position_default.instance_variable_get(:@log) }
+
+    it 'sends #dump to the Log' do
+      allow(log).to receive(:dump)
+      position_default.dump_log
+      expect(log).to have_received(:dump)
+    end
+  end
+
+  describe '#select_source' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    let(:log) { position_default.instance_variable_get(:@log) }
+    let(:coord_invalid) { Chess::Coord.from_s('e4') }
+    let(:coord_valid) { Chess::Coord.from_s('e2') }
+    let(:controlled_a) { position_default.to_adjacent_controlled_coords_from(coord_valid).values.flatten }
+    let(:attacked_a) { position_default.to_adjacent_attacked_coords_from(coord_valid).values.flatten }
+
+    context 'when passed an invalid source Coord' do
+      it 'returns nil' do
+        result = position_default.select_source(coord_invalid)
+        expect(result).to be_nil
+      end
+
+      it 'changes nothing' do
+        expect { position_default.select_source(coord_invalid) }.not_to(change \
+          { position_default })
+      end
+    end
+
+    context 'when passed a valid source Coord' do
+      before do
+        allow(log).to receive(:update_metadata).with(
+          [:current_source, coord_valid],
+          [:currently_controlled, controlled_a],
+          [:currently_attacked, attacked_a]
+        )
+      end
+
+      # rubocop:disable RSpec/ExampleLength
+      it 'sends #update_metadata to the Log with the expected args' do
+        position_default.select_source(coord_valid)
+        expect(log).to have_received(:update_metadata).with(
+          [:current_source, coord_valid],
+          [:currently_controlled, controlled_a],
+          [:currently_attacked, attacked_a]
+        )
+      end
+      # rubocop: enable all
+    end
+  end
+
+  describe '#deselect_source' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    let(:log) { position_default.instance_variable_get(:@log) }
+
+    before do
+      allow(log).to receive(:reset_metadata).with(
+        :current_source, :currently_controlled, :currently_attacked
+      )
+    end
+
+    it 'sends #reset_metadata to the Log with the expected args' do
+      position_default.deselect_source
+      expect(log).to have_received(:reset_metadata).with(
+        :current_source, :currently_controlled, :currently_attacked
+      )
+    end
+  end
 end
