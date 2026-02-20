@@ -231,6 +231,69 @@ describe Chess::Position do
     end
   end
 
+
+  describe '#valid_move?' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    before do
+      board = position_default.instance_variable_get(:@board)
+      board.update_at(Chess::Coord.from_s('e4'), Chess::Queen.new(:white))
+      board.update_at(Chess::Coord.from_s('e5'), Chess::Pawn.new(:white))
+    end
+
+    context 'when the given source is invalid' do
+      it 'returns false' do
+        source_coord = Chess::Coord.from_s('e6')
+        destination_coord = Chess::Coord.from_s('e2')
+        result = position_default.valid_move?(source_coord, destination_coord)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when the given source is valid, but the given destination is invalid' do
+      let(:invalid_destinations) do
+        %w[
+          a8 b8 c8 d8 e8 f8 g8 h8
+          a7 c7 d7 e7 f7 g7
+          a6 b6 d6 e6 f6 h6
+          a5 b5 c5 e5 g5 h5
+          e4
+          a3 b3 c3 g3 h3
+          a2 b2 c2 d2 e2 f2 g2 h2
+          a1 b1 c1 d1 e1 f1 g1 h1
+        ].map { |coord_s| Chess::Coord.from_s(coord_s) }
+      end
+
+      it 'returns false' do
+        source_coord = Chess::Coord.from_s('e4')
+        result = invalid_destinations.none? do |destination_coord|
+          position_default.valid_move?(source_coord, destination_coord)
+        end
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the given source is valid and the given destination is valid' do
+      let(:valid_destinations) do
+        %w[
+          b7 h7
+          c6 g6
+          d5 f5
+          a4 b4 c4 d4 f4 g4 h4
+          d3 e3 f3
+        ].map { |coord_s| Chess::Coord.from_s(coord_s) }
+      end
+
+      it 'returns true' do
+        source_coord = Chess::Coord.from_s('e4')
+        result = valid_destinations.all? do |destination_coord|
+          position_default.valid_move?(source_coord, destination_coord)
+        end
+        expect(result).to be(true)
+      end
+    end
+  end
+
   describe '#valid_source?' do
     subject(:position_default) { described_class.new_default('Player', 'Player') }
 
