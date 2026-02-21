@@ -417,4 +417,103 @@ describe Chess::Board do
       expect(result).to eq(expected)
     end
   end
+
+  describe '#to_ranks' do
+    subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
+
+    let(:fen_default) { Chess::ChessConstants::FEN_DEFAULT }
+    let(:fen_parser_default) { Chess::FENParser.new(fen_default) }
+    let(:expected) do
+      {
+        8 => [
+          "The Square is occupied by a Rook.\n\s\sThe Rook is black and has not moved.",
+          "The Square is occupied by a Knight.\n\s\sThe Knight is black and has not moved.",
+          "The Square is occupied by a Bishop.\n\s\sThe Bishop is black and has not moved.",
+          "The Square is occupied by a Queen.\n\s\sThe Queen is black and has not moved.",
+          "The Square is occupied by a King.\n\s\sThe King is black and has not moved.",
+          "The Square is occupied by a Bishop.\n\s\sThe Bishop is black and has not moved.",
+          "The Square is occupied by a Knight.\n\s\sThe Knight is black and has not moved.",
+          "The Square is occupied by a Rook.\n\s\sThe Rook is black and has not moved."
+        ],
+        7 => [
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is black and has not moved."
+        ],
+        6 => [
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.'
+        ],
+        5 => [
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.'
+        ],
+        4 => [
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.'
+        ],
+        3 => [
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.',
+          'The Square is unoccupied.'
+        ],
+        2 => [
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved.",
+          "The Square is occupied by a Pawn.\n\s\sThe Pawn is white and has not moved."
+        ],
+        1 => [
+          "The Square is occupied by a Rook.\n\s\sThe Rook is white and has not moved.",
+          "The Square is occupied by a Knight.\n\s\sThe Knight is white and has not moved.",
+          "The Square is occupied by a Bishop.\n\s\sThe Bishop is white and has not moved.",
+          "The Square is occupied by a Queen.\n\s\sThe Queen is white and has not moved.",
+          "The Square is occupied by a King.\n\s\sThe King is white and has not moved.",
+          "The Square is occupied by a Bishop.\n\s\sThe Bishop is white and has not moved.",
+          "The Square is occupied by a Knight.\n\s\sThe Knight is white and has not moved.",
+          "The Square is occupied by a Rook.\n\s\sThe Rook is white and has not moved."
+        ]
+      }
+    end
+
+    it 'returns a hash where each key is a rank integer pointing to an array of Squares' do
+      result = board_default.to_ranks
+      strings = result.transform_values do |square_a|
+        square_a.map(&:to_s)
+      end
+      expect(strings).to eq(expected)
+    end
+  end
 end
