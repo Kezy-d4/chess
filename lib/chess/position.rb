@@ -154,17 +154,23 @@ module Chess
       end
     end
 
+    # rubocop:disable Metrics/MethodLength
     def update_log_metadata_on_move(source_coord, destination_coord)
       if @board.occupied_at?(destination_coord)
         captured_piece = @board.square_at(destination_coord).occupant
-        @log.update_metadata([:previous_capture, captured_piece])
+        @log.update_metadata(
+          [:previous_capture, captured_piece],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
       elsif @board.unoccupied_at?(destination_coord)
         @log.reset_metadata(:previous_capture)
+        @log.update_metadata(
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
       end
-      @log.update_metadata(
-        [:previous_source, source_coord],
-        [:previous_destination, destination_coord]
-      )
     end
+    # rubocop:enable all
   end
 end

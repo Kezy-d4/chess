@@ -231,6 +231,124 @@ describe Chess::Position do
     end
   end
 
+  describe '#move' do
+    context 'when the move is invalid' do
+      subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+      let(:source_coord) { Chess::Coord.from_s('e4') }
+      let(:destination_coord) { Chess::Coord.from_s('e6') }
+
+      it 'returns nil' do
+        result = position_default.move(source_coord, destination_coord)
+        expect(result).to be_nil
+      end
+
+      it 'changes nothing' do
+        expect { position_default.move(source_coord, destination_coord) }.not_to(change \
+          { position_default })
+      end
+    end
+
+    # rubocop:disable RSpec/MultipleMemoizedHelpers
+    context 'when the move is valid and results in a capture' do
+      subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+      before do
+        board.update_at(Chess::Coord.from_s('e4'), queen)
+        allow(log).to receive(:update_metadata).with(
+          [:previous_capture, captured_piece],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+        allow(queen).to receive(:increment_total_moves)
+        allow(board).to receive(:empty_at).with(source_coord)
+        allow(board).to receive(:update_at).with(destination_coord, queen)
+      end
+
+      let(:log) { position_default.instance_variable_get(:@log) }
+      let(:board) { position_default.instance_variable_get(:@board) }
+      let(:captured_piece) { board.square_at(destination_coord).occupant }
+      let(:queen) { Chess::Queen.new(:white) }
+      let(:source_coord) { Chess::Coord.from_s('e4') }
+      let(:destination_coord) { Chess::Coord.from_s('e7') }
+
+      # rubocop:disable RSpec/ExampleLength
+      it 'sends #update_metadata to the Log with expected args' do
+        position_default.move(source_coord, destination_coord)
+        expect(log).to have_received(:update_metadata).with(
+          [:previous_capture, captured_piece],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+      # rubocop:enable all
+
+      it 'sends #increment_total_moves to the moved Piece' do
+        position_default.move(source_coord, destination_coord)
+        expect(queen).to have_received(:increment_total_moves)
+      end
+
+      it 'sends #empty_at to the Board with the source Coord' do
+        position_default.move(source_coord, destination_coord)
+        expect(board).to have_received(:empty_at).with(source_coord)
+      end
+
+      it 'sends #update_at to the Board with the destination Coord and moved Piece' do
+        position_default.move(source_coord, destination_coord)
+        expect(board).to have_received(:update_at).with(destination_coord, queen)
+      end
+    end
+
+    context 'when the move is valid and does not result in a capture' do
+      subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+      before do
+        board.update_at(Chess::Coord.from_s('e4'), queen)
+        allow(log).to receive(:update_metadata).with(
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+        allow(log).to receive(:reset_metadata).with(:previous_capture)
+        allow(queen).to receive(:increment_total_moves)
+        allow(board).to receive(:empty_at).with(source_coord)
+        allow(board).to receive(:update_at).with(destination_coord, queen)
+      end
+
+      let(:log) { position_default.instance_variable_get(:@log) }
+      let(:board) { position_default.instance_variable_get(:@board) }
+      let(:queen) { Chess::Queen.new(:white) }
+      let(:source_coord) { Chess::Coord.from_s('e4') }
+      let(:destination_coord) { Chess::Coord.from_s('e6') }
+
+      it 'sends #update_metadata to the Log with expected args' do
+        position_default.move(source_coord, destination_coord)
+        expect(log).to have_received(:update_metadata).with(
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+
+      it 'sends #reset_metadata to the Log with expected args' do
+        position_default.move(source_coord, destination_coord)
+        expect(log).to have_received(:reset_metadata).with(:previous_capture)
+      end
+
+      it 'sends #increment_total_moves to the moved Piece' do
+        position_default.move(source_coord, destination_coord)
+        expect(queen).to have_received(:increment_total_moves)
+      end
+
+      it 'sends #empty_at to the Board with the source Coord' do
+        position_default.move(source_coord, destination_coord)
+        expect(board).to have_received(:empty_at).with(source_coord)
+      end
+
+      it 'sends #update_at to the Board with the destination Coord and moved Piece' do
+        position_default.move(source_coord, destination_coord)
+        expect(board).to have_received(:update_at).with(destination_coord, queen)
+      end
+    end
+  end
 
   describe '#valid_move?' do
     subject(:position_default) { described_class.new_default('Player', 'Player') }
