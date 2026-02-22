@@ -73,8 +73,8 @@ module Chess
       return unless @board.occupied_at?(coord)
 
       piece = @board.square_at(coord).occupant
-      movement = piece.to_adjacent_movement_coords(coord)
-      attacked = movement.transform_values do |coord_a|
+      captures = piece.to_adjacent_capture_coords(coord)
+      attacked = captures.transform_values do |coord_a|
         result = coord_a.find do |adjacent_coord|
           next unless @board.square_at(adjacent_coord).occupied?
 
