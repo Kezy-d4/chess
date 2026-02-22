@@ -152,15 +152,6 @@ describe Chess::Piece do
     end
   end
 
-  describe '#to_class_s' do
-    subject(:piece) { described_class.new(:white) }
-
-    it 'returns a class string' do
-      result = piece.to_class_s
-      expect(result).to eq('Piece')
-    end
-  end
-
   describe '#to_s' do
     context 'when unmoved' do
       subject(:piece_unmoved) { described_class.new(:white) }

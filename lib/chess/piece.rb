@@ -5,6 +5,8 @@ module Chess
   class Piece
     attr_reader :color, :total_moves
 
+    using ObjectExtensions
+
     # @param color [Symbol]
     # @param total_moves [Integer]
     def initialize(color, total_moves = 0)

@@ -3,6 +3,7 @@
 module Chess
   # A bishop chess piece
   class Bishop < Piece
+    using HashExtensions
     def to_adjacent_movement_coords(coord)
       Coord::COORD_METHOD_MAP
         .slice(:north_east, :south_east, :south_west, :north_west)

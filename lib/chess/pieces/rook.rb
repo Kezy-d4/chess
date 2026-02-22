@@ -3,6 +3,7 @@
 module Chess
   # A rook chess piece
   class Rook < Piece
+    using HashExtensions
     def to_adjacent_movement_coords(coord)
       Coord::COORD_METHOD_MAP
         .slice(:north, :east, :south, :west)

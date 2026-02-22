@@ -5,6 +5,8 @@ module Chess
   class Square
     attr_reader :occupant
 
+    using ObjectExtensions
+
     # @param occupant [Piece, nil]
     def initialize(occupant = nil)
       @occupant = occupant

@@ -3,6 +3,8 @@
 module Chess
   # A chess position
   class Position # rubocop:disable Metrics/ClassLength
+    using HashExtensions
+
     # @param board [Board]
     # @param aux_pos_data [AuxPosData]
     # @param player_white [Player]

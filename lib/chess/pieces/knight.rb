@@ -3,6 +3,7 @@
 module Chess
   # A knight chess piece
   class Knight < Piece
+    using HashExtensions
     # Wrap each value in an array to maintain a common interface with the other
     # pieces.
     def to_adjacent_movement_coords(coord)

@@ -77,15 +77,6 @@ describe Chess::Square do
     end
   end
 
-  describe '#to_class_s' do
-    subject(:square) { described_class.new }
-
-    it 'returns a class string' do
-      result = square.to_class_s
-      expect(result).to eq('Square')
-    end
-  end
-
   describe '#to_s' do
     context 'when occupied' do
       subject(:square_occupied) { described_class.new(piece) }

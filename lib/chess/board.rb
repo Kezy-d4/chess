@@ -6,6 +6,8 @@ module Chess
     extend Pieces
     extend FENCharAnalysis
 
+    using NumericExtensions
+
     # @param squares [Hash{Coord => Square}]
     def initialize(squares)
       @squares = squares

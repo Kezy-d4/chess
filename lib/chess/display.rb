@@ -3,6 +3,8 @@
 module Chess
   # Displays a chess board on the command line
   class Display # rubocop:disable Metrics/ClassLength
+    using ObjectExtensions
+
     COLOR_RGB_MAP = {
       white: '255;255;255',
       black: '0;0;0',

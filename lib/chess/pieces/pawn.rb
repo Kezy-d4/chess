@@ -3,6 +3,7 @@
 module Chess
   # A pawn chess piece
   class Pawn < Piece
+    using HashExtensions
     # Wrap values in an array where necessary to maintain a common interface
     # with the other pieces.
 
