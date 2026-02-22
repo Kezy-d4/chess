@@ -28,15 +28,13 @@ module Chess
 
     BOARD_FILE_MARKERS = '   a  b  c  d  e  f  g  h'
 
-    # @param board [Board]
-    def initialize(board)
-      @board = board
+    def initialize
       @current_bg_color = :yellow
     end
 
-    def render_board(metadata)
+    def render_board(board_ranks, metadata)
       ChessConstants::BOARD_RANK_MARKERS.each do |rank_i|
-        render_rank(rank_i, metadata)
+        render_rank(board_ranks, rank_i, metadata)
         puts
       end
       puts BOARD_FILE_MARKERS
@@ -44,11 +42,11 @@ module Chess
 
     private
 
-    def render_rank(rank_i, metadata)
+    def render_rank(board_ranks, rank_i, metadata)
       print "#{rank_i} "
       rank_i.even? ? update_current_bg_color(:yellow) : update_current_bg_color(:green)
       file_idx = 0
-      @board.to_ranks[rank_i].each do |square|
+      board_ranks[rank_i].each do |square|
         coord_s = "#{ChessConstants::BOARD_FILE_MARKERS[file_idx]}#{rank_i}"
         coord = Chess::Coord.from_s(coord_s)
         render_square(square, coord, @current_bg_color, metadata)

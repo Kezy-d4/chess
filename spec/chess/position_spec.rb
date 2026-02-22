@@ -715,4 +715,17 @@ describe Chess::Position do
       )
     end
   end
+
+  describe '#to_board_ranks' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    let(:board) { position_default.instance_variable_get(:@board) }
+
+    before { allow(board).to receive(:to_ranks) }
+
+    it 'sends #to_ranks to the Board' do
+      position_default.to_board_ranks
+      expect(board).to have_received(:to_ranks)
+    end
+  end
 end
