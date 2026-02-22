@@ -513,7 +513,7 @@ describe Chess::Position do
       end
     end
 
-    context 'when occupied at the given Coord' do
+    context 'when occupied at the given Coord by a Queen' do
       let(:coord_e4) { Chess::Coord.from_s('e4') }
       let(:expected) do
         {
@@ -536,6 +536,29 @@ describe Chess::Position do
 
       it 'returns a hash of attacked adjacencies per direction' do
         result = position_default.to_adjacent_attacked_coords_from(coord_e4)
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when occupied at the given Coord by a Pawn' do
+      let(:coord_e3) { Chess::Coord.from_s('e3') }
+      let(:expected) do
+        {
+          south_west: %w[d2],
+          south_east: %w[f2]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+
+      before do
+        pawn = Chess::Pawn.new(:black)
+        board = position_default.instance_variable_get(:@board)
+        board.update_at(coord_e3, pawn)
+      end
+
+      it 'returns a hash of attacked adjacencies per direction' do
+        result = position_default.to_adjacent_attacked_coords_from(coord_e3)
         expect(result).to eq(expected)
       end
     end
