@@ -716,6 +716,26 @@ describe Chess::Position do
     end
   end
 
+  describe '#source?' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    context 'when a source has been selected' do
+      before { position_default.select_source(Chess::Coord.from_s('e2')) }
+
+      it 'returns true' do
+        result = position_default.source?
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when no source has been selected' do
+      it 'returns false' do
+        result = position_default.source?
+        expect(result).to be(false)
+      end
+    end
+  end
+
   describe '#to_active_player_sources' do
     subject(:position_default) { described_class.new_default('Player', 'Player') }
 
@@ -728,6 +748,41 @@ describe Chess::Position do
     it 'returns an array of the active Player\'s possible source Coords' do
       result = position_default.to_active_player_sources
       expect(result).to eq(expected)
+    end
+  end
+
+  describe '#to_destinations_from' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    context 'when unoccupied at passed Coord' do
+      it 'returns nil' do
+        result = position_default.to_destinations_from(Chess::Coord.from_s('e4'))
+        expect(result).to be_nil
+      end
+    end
+
+    context 'when occupied at passed Coord' do
+      before do
+        board = position_default.instance_variable_get(:@board)
+        queen = Chess::Queen.new(:white)
+        board.update_at(coord_e4, queen)
+      end
+
+      let(:coord_e4) { Chess::Coord.from_s('e4') }
+      let(:expected) do
+        %w[
+          d3 e3 f3
+          a4 b4 c4 d4 f4 g4 h4
+          d5 e5 f5
+          c6 e6 g6
+          b7 e7 h7
+        ].map { |coord_s| Chess::Coord.from_s(coord_s) }
+      end
+
+      it 'returns an array of possible destination Coords' do
+        result = position_default.to_destinations_from(coord_e4)
+        expect(result).to match_array(expected)
+      end
     end
   end
 

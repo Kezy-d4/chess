@@ -50,13 +50,7 @@ module Chess
     def valid_move?(source_coord, destination_coord)
       return false unless @board.occupied_at?(source_coord)
 
-      controlled_a = to_adjacent_controlled_coords_from(source_coord).values.flatten
-      attacked_a = to_adjacent_attacked_coords_from(source_coord).values.flatten
-      controlled_a.include?(destination_coord) || attacked_a.include?(destination_coord)
-    end
-
-    def valid_source?(coord)
-      to_active_player_sources.include?(coord)
+      to_destinations_from(source_coord).include?(destination_coord)
     end
 
     def to_adjacent_controlled_coords_from(coord)
@@ -135,8 +129,23 @@ module Chess
       @log.reset_metadata(:current_source, :currently_controlled, :currently_attacked)
     end
 
+    def source?
+      metadata = dump_log[:metadata]
+      !metadata[:current_source].nil? &&
+        !metadata[:currently_controlled].nil? &&
+        !metadata[:currently_attacked].nil?
+    end
+
     def to_active_player_sources
       to_player_associations(to_active_player).keys
+    end
+
+    def to_destinations_from(coord)
+      return unless @board.occupied_at?(coord)
+
+      controlled_a = to_adjacent_controlled_coords_from(coord).values.flatten
+      attacked_a = to_adjacent_attacked_coords_from(coord).values.flatten
+      controlled_a + attacked_a
     end
 
     def to_board_ranks
