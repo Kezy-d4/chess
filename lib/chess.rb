@@ -6,6 +6,7 @@ module Chess
   require_relative 'core_ext/object_extensions'
   require_relative 'core_ext/numeric_extensions'
   require_relative 'core_ext/hash_extensions'
+  require_relative 'core_ext/string_extensions'
   require_relative 'chess/fen_char_analysis'
   require_relative 'chess/coord'
   require_relative 'chess/piece'
