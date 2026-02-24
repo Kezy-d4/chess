@@ -412,54 +412,6 @@ describe Chess::Position do
     end
   end
 
-  describe '#valid_source?' do
-    subject(:position_default) { described_class.new_default('Player', 'Player') }
-
-    context 'when passed any Coord corresponding to one of the active Player\'s Squares' do
-      let(:valid_coords) do
-        %w[a2 b2 c2 d2 e2 f2 g2 h2 a1 b1 c1 d1 e1 f1 g1 h1].map do |coord_s|
-          Chess::Coord.from_s(coord_s)
-        end
-      end
-
-      it 'returns true' do
-        result = valid_coords.all? { |coord| position_default.valid_source?(coord) }
-        expect(result).to be(true)
-      end
-    end
-
-    context 'when passed any Coord corresponding to an unoccupied Square' do
-      let(:unoccupied_coords) do
-        %w[
-          a3 b3 c3 d3 e3 f3 g3 h3
-          a4 b4 c4 d4 e4 f4 g4 h4
-          a5 b5 c5 d5 e5 f5 g5 h5
-          a6 b6 c6 d6 e6 f6 g6 h6
-        ].map do |coord_s|
-          Chess::Coord.from_s(coord_s)
-        end
-      end
-
-      it 'returns false' do
-        result = unoccupied_coords.none? { |coord| position_default.valid_source?(coord) }
-        expect(result).to be(true)
-      end
-    end
-
-    context 'when passed any Coord corresponding to one of the inactive Player\'s Squares' do
-      let(:inactive_coords) do
-        %w[a7 b7 c7 d7 e7 f7 g7 h7 a8 b8 c8 d8 e8 f8 g8 h8].map do |coord_s|
-          Chess::Coord.from_s(coord_s)
-        end
-      end
-
-      it 'returns false' do
-        result = inactive_coords.none? { |coord| position_default.valid_source?(coord) }
-        expect(result).to be(true)
-      end
-    end
-  end
-
   describe '#to_adjacent_controlled_coords_from' do
     subject(:position_default) { described_class.new_default('Player', 'Player') }
 
@@ -651,6 +603,54 @@ describe Chess::Position do
       allow(log).to receive(:dump)
       position_default.dump_log
       expect(log).to have_received(:dump)
+    end
+  end
+
+  describe '#valid_source?' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    context 'when passed any Coord corresponding to one of the active Player\'s Squares' do
+      let(:valid_coords) do
+        %w[a2 b2 c2 d2 e2 f2 g2 h2 a1 b1 c1 d1 e1 f1 g1 h1].map do |coord_s|
+          Chess::Coord.from_s(coord_s)
+        end
+      end
+
+      it 'returns true' do
+        result = valid_coords.all? { |coord| position_default.valid_source?(coord) }
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when passed any Coord corresponding to an unoccupied Square' do
+      let(:unoccupied_coords) do
+        %w[
+          a3 b3 c3 d3 e3 f3 g3 h3
+          a4 b4 c4 d4 e4 f4 g4 h4
+          a5 b5 c5 d5 e5 f5 g5 h5
+          a6 b6 c6 d6 e6 f6 g6 h6
+        ].map do |coord_s|
+          Chess::Coord.from_s(coord_s)
+        end
+      end
+
+      it 'returns false' do
+        result = unoccupied_coords.none? { |coord| position_default.valid_source?(coord) }
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when passed any Coord corresponding to one of the inactive Player\'s Squares' do
+      let(:inactive_coords) do
+        %w[a7 b7 c7 d7 e7 f7 g7 h7 a8 b8 c8 d8 e8 f8 g8 h8].map do |coord_s|
+          Chess::Coord.from_s(coord_s)
+        end
+      end
+
+      it 'returns false' do
+        result = inactive_coords.none? { |coord| position_default.valid_source?(coord) }
+        expect(result).to be(true)
+      end
     end
   end
 

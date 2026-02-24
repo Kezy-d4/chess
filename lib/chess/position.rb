@@ -115,6 +115,10 @@ module Chess
       @log.dump
     end
 
+    def valid_source?(coord)
+      to_active_player_sources.include?(coord)
+    end
+
     def select_source(coord)
       return unless valid_source?(coord)
 
