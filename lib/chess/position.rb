@@ -56,7 +56,7 @@ module Chess
     end
 
     def valid_source?(coord)
-      to_player_associations(to_active_player).key?(coord)
+      to_active_player_sources.include?(coord)
     end
 
     def to_adjacent_controlled_coords_from(coord)
