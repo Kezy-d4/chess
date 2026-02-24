@@ -751,6 +751,21 @@ describe Chess::Position do
     end
   end
 
+  describe '#to_inactive_player_sources' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    let(:expected) do
+      %w[a8 b8 c8 d8 e8 f8 g8 h8 a7 b7 c7 d7 e7 f7 g7 h7].map do |coord_s|
+        Chess::Coord.from_s(coord_s)
+      end
+    end
+
+    it 'returns an array of the inactive Player\'s possible source Coords' do
+      result = position_default.to_inactive_player_sources
+      expect(result).to eq(expected)
+    end
+  end
+
   describe '#to_destinations_from' do
     subject(:position_default) { described_class.new_default('Player', 'Player') }
 

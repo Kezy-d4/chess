@@ -140,6 +140,10 @@ module Chess
       to_player_associations(to_active_player).keys
     end
 
+    def to_inactive_player_sources
+      to_player_associations(to_inactive_player).keys
+    end
+
     def to_destinations_from(coord)
       return unless @board.occupied_at?(coord)
 
