@@ -131,6 +131,10 @@ module Chess
       @log.reset_metadata(:current_source, :currently_controlled, :currently_attacked)
     end
 
+    def to_active_player_sources
+      to_player_associations(to_active_player).keys
+    end
+
     def to_board_ranks
       @board.to_ranks
     end

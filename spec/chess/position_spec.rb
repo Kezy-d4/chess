@@ -716,6 +716,21 @@ describe Chess::Position do
     end
   end
 
+  describe '#to_active_player_sources' do
+    subject(:position_default) { described_class.new_default('Player', 'Player') }
+
+    let(:expected) do
+      %w[a2 b2 c2 d2 e2 f2 g2 h2 a1 b1 c1 d1 e1 f1 g1 h1].map do |coord_s|
+        Chess::Coord.from_s(coord_s)
+      end
+    end
+
+    it 'returns an array of the active Player\'s possible source Coords' do
+      result = position_default.to_active_player_sources
+      expect(result).to eq(expected)
+    end
+  end
+
   describe '#to_board_ranks' do
     subject(:position_default) { described_class.new_default('Player', 'Player') }
 
