@@ -3,6 +3,7 @@
 # Top level namespace for the project
 module Chess
   require_relative 'chess/chess_constants'
+  require_relative 'chess/ux'
   require_relative 'core_ext/object_extensions'
   require_relative 'core_ext/numeric_extensions'
   require_relative 'core_ext/hash_extensions'
