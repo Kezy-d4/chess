@@ -68,12 +68,10 @@ module Chess
       square_at(coord).unoccupied?
     end
 
-    def to_white_occupied_associations
-      to_occupied_associations.select { |_coord, square| square.occupant.white? }
-    end
-
-    def to_black_occupied_associations
-      to_occupied_associations.select { |_coord, square| square.occupant.black? }
+    def to_occupied_associations(color)
+      @squares.select do |_coord, square|
+        square.occupied? && square.occupant.color == color
+      end
     end
 
     def to_ranks
@@ -112,10 +110,6 @@ module Chess
       end
       fen_a << contiguous_empty_counter if contiguous_empty_counter.positive?
       fen_a.join
-    end
-
-    def to_occupied_associations
-      @squares.select { |_coord, square| square.occupied? }
     end
   end
 end
