@@ -174,11 +174,7 @@ module Chess
     private
 
     def to_player_associations(player)
-      if player == @player_white
-        @board.to_white_occupied_associations
-      elsif player == @player_black
-        @board.to_black_occupied_associations
-      end
+      @board.to_occupied_associations(player.color)
     end
 
     # rubocop:disable Metrics/MethodLength
