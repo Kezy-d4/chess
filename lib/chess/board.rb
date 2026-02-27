@@ -2,11 +2,12 @@
 
 module Chess
   # A chess board
-  class Board
+  class Board # rubocop:disable Metrics/ClassLength
     extend Pieces
     extend FENCharAnalysis
 
     using NumericExtensions
+    using HashExtensions
 
     # @param squares [Hash{Coord => Square}]
     def initialize(squares)
@@ -67,6 +68,38 @@ module Chess
     def unoccupied_at?(coord)
       square_at(coord).unoccupied?
     end
+
+    def to_adjacent_controlled_coords_from(coord)
+      return unless occupied_at?(coord)
+
+      piece = square_at(coord).occupant
+      movement = piece.to_adjacent_movement_coords(coord)
+      controlled = movement.transform_values do |coord_a|
+        coord_a.take_while { |adjacent_coord| unoccupied_at?(adjacent_coord) }
+      end
+      controlled.delete_empty_arr_vals
+    end
+
+    # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+    def to_adjacent_attacked_coords_from(coord)
+      return unless occupied_at?(coord)
+
+      piece = square_at(coord).occupant
+      captures = piece.to_adjacent_capture_coords(coord)
+      attacked = captures.transform_values do |coord_a|
+        result = coord_a.find do |adjacent_coord|
+          next unless square_at(adjacent_coord).occupied?
+
+          adjacent_occupant = square_at(adjacent_coord).occupant
+          break if piece.color == adjacent_occupant.color
+
+          piece.color != adjacent_occupant.color
+        end
+        [result]
+      end
+      attacked.delete_empty_arr_vals
+    end
+    # rubocop:enable all
 
     def to_occupied_associations(color)
       @squares.select do |_coord, square|

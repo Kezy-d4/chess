@@ -350,6 +350,132 @@ describe Chess::Board do
     end
   end
 
+  describe '#to_adjacent_controlled_coords_from' do
+    subject(:board) do
+      fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+      board = described_class.from_fen_parser(fen_parser_default)
+      board.update_at(Chess::Coord.from_s('e4'), Chess::Pawn.new(:white, 1))
+      board.update_at(Chess::Coord.from_s('d5'), Chess::Pawn.new(:black, 1))
+      board.update_at(Chess::Coord.from_s('e5'), Chess::Queen.new(:white))
+      board
+    end
+
+    context 'when unoccupied at Coord' do
+      it 'returns nil' do
+        result = board.to_adjacent_controlled_coords_from(Chess::Coord.from_s('e3'))
+        expect(result).to be_nil
+      end
+    end
+
+    context 'when testing Queen at e5' do
+      let(:expected) do
+        {
+          north: %w[e6],
+          east: %w[f5 g5 h5],
+          north_east: %w[f6],
+          south_east: %w[f4 g3],
+          south_west: %w[d4 c3],
+          north_west: %w[d6]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+
+      it 'returns a hash of controlled adjacency arrays per direction' do
+        result = board.to_adjacent_controlled_coords_from(Chess::Coord.from_s('e5'))
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when testing Pawn at d5' do
+      let(:expected) do
+        {
+          south: %w[d4]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+
+      it 'returns a hash of controlled adjacency arrays per direction' do
+        result = board.to_adjacent_controlled_coords_from(Chess::Coord.from_s('d5'))
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when testing Pawn at e4 with no control' do
+      it 'returns an empty hash' do
+        result = board.to_adjacent_controlled_coords_from(Chess::Coord.from_s('e4'))
+        expect(result).to be_a(Hash).and be_empty
+      end
+    end
+  end
+
+  describe '#to_adjacent_attacked_coords_from' do
+    subject(:board) do
+      fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+      board = described_class.from_fen_parser(fen_parser_default)
+      board.update_at(Chess::Coord.from_s('e4'), Chess::Pawn.new(:white, 1))
+      board.update_at(Chess::Coord.from_s('d5'), Chess::Pawn.new(:black, 1))
+      board.update_at(Chess::Coord.from_s('e5'), Chess::Queen.new(:white))
+      board
+    end
+
+    context 'when testing Queen at e5' do
+      let(:expected) do
+        {
+          north: %w[e7],
+          west: %w[d5],
+          north_east: %w[g7],
+          north_west: %w[c7]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+
+      it 'returns a hash of attacked adjacency arrays per direction' do
+        result = board.to_adjacent_attacked_coords_from(Chess::Coord.from_s('e5'))
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when testing Pawn at e4' do
+      let(:expected) do
+        {
+          north_west: %w[d5]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+
+      it 'returns a hash of attacked adjacency arrays per direction' do
+        result = board.to_adjacent_attacked_coords_from(Chess::Coord.from_s('e4'))
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when testing Pawn at d5' do
+      let(:expected) do
+        {
+          south_east: %w[e4]
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+
+      it 'returns a hash of attacked adjacency arrays per direction' do
+        result = board.to_adjacent_attacked_coords_from(Chess::Coord.from_s('d5'))
+        expect(result).to eq(expected)
+      end
+    end
+
+    context 'when testing Pawn at e7 with no attack' do
+      it 'returns an empty hash' do
+        result = board.to_adjacent_attacked_coords_from(Chess::Coord.from_s('e7'))
+        expect(result).to be_a(Hash).and be_empty
+      end
+    end
+  end
+
   describe '#to_occupied_associations' do
     subject(:board_default) { described_class.from_fen_parser(fen_parser_default) }
 
