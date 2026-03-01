@@ -361,9 +361,9 @@ describe Chess::Board do
     end
 
     context 'when unoccupied at Coord' do
-      it 'returns nil' do
+      it 'returns an empty hash' do
         result = board.to_adjacent_controlled_coords_from(Chess::Coord.from_s('e3'))
-        expect(result).to be_nil
+        expect(result).to be_a(Hash).and be_empty
       end
     end
 
@@ -418,6 +418,13 @@ describe Chess::Board do
       board.update_at(Chess::Coord.from_s('d5'), Chess::Pawn.new(:black, 1))
       board.update_at(Chess::Coord.from_s('e5'), Chess::Queen.new(:white))
       board
+    end
+
+    context 'when unoccupied at Coord' do
+      it 'returns an empty hash' do
+        result = board.to_adjacent_attacked_coords_from(Chess::Coord.from_s('e3'))
+        expect(result).to be_a(Hash).and be_empty
+      end
     end
 
     context 'when testing Queen at e5' do

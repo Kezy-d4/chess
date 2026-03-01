@@ -70,7 +70,7 @@ module Chess
     end
 
     def to_adjacent_controlled_coords_from(coord)
-      return unless occupied_at?(coord)
+      return {} unless occupied_at?(coord)
 
       piece = square_at(coord).occupant
       movement = piece.to_adjacent_movement_coords(coord)
@@ -82,7 +82,7 @@ module Chess
 
     # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     def to_adjacent_attacked_coords_from(coord)
-      return unless occupied_at?(coord)
+      return {} unless occupied_at?(coord)
 
       piece = square_at(coord).occupant
       captures = piece.to_adjacent_capture_coords(coord)
