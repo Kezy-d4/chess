@@ -61,6 +61,8 @@ module Chess
     def render_square(square, coord, bg_color, metadata)
       if metadata[:current_source] == coord
         render_source_square(square.occupant)
+      elsif metadata[:checked_king] == coord
+        render_checked_square(square.occupant)
       elsif metadata[:currently_controlled]&.include?(coord)
         render_controlled_square(bg_color)
       elsif metadata[:currently_attacked]&.include?(coord)
@@ -96,6 +98,10 @@ module Chess
       bg_rgb_val = COLOR_RGB_MAP[bg_color]
       square = " #{CONTROLLED_INDICATOR} "
       print "\e[48;2;#{bg_rgb_val}m\e[38;2;#{fg_rgb_val}m#{square}\e[0m"
+    end
+
+    def render_checked_square(occupant)
+      render_occupied_square(occupant, :red)
     end
 
     def render_source_square(occupant)
