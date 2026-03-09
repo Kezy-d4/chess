@@ -142,7 +142,7 @@ describe Chess::Log do
           Currently attacked: ["e5", "e6"]
           Previous source: a8
           Previous destination: b6
-          Previous capture: The Pawn is black and has not moved.
+          Previous capture: The Pawn is black.
 
         HEREDOC
       end
