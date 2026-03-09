@@ -41,10 +41,6 @@ module Chess
       end
     end
 
-    def over?
-      @position.checkmate? || @position.stalemate?
-    end
-
     def prompt_for_source
       loop do
         display_source_prompt_ux

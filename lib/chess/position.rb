@@ -64,6 +64,10 @@ module Chess
       !check? && !any_legal_moves_available_to?(to_active_player)
     end
 
+    def over?
+      @position.checkmate? || @position.stalemate?
+    end
+
     def legal_move?(source_coord, destination_coord)
       legal_source?(source_coord) && to_legal_destinations_from(source_coord).include?(destination_coord)
     end
