@@ -115,19 +115,6 @@ module Chess
       end
     end
 
-    def to_s
-      arr = []
-      no_of_ranks = ChessConstants::BOARD_RANK_MARKERS.length
-      square_counter = 1
-      @squares.each do |coord, square|
-        arr << "#{coord}:\n"
-        arr << "#{square}\n"
-        arr << "\n" if square_counter.multiple_of?(no_of_ranks)
-        square_counter += 1
-      end
-      arr.join
-    end
-
     private
 
     def rank_a_to_partial_fen(rank_a) # rubocop:disable Metrics/MethodLength
