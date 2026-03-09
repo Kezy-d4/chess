@@ -32,8 +32,7 @@ module Chess
 
     def to_s
       if occupied?
-        "The #{to_class_s} is occupied by a #{@occupant.to_class_s}.\n" \
-          "\s\s#{@occupant}"
+        "The #{to_class_s} is occupied by a #{@occupant.color} #{@occupant.to_class_s}."
       elsif unoccupied?
         "The #{to_class_s} is unoccupied."
       end

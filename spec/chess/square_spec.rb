@@ -82,10 +82,7 @@ describe Chess::Square do
       subject(:square_occupied) { described_class.new(piece) }
 
       let(:piece) { Chess::Piece.new(:white) }
-      let(:expected) do
-        "The Square is occupied by a Piece.\n" \
-          "\s\sThe Piece is white and has not moved."
-      end
+      let(:expected) { 'The Square is occupied by a white Piece.' }
 
       it 'returns a string describing the state' do
         result = square_occupied.to_s
