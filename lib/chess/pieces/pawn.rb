@@ -26,23 +26,19 @@ module Chess
     private
 
     def to_white_adjacent_movement_coords(coord)
-      hash = {}
-      if unmoved?
-        hash = { north: coord.to_northern_adjacencies[0..1] }
-      elsif moved?
-        hash = { north: [coord.to_northern_adjacencies.first] }
+      if coord.rank == 2
+        { north: coord.to_northern_adjacencies[0..1] }.delete_empty_arr_vals
+      else
+        { north: [coord.to_northern_adjacencies.first] }.delete_empty_arr_vals
       end
-      hash.delete_empty_arr_vals
     end
 
     def to_black_adjacent_movement_coords(coord)
-      hash = {}
-      if unmoved?
-        hash = { south: coord.to_southern_adjacencies[0..1] }
-      elsif moved?
-        hash = { south: [coord.to_southern_adjacencies.first] }
+      if coord.rank == 7
+        { south: coord.to_southern_adjacencies[0..1] }.delete_empty_arr_vals
+      else
+        { south: [coord.to_southern_adjacencies.first] }.delete_empty_arr_vals
       end
-      hash.delete_empty_arr_vals
     end
 
     def to_white_adjacent_capture_coords(coord)
