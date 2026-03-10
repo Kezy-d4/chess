@@ -3,7 +3,7 @@
 module Chess
   # Auxiliary data representing a chess position excluding piece placement--the
   # auxiliary position data
-  class AuxPosData # rubocop:disable Metrics/ClassLength
+  class AuxPosData
     # @param data_fields [Hash{Symbol => String}]
     def initialize(data_fields)
       @data_fields = data_fields
@@ -116,16 +116,6 @@ module Chess
     def increment_full_move_number
       incremented = (@data_fields[:full_move_number].to_i + 1).to_s
       @data_fields[:full_move_number] = incremented
-    end
-
-    def to_s
-      <<~HEREDOC
-        Active color: #{@data_fields[:active_color]}
-        Castling availability: #{@data_fields[:castling_availability]}
-        En passant target: #{@data_fields[:en_passant_target]}
-        Half move clock: #{@data_fields[:half_move_clock]}
-        Full move number: #{@data_fields[:full_move_number]}
-      HEREDOC
     end
 
     private
