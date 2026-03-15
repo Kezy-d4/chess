@@ -49,41 +49,17 @@ describe Chess::Position do
       described_class.from_fen_parser(fen_parser_immortal)
     end
 
-    # rubocop:disable RSpec/MultipleMemoizedHelpers
     context 'when the destination is occupied' do
       let(:source_coord) { Chess::Coord.from_s('f6') }
       let(:destination_coord) { Chess::Coord.from_s('e4') }
       let(:piece_placement_before) { 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1' }
       let(:piece_placement_after) { 'rnb1kb1r/p2p1ppp/2p5/1B3Nq1/4npP1/3P4/PPP4P/RNBQ1KR1' }
-      let(:log) { position_mid.instance_variable_get(:@log) }
-      let(:captured_piece) do
-        position_mid.instance_variable_get(:@board).square_at(destination_coord).occupant
-      end
 
-      before do
-        allow(log).to receive(:update_metadata).with(
-          [:previous_capture, captured_piece],
-          [:previous_source, source_coord],
-          [:previous_destination, destination_coord]
-        )
-      end
-
-      it 'moves the source Piece to the destination, capturing the destination Piece' do
+      it 'moves the source Piece, capturing the Piece at the destination' do
         expect { position_mid.move(source_coord, destination_coord) }
           .to change { position_mid.to_fen.split[0] }
           .from(piece_placement_before).to(piece_placement_after)
       end
-
-      # rubocop:disable RSpec/ExampleLength
-      it 'sends #update_metadata to the Log with expected args' do
-        position_mid.move(source_coord, destination_coord)
-        expect(log).to have_received(:update_metadata).with(
-          [:previous_capture, captured_piece],
-          [:previous_source, source_coord],
-          [:previous_destination, destination_coord]
-        )
-      end
-      # rubocop:enable all
     end
 
     context 'when the destination is unoccupied' do
@@ -91,33 +67,11 @@ describe Chess::Position do
       let(:destination_coord) { Chess::Coord.from_s('g8') }
       let(:piece_placement_before) { 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1' }
       let(:piece_placement_after) { 'rnb1kbnr/p2p1ppp/2p5/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1' }
-      let(:log) { position_mid.instance_variable_get(:@log) }
-
-      before do
-        allow(log).to receive(:reset_metadata).with(:previous_capture)
-        allow(log).to receive(:update_metadata).with(
-          [:previous_source, source_coord],
-          [:previous_destination, destination_coord]
-        )
-      end
 
       it 'moves the source Piece to the destination' do
         expect { position_mid.move(source_coord, destination_coord) }
           .to change { position_mid.to_fen.split[0] }
           .from(piece_placement_before).to(piece_placement_after)
-      end
-
-      it 'sends #reset_metadata to the Log with expected args' do
-        position_mid.move(source_coord, destination_coord)
-        expect(log).to have_received(:reset_metadata).with(:previous_capture)
-      end
-
-      it 'sends #update_metadata to the Log with expected args' do
-        position_mid.move(source_coord, destination_coord)
-        expect(log).to have_received(:update_metadata).with(
-          [:previous_source, source_coord],
-          [:previous_destination, destination_coord]
-        )
       end
     end
   end

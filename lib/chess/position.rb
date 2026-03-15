@@ -42,7 +42,6 @@ module Chess
     end
 
     def move(source_coord, destination_coord)
-      update_metadata_before_move(source_coord, destination_coord)
       piece = @board.square_at(source_coord).occupant
       @board.empty_at(source_coord)
       @board.update_at(destination_coord, piece)
