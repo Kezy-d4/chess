@@ -21,7 +21,7 @@ module Chess
     end
 
     def dump
-      { metadata: @metadata.dup }
+      { metadata: Marshal.load(Marshal.dump(@metadata)) }
     end
 
     def to_s
