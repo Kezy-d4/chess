@@ -113,6 +113,33 @@ module Chess
       to_player_associations(player).keys
     end
 
+    # rubocop:disable Metrics/MethodLength
+    def update_metadata_before_move(source_coord, destination_coord)
+      if @board.occupied_at?(destination_coord)
+        captured_piece = @board.square_at(destination_coord).occupant
+        @log.update_metadata(
+          [:previous_capture, captured_piece],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      elsif @board.unoccupied_at?(destination_coord)
+        @log.reset_metadata(:previous_capture)
+        @log.update_metadata(
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+    end
+    # rubocop: enable all
+
+    def update_metadata_after_player_swap
+      if check?
+        @log.update_metadata([:checked_king, to_king_source(to_active_player)])
+      elsif !check?
+        @log.reset_metadata(:checked_king)
+      end
+    end
+
     def to_board_ranks
       @board.to_ranks
     end
@@ -201,30 +228,8 @@ module Chess
       Marshal.load(Marshal.dump(self))
     end
 
-    # rubocop:disable Metrics/MethodLength
-    def update_metadata_before_move(source_coord, destination_coord)
-      if @board.occupied_at?(destination_coord)
-        captured_piece = @board.square_at(destination_coord).occupant
-        @log.update_metadata(
-          [:previous_capture, captured_piece],
-          [:previous_source, source_coord],
-          [:previous_destination, destination_coord]
-        )
-      elsif @board.unoccupied_at?(destination_coord)
-        @log.reset_metadata(:previous_capture)
-        @log.update_metadata(
-          [:previous_source, source_coord],
-          [:previous_destination, destination_coord]
-        )
-      end
     end
-    # rubocop: enable all
 
-    def update_metadata_after_player_swap
-      if check?
-        @log.update_metadata([:checked_king, to_king_source(to_active_player)])
-      elsif !check?
-        @log.reset_metadata(:checked_king)
       end
     end
   end

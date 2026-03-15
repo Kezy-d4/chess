@@ -815,6 +815,112 @@ describe Chess::Position do
     end
   end
 
+  describe '#update_metadata_before_move' do
+    subject(:position_mid) do
+      fen_immortal = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'
+      fen_parser_immortal = Chess::FENParser.new(fen_immortal)
+      described_class.from_fen_parser(fen_parser_immortal)
+    end
+
+    context 'when the destination is occupied' do
+      let(:source_coord) { Chess::Coord.from_s('f6') }
+      let(:destination_coord) { Chess::Coord.from_s('e4') }
+      let(:captured_piece) do
+        position_mid.instance_variable_get(:@board).square_at(destination_coord).occupant
+      end
+      let(:log) { position_mid.instance_variable_get(:@log) }
+
+      before do
+        allow(log).to receive(:update_metadata).with(
+          [:previous_capture, captured_piece],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+
+      # rubocop:disable RSpec/ExampleLength
+      it 'sends #update_metadata to the Log with expected args' do
+        position_mid.update_metadata_before_move(source_coord, destination_coord)
+        expect(log).to have_received(:update_metadata).with(
+          [:previous_capture, captured_piece],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+      # rubocop:enable all
+    end
+
+    context 'when the destination is unoccupied' do
+      let(:source_coord) { Chess::Coord.from_s('f6') }
+      let(:destination_coord) { Chess::Coord.from_s('g8') }
+      let(:log) { position_mid.instance_variable_get(:@log) }
+
+      before do
+        allow(log).to receive(:reset_metadata).with(:previous_capture)
+        allow(log).to receive(:update_metadata).with(
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+
+      it 'sends #reset_metadata to the Log with expected args' do
+        position_mid.update_metadata_before_move(source_coord, destination_coord)
+        expect(log).to have_received(:reset_metadata).with(:previous_capture)
+      end
+
+      it 'sends #update_metadata to the Log with expected args' do
+        position_mid.update_metadata_before_move(source_coord, destination_coord)
+        expect(log).to have_received(:update_metadata).with(
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+    end
+  end
+
+  describe '#update_metadata_after_player_swap' do
+    context 'when check' do
+      subject(:position_check) do
+        fen_check = 'rnb1kbnr/pppp1ppp/8/8/2B1Pp1q/8/PPPP2PP/RNBQK1NR w KQkq - 2 4'
+        fen_parser_check = Chess::FENParser.new(fen_check)
+        described_class.from_fen_parser(fen_parser_check)
+      end
+
+      let(:log) { position_check.instance_variable_get(:@log) }
+      let(:checked_king_coord) { Chess::Coord.from_s('e1') }
+
+      before do
+        allow(log).to receive(:update_metadata).with(
+          [:checked_king, checked_king_coord]
+        )
+      end
+
+      it 'sends #update_metadata to the Log with expected args' do
+        position_check.update_metadata_after_player_swap
+        expect(log).to have_received(:update_metadata).with(
+          [:checked_king, checked_king_coord]
+        )
+      end
+    end
+
+    context 'when no check' do
+      subject(:position_no_check) do
+        fen_no_check = 'rnb1kbnr/pppp1ppp/8/8/2B1Pp1q/8/PPPP2PP/RNBQ1KNR b kq - 3 4'
+        fen_parser_no_check = Chess::FENParser.new(fen_no_check)
+        described_class.from_fen_parser(fen_parser_no_check)
+      end
+
+      let(:log) { position_no_check.instance_variable_get(:@log) }
+
+      before { allow(log).to receive(:reset_metadata).with(:checked_king) }
+
+      it 'sends #reset_metadata to the Log with expected args' do
+        position_no_check.update_metadata_after_player_swap
+        expect(log).to have_received(:reset_metadata).with(:checked_king)
+      end
+    end
+  end
+
   describe '#to_board_ranks' do
     subject(:position_default) do
       fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
