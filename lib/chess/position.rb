@@ -19,21 +19,20 @@ module Chess
     end
 
     class << self
-      # This method is convenient primarily for unit testing. However,
-      # constructing anything but a default starting Position this way will not
-      # come with the Piece total_moves data contained within the Board or the
-      # data contained within the Log appropriate for that Position, so it is
-      # not a method intended to be used for deserialization of a previously
-      # serialized object.
       # @param fen_parser [FENParser]
       # @param player_white_name [String]
       # @param player_black_name [String]
-      def from_fen_parser(fen_parser, player_white_name, player_black_name)
+      # @param log [Log]
+      def from_fen_parser(
+        fen_parser,
+        player_white_name = 'w',
+        player_black_name = 'b',
+        log = Log.new({})
+      )
         board = Board.from_fen_parser(fen_parser)
         aux_pos_data = AuxPosData.from_fen_parser(fen_parser)
         player_white = Player.new(player_white_name, :white)
         player_black = Player.new(player_black_name, :black)
-        log = Log.new({})
         new(board, aux_pos_data, player_white, player_black, log)
       end
     end
@@ -43,13 +42,10 @@ module Chess
     end
 
     def move(source_coord, destination_coord)
-      return unless @board.occupied_at?(source_coord)
-
       update_metadata_before_move(source_coord, destination_coord)
       piece = @board.square_at(source_coord).occupant
       @board.empty_at(source_coord)
       @board.update_at(destination_coord, piece)
-      piece.increment_total_moves
     end
 
     def check?
@@ -65,7 +61,7 @@ module Chess
     end
 
     def over?
-      @position.checkmate? || @position.stalemate?
+      checkmate? || stalemate?
     end
 
     def legal_move?(source_coord, destination_coord)
@@ -81,8 +77,6 @@ module Chess
     end
 
     def select_source(coord)
-      return unless legal_source?(coord)
-
       @log.update_metadata(
         [:current_source, coord],
         [:currently_controlled, to_legal_controlled_destinations_from(coord)],
@@ -92,13 +86,6 @@ module Chess
 
     def deselect_source
       @log.reset_metadata(:current_source, :currently_controlled, :currently_attacked)
-    end
-
-    def source?
-      metadata = dump_log[:metadata]
-      !metadata[:current_source].nil? &&
-        !metadata[:currently_controlled].nil? &&
-        !metadata[:currently_attacked].nil?
     end
 
     def to_active_player
@@ -129,12 +116,9 @@ module Chess
 
     def to_s
       <<~HEREDOC
-        Board:
-        #{@board}
-        AuxPosData:
-        #{@aux_pos_data}
-        Player playing white: #{@player_white}#{"\n"}
-        Player playing black: #{@player_black}#{"\n"}
+        FEN: #{to_fen}
+        Player playing white: #{@player_white}
+        Player playing black: #{@player_black}
         Log:
         #{@log}
       HEREDOC
