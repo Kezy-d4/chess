@@ -329,6 +329,38 @@ describe Chess::Position do
     end
   end
 
+  describe '#draw_by_fifty_move_rule_claimable?' do
+    subject(:position_default) do
+      fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+      described_class.from_fen_parser(fen_parser_default)
+    end
+
+    let(:aux_pos_data) { position_default.instance_variable_get(:@aux_pos_data) }
+
+    before { allow(aux_pos_data).to receive(:fifty_move_rule_satisfied?) }
+
+    it 'sends #fifty_move_rule_satisfied? to the AuxPosData' do
+      position_default.draw_by_fifty_move_rule_claimable?
+      expect(aux_pos_data).to have_received(:fifty_move_rule_satisfied?)
+    end
+  end
+
+  describe '#draw_by_seventy_five_move_rule?' do
+    subject(:position_default) do
+      fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+      described_class.from_fen_parser(fen_parser_default)
+    end
+
+    let(:aux_pos_data) { position_default.instance_variable_get(:@aux_pos_data) }
+
+    before { allow(aux_pos_data).to receive(:seventy_five_move_rule_satisfied?) }
+
+    it 'sends #seventy_five_move_rule_satisfied? to the AuxPosData' do
+      position_default.draw_by_seventy_five_move_rule?
+      expect(aux_pos_data).to have_received(:seventy_five_move_rule_satisfied?)
+    end
+  end
+
   describe '#over?' do
     context 'when checkmate' do
       subject(:position_checkmate) do
@@ -356,7 +388,20 @@ describe Chess::Position do
       end
     end
 
-    context 'when not checkmate or stalemate' do
+    context 'when draw by seventy five move rule' do
+      subject(:position_draw_by_seventy_five_move_rule) do
+        fen_seventy_five = 'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 150 75'
+        fen_parser_seventy_five = Chess::FENParser.new(fen_seventy_five)
+        described_class.from_fen_parser(fen_parser_seventy_five)
+      end
+
+      it 'returns true' do
+        result = position_draw_by_seventy_five_move_rule.over?
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when not over' do
       subject(:position_not_over) do
         fen_not_over = Chess::ChessConstants::FEN_DEFAULT
         fen_parser_not_over = Chess::FENParser.new(fen_not_over)
