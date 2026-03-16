@@ -104,9 +104,7 @@ module Chess
     end
 
     def swap_active_player
-      @aux_pos_data.increment_full_move_number if to_active_player == @player_black
       @aux_pos_data.swap_active_color
-      update_metadata_after_player_swap
     end
 
     def to_player_sources(player)
@@ -119,6 +117,10 @@ module Chess
       else
         @aux_pos_data.increment_half_move_clock
       end
+    end
+
+    def update_full_move_number_before_player_swap
+      @aux_pos_data.increment_full_move_number if to_active_player == @player_black
     end
 
     # rubocop:disable Metrics/MethodLength

@@ -685,98 +685,16 @@ describe Chess::Position do
   end
 
   describe '#swap_active_player' do
-    context 'when white is active and swapping to a non-checked black' do
-      subject(:position_white_to_non_checked_black) do
-        fen_white_active = 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e3 0 1'
-        fen_parser_white_active = Chess::FENParser.new(fen_white_active)
-        described_class.from_fen_parser(fen_parser_white_active)
-      end
-
-      let(:log) { position_white_to_non_checked_black.instance_variable_get(:@log) }
-
-      before { allow(log).to receive(:reset_metadata).with(:checked_king) }
-
-      it 'does not increment the full move number and swaps the active color' do
-        position_white_to_non_checked_black.swap_active_player
-        fen_after = position_white_to_non_checked_black.to_fen
-        expect(fen_after).to eq('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1')
-      end
-
-      it 'sends #reset_metadata to the Log with expected args' do
-        position_white_to_non_checked_black.swap_active_player
-        expect(log).to have_received(:reset_metadata).with(:checked_king)
-      end
+    subject(:position_mid) do
+      fen_mid = 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e3 0 1'
+      fen_parser_mid = Chess::FENParser.new(fen_mid)
+      described_class.from_fen_parser(fen_parser_mid)
     end
 
-    context 'when white is active and swapping to a checked black' do
-      subject(:position_white_to_checked_black) do
-        fen_white_active = 'r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3P1Q2/P1P1K3/q5b1 w kq - 0 21'
-        fen_parser_white_active = Chess::FENParser.new(fen_white_active)
-        described_class.from_fen_parser(fen_parser_white_active)
-      end
-
-      let(:log) { position_white_to_checked_black.instance_variable_get(:@log) }
-      let(:checked_king_coord) { Chess::Coord.from_s('e8') }
-
-      before { allow(log).to receive(:update_metadata).with([:checked_king, checked_king_coord]) }
-
-      it 'does not increment the full move number and swaps the active color' do
-        position_white_to_checked_black.swap_active_player
-        fen_after = position_white_to_checked_black.to_fen
-        expect(fen_after).to eq('r1b1k1nr/p2p1pNp/n2B4/1p1NP2P/6P1/3P1Q2/P1P1K3/q5b1 b kq - 0 21')
-      end
-
-      it 'sends #update_metadata to the Log with expected args' do
-        position_white_to_checked_black.swap_active_player
-        expect(log).to have_received(:update_metadata).with([:checked_king, checked_king_coord])
-      end
-    end
-
-    context 'when black is active and swapping to a non-checked white' do
-      subject(:position_black_to_non_checked_white) do
-        fen_black_active = 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1'
-        fen_parser_black_active = Chess::FENParser.new(fen_black_active)
-        described_class.from_fen_parser(fen_parser_black_active)
-      end
-
-      let(:log) { position_black_to_non_checked_white.instance_variable_get(:@log) }
-
-      before { allow(log).to receive(:reset_metadata).with(:checked_king) }
-
-      it 'increments the full move number and swaps the active color' do
-        position_black_to_non_checked_white.swap_active_player
-        fen_after = position_black_to_non_checked_white.to_fen
-        expect(fen_after).to eq('rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2')
-      end
-
-      it 'sends #reset_metadata to the Log with expected args' do
-        position_black_to_non_checked_white.swap_active_player
-        expect(log).to have_received(:reset_metadata).with(:checked_king)
-      end
-    end
-
-    context 'when black is active and swapping to a checked white' do
-      subject(:position_black_to_checked_white) do
-        fen_black_active = 'rnb1kbnr/pppp1ppp/8/8/2B1Pp1q/8/PPPP2PP/RNBQK1NR b KQkq - 2 3'
-        fen_parser_black_active = Chess::FENParser.new(fen_black_active)
-        described_class.from_fen_parser(fen_parser_black_active)
-      end
-
-      let(:log) { position_black_to_checked_white.instance_variable_get(:@log) }
-      let(:checked_king_coord) { Chess::Coord.from_s('e1') }
-
-      before { allow(log).to receive(:update_metadata).with([:checked_king, checked_king_coord]) }
-
-      it 'increments the full move number and swaps the active color' do
-        position_black_to_checked_white.swap_active_player
-        fen_after = position_black_to_checked_white.to_fen
-        expect(fen_after).to eq('rnb1kbnr/pppp1ppp/8/8/2B1Pp1q/8/PPPP2PP/RNBQK1NR w KQkq - 2 4')
-      end
-
-      it 'sends #update_metadata to the Log with expected args' do
-        position_black_to_checked_white.swap_active_player
-        expect(log).to have_received(:update_metadata).with([:checked_king, checked_king_coord])
-      end
+    it 'swaps the active Player' do
+      position_mid.swap_active_player
+      fen_after = position_mid.to_fen
+      expect(fen_after).to eq('rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1')
     end
   end
 
@@ -870,6 +788,42 @@ describe Chess::Position do
       it 'sends #increment_half_move_clock to the AuxPosData' do
         position_mid.update_half_move_clock_after_move
         expect(aux_pos_data).to have_received(:increment_half_move_clock)
+      end
+    end
+  end
+
+  describe '#update_full_move_number_before_player_swap' do
+    context 'when swapping from white' do
+      subject(:position_swap_from_white) do
+        fen_mid = 'rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e3 0 1'
+        fen_parser_mid = Chess::FENParser.new(fen_mid)
+        described_class.from_fen_parser(fen_parser_mid)
+      end
+
+      let(:aux_pos_data) { position_swap_from_white.instance_variable_get(:@aux_pos_data) }
+
+      before { allow(aux_pos_data).to receive(:increment_full_move_number) }
+
+      it 'does not send #increment_full_move_number to the AuxPosData' do
+        position_swap_from_white.update_full_move_number_before_player_swap
+        expect(aux_pos_data).not_to have_received(:increment_full_move_number)
+      end
+    end
+
+    context 'when swapping from black' do
+      subject(:position_swap_from_black) do
+        fen_mid = 'rnbqkbnr/pp1ppppp/8/2p5/4P3/8/PPPP1PPP/RNBQKBNR b KQkq c6 0 1'
+        fen_parser_mid = Chess::FENParser.new(fen_mid)
+        described_class.from_fen_parser(fen_parser_mid)
+      end
+
+      let(:aux_pos_data) { position_swap_from_black.instance_variable_get(:@aux_pos_data) }
+
+      before { allow(aux_pos_data).to receive(:increment_full_move_number) }
+
+      it 'sends #increment_full_move_number to the AuxPosData' do
+        position_swap_from_black.update_full_move_number_before_player_swap
+        expect(aux_pos_data).to have_received(:increment_full_move_number)
       end
     end
   end
