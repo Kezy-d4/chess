@@ -815,6 +815,65 @@ describe Chess::Position do
     end
   end
 
+  describe '#update_half_move_clock_after_move' do
+    subject(:position_mid) do
+      fen_immortal = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'
+      fen_parser_immortal = Chess::FENParser.new(fen_immortal)
+      described_class.from_fen_parser(fen_parser_immortal)
+    end
+
+    context 'when testing after moving a Pawn' do
+      let(:source_coord) { Chess::Coord.from_s('d7') }
+      let(:destination_coord) { Chess::Coord.from_s('d6') }
+      let(:aux_pos_data) { position_mid.instance_variable_get(:@aux_pos_data) }
+
+      before do
+        position_mid.update_metadata_before_move(source_coord, destination_coord)
+        position_mid.move(source_coord, destination_coord)
+        allow(aux_pos_data).to receive(:reset_half_move_clock)
+      end
+
+      it 'sends #reset_half_move_clock to the AuxPosData' do
+        position_mid.update_half_move_clock_after_move
+        expect(aux_pos_data).to have_received(:reset_half_move_clock)
+      end
+    end
+
+    context 'when testing after moving to capture' do
+      let(:source_coord) { Chess::Coord.from_s('f6') }
+      let(:destination_coord) { Chess::Coord.from_s('e4') }
+      let(:aux_pos_data) { position_mid.instance_variable_get(:@aux_pos_data) }
+
+      before do
+        position_mid.update_metadata_before_move(source_coord, destination_coord)
+        position_mid.move(source_coord, destination_coord)
+        allow(aux_pos_data).to receive(:reset_half_move_clock)
+      end
+
+      it 'sends #reset_half_move_clock to the AuxPosData' do
+        position_mid.update_half_move_clock_after_move
+        expect(aux_pos_data).to have_received(:reset_half_move_clock)
+      end
+    end
+
+    context 'when testing after not moving a pawn or to capture' do
+      let(:source_coord) { Chess::Coord.from_s('f6') }
+      let(:destination_coord) { Chess::Coord.from_s('g8') }
+      let(:aux_pos_data) { position_mid.instance_variable_get(:@aux_pos_data) }
+
+      before do
+        position_mid.update_metadata_before_move(source_coord, destination_coord)
+        position_mid.move(source_coord, destination_coord)
+        allow(aux_pos_data).to receive(:increment_half_move_clock)
+      end
+
+      it 'sends #increment_half_move_clock to the AuxPosData' do
+        position_mid.update_half_move_clock_after_move
+        expect(aux_pos_data).to have_received(:increment_half_move_clock)
+      end
+    end
+  end
+
   describe '#update_metadata_before_move' do
     subject(:position_mid) do
       fen_immortal = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'

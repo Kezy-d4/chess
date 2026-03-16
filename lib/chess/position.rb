@@ -113,6 +113,14 @@ module Chess
       to_player_associations(player).keys
     end
 
+    def update_half_move_clock_after_move
+      if previous_capture? || previous_pawn_move?
+        @aux_pos_data.reset_half_move_clock
+      else
+        @aux_pos_data.increment_half_move_clock
+      end
+    end
+
     # rubocop:disable Metrics/MethodLength
     def update_metadata_before_move(source_coord, destination_coord)
       if @board.occupied_at?(destination_coord)
@@ -228,9 +236,13 @@ module Chess
       Marshal.load(Marshal.dump(self))
     end
 
+    def previous_capture?
+      !!dump_log[:metadata][:previous_capture]
     end
 
-      end
+    def previous_pawn_move?
+      piece = @board.square_at(dump_log[:metadata][:previous_destination]).occupant
+      piece.is_a?(Pawn)
     end
   end
 end
