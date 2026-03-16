@@ -4,8 +4,10 @@ module Chess
   # Logs data about a chess position
   class Log
     # @param metadata [Hash{Symbol => Coord, Array<Coord>, Piece, nil}]
-    def initialize(metadata)
+    # @param fen_history [Array<String>] the chronological history of FEN records
+    def initialize(metadata = {}, fen_history = [])
       @metadata = metadata
+      @fen_history = fen_history
     end
 
     def update_metadata(*associations)
@@ -20,8 +22,13 @@ module Chess
       keys.each { |key| @metadata[key] = nil if @metadata.include?(key) }
     end
 
+    def push_fen(fen)
+      @fen_history << fen
+    end
+
     def dump
-      { metadata: Marshal.load(Marshal.dump(@metadata)) }
+      { metadata: Marshal.load(Marshal.dump(@metadata)),
+        fen_history: Marshal.load(Marshal.dump(@fen_history)) }
     end
 
     def to_s

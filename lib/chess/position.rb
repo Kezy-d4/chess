@@ -27,7 +27,7 @@ module Chess
         fen_parser,
         player_white_name = 'w',
         player_black_name = 'b',
-        log = Log.new({})
+        log = Log.new
       )
         board = Board.from_fen_parser(fen_parser)
         aux_pos_data = AuxPosData.from_fen_parser(fen_parser)
@@ -144,6 +144,10 @@ module Chess
       elsif !check?
         @log.reset_metadata(:checked_king)
       end
+    end
+
+    def push_to_fen_history
+      @log.push_fen(to_fen)
     end
 
     def to_board_ranks

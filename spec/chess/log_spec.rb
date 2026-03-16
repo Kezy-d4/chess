@@ -105,6 +105,16 @@ describe Chess::Log do
     end
   end
 
+  describe '#push_fen' do
+    subject(:log) { described_class.new }
+
+    it 'pushes the given FEN record to the FEN history' do
+      log.push_fen(Chess::ChessConstants::FEN_DEFAULT)
+      fen_history_after = log.instance_variable_get(:@fen_history)
+      expect(fen_history_after).to eq([Chess::ChessConstants::FEN_DEFAULT])
+    end
+  end
+
   describe '#dump' do
     subject(:log) { described_class.new({}) }
 

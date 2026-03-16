@@ -918,6 +918,22 @@ describe Chess::Position do
     end
   end
 
+  describe '#push_to_fen_history' do
+    subject(:position_default) do
+      fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+      described_class.from_fen_parser(fen_parser_default)
+    end
+
+    let(:log) { position_default.instance_variable_get(:@log) }
+
+    before { allow(log).to receive(:push_fen).with(position_default.to_fen) }
+
+    it 'sends #push_fen to the log with a FEN record of self' do
+      position_default.push_to_fen_history
+      expect(log).to have_received(:push_fen).with(position_default.to_fen)
+    end
+  end
+
   describe '#to_board_ranks' do
     subject(:position_default) do
       fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
