@@ -59,16 +59,12 @@ module Chess
       !check? && !any_legal_moves_available_to?(to_active_player)
     end
 
-    def draw_by_fifty_move_rule_claimable?
+    def draw_by_fifty_move_rule?
       @aux_pos_data.fifty_move_rule_satisfied?
     end
 
-    def draw_by_seventy_five_move_rule?
-      @aux_pos_data.seventy_five_move_rule_satisfied?
-    end
-
     def over?
-      checkmate? || stalemate? || draw_by_seventy_five_move_rule?
+      checkmate? || stalemate? || draw_by_fifty_move_rule?
     end
 
     def legal_move?(source_coord, destination_coord)

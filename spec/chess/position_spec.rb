@@ -329,7 +329,7 @@ describe Chess::Position do
     end
   end
 
-  describe '#draw_by_fifty_move_rule_claimable?' do
+  describe '#draw_by_fifty_move_rule?' do
     subject(:position_default) do
       fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
       described_class.from_fen_parser(fen_parser_default)
@@ -340,24 +340,8 @@ describe Chess::Position do
     before { allow(aux_pos_data).to receive(:fifty_move_rule_satisfied?) }
 
     it 'sends #fifty_move_rule_satisfied? to the AuxPosData' do
-      position_default.draw_by_fifty_move_rule_claimable?
+      position_default.draw_by_fifty_move_rule?
       expect(aux_pos_data).to have_received(:fifty_move_rule_satisfied?)
-    end
-  end
-
-  describe '#draw_by_seventy_five_move_rule?' do
-    subject(:position_default) do
-      fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
-      described_class.from_fen_parser(fen_parser_default)
-    end
-
-    let(:aux_pos_data) { position_default.instance_variable_get(:@aux_pos_data) }
-
-    before { allow(aux_pos_data).to receive(:seventy_five_move_rule_satisfied?) }
-
-    it 'sends #seventy_five_move_rule_satisfied? to the AuxPosData' do
-      position_default.draw_by_seventy_five_move_rule?
-      expect(aux_pos_data).to have_received(:seventy_five_move_rule_satisfied?)
     end
   end
 
@@ -388,15 +372,15 @@ describe Chess::Position do
       end
     end
 
-    context 'when draw by seventy five move rule' do
-      subject(:position_draw_by_seventy_five_move_rule) do
-        fen_seventy_five = 'rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 150 75'
-        fen_parser_seventy_five = Chess::FENParser.new(fen_seventy_five)
-        described_class.from_fen_parser(fen_parser_seventy_five)
+    context 'when draw by fifty move rule' do
+      subject(:position_draw_by_fifty_move_rule) do
+        fen_fifty_move = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 100 50'
+        fen_parser_fifty_move = Chess::FENParser.new(fen_fifty_move)
+        described_class.from_fen_parser(fen_parser_fifty_move)
       end
 
       it 'returns true' do
-        result = position_draw_by_seventy_five_move_rule.over?
+        result = position_draw_by_fifty_move_rule.over?
         expect(result).to be(true)
       end
     end
