@@ -345,6 +345,22 @@ describe Chess::Position do
     end
   end
 
+  describe '#draw_by_threefold_repetition_rule?' do
+    subject(:position_default) do
+      fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+      described_class.from_fen_parser(fen_parser_default)
+    end
+
+    let(:log) { position_default.instance_variable_get(:@log) }
+
+    before { allow(log).to receive(:threefold_repetition_rule_satisfied?) }
+
+    it 'sends #threefold_repetition_rule_satisfied? to the Log' do
+      position_default.draw_by_threefold_repetition_rule?
+      expect(log).to have_received(:threefold_repetition_rule_satisfied?)
+    end
+  end
+
   describe '#over?' do
     context 'when checkmate' do
       subject(:position_checkmate) do
@@ -381,6 +397,29 @@ describe Chess::Position do
 
       it 'returns true' do
         result = position_draw_by_fifty_move_rule.over?
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when draw by threefold repetition rule' do
+      subject(:position_draw_by_threefold_repetition) do
+        fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+        position = described_class.from_fen_parser(fen_parser_default)
+        log = position.instance_variable_get(:@log)
+        log.push_fen('8/pp3p1k/2p2q1p/3r1P2/5R2/7P/P1P1QP2/7K b - - 0 1')
+        log.push_fen('8/pp3p1k/2p4p/3rqP2/5R2/7P/P1P1QP2/7K w - - 0 1')
+        log.push_fen('8/pp3p1k/2p4p/3rqP1Q/5R2/7P/P1P2P2/7K b - - 0 1')
+        log.push_fen('8/pp3p1k/2p2q1p/3r1P1Q/5R2/7P/P1P2P2/7K w - - 0 1')
+        log.push_fen('8/pp3p1k/2p2q1p/3r1P2/5R2/7P/P1P1QP2/7K b - - 0 1')
+        log.push_fen('8/pp3p1k/2p2q1p/4rP2/5R2/7P/P1P1QP2/7K w - - 0 1')
+        log.push_fen('8/pp3p1k/2p2q1p/4rP2/5R2/3Q3P/P1P2P2/7K b - - 0 1')
+        log.push_fen('8/pp3p1k/2p2q1p/3r1P2/5R2/3Q3P/P1P2P2/7K w - - 0 1')
+        log.push_fen('8/pp3p1k/2p2q1p/3r1P2/5R2/7P/P1P1QP2/7K b - - 0 1')
+        position
+      end
+
+      it 'returns true' do
+        result = position_draw_by_threefold_repetition.over?
         expect(result).to be(true)
       end
     end

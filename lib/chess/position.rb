@@ -63,8 +63,12 @@ module Chess
       @aux_pos_data.fifty_move_rule_satisfied?
     end
 
+    def draw_by_threefold_repetition_rule?
+      @log.threefold_repetition_rule_satisfied?
+    end
+
     def over?
-      checkmate? || stalemate? || draw_by_fifty_move_rule?
+      checkmate? || stalemate? || draw_by_fifty_move_rule? || draw_by_threefold_repetition_rule?
     end
 
     def legal_move?(source_coord, destination_coord)
