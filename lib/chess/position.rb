@@ -111,6 +111,19 @@ module Chess
       to_player_associations(player).keys
     end
 
+    def previous_move_eligible_for_promotion?
+      return false unless previous_pawn_move?
+
+      coord = dump_log[:metadata][:previous_destination]
+      pawn = @board.square_at(coord).occupant
+      pawn.eligible_for_promotion?(coord)
+    end
+
+    def promote_previously_moved_pawn(piece)
+      pawn = @board.square_at(dump_log[:metadata][:previous_destination]).occupant
+      pawn.promote(piece)
+    end
+
     def update_half_move_clock_after_move
       if previous_capture? || previous_pawn_move?
         @aux_pos_data.reset_half_move_clock

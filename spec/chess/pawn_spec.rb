@@ -246,4 +246,48 @@ describe Chess::Pawn do
       end
     end
   end
+
+  describe '#eligible_for_promotion?' do
+    context 'when white' do
+      subject(:pawn_white) { described_class.new(:white) }
+
+      it 'returns true if passed any Coord with a rank of 8' do
+        result = pawn_white.eligible_for_promotion?(Chess::Coord.from_s('e8'))
+        expect(result).to be(true)
+      end
+
+      it 'returns false if passed any Coord with a rank other than 8' do
+        result = pawn_white.eligible_for_promotion?(Chess::Coord.from_s('e7'))
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when black' do
+      subject(:pawn_black) { described_class.new(:black) }
+
+      it 'returns true if passed any Coord with a rank of 1' do
+        result = pawn_black.eligible_for_promotion?(Chess::Coord.from_s('e1'))
+        expect(result).to be(true)
+      end
+
+      it 'returns false if passed any Coord with a rank other than 1' do
+        result = pawn_black.eligible_for_promotion?(Chess::Coord.from_s('e2'))
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#promote' do
+    subject(:pawn) { described_class.new(:white) }
+
+    it 'returns a new Piece based on the passed arg' do
+      result = pawn.promote(Chess::Queen)
+      expect(result).to be_a(Chess::Queen)
+    end
+
+    it 'returns a new Piece with this Pawn\'s color' do
+      result = pawn.promote(Chess::Queen)
+      expect(result.color).to eq(pawn.color)
+    end
+  end
 end

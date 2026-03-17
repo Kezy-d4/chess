@@ -756,6 +756,89 @@ describe Chess::Position do
     end
   end
 
+  describe '#previous_move_eligible_for_promotion?' do
+    context 'when the previous move did not involve a Pawn' do
+      subject(:position_no_pawn_move) do
+        fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+        position = described_class.from_fen_parser(fen_parser_default)
+        position.update_metadata_before_move(source_coord, destination_coord)
+        position.move(source_coord, destination_coord)
+        position
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('g1') }
+      let(:destination_coord) { Chess::Coord.from_s('f3') }
+
+      it 'returns false' do
+        result = position_no_pawn_move.previous_move_eligible_for_promotion?
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when the previous move involved a Pawn not eligible for promotion' do
+      subject(:position_pawn_no_promotion) do
+        fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+        position = described_class.from_fen_parser(fen_parser_default)
+        position.update_metadata_before_move(source_coord, destination_coord)
+        position.move(source_coord, destination_coord)
+        position
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e2') }
+      let(:destination_coord) { Chess::Coord.from_s('e4') }
+
+      it 'returns false' do
+        result = position_pawn_no_promotion.previous_move_eligible_for_promotion?
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when the previous move involved a Pawn eligible for promotion' do
+      subject(:position_pawn_promotion) do
+        fen_pre_promotion = 'rnbqk1nr/ppp2ppp/8/4P3/1BP5/8/PP2KpPP/RN1Q1BNR b kq - 1 7'
+        fen_parser_pre_promotion = Chess::FENParser.new(fen_pre_promotion)
+        position = described_class.from_fen_parser(fen_parser_pre_promotion)
+        position.update_metadata_before_move(source_coord, destination_coord)
+        position.move(source_coord, destination_coord)
+        position
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('f2') }
+      let(:destination_coord) { Chess::Coord.from_s('g1') }
+
+      it 'returns true' do
+        result = position_pawn_promotion.previous_move_eligible_for_promotion?
+        expect(result).to be(true)
+      end
+    end
+  end
+
+  describe '#promote_previously_moved_pawn' do
+    subject(:position_pawn_promotion) do
+      fen_pre_promotion = 'rnbqk1nr/ppp2ppp/8/4P3/1BP5/8/PP2KpPP/RN1Q1BNR b kq - 1 7'
+      fen_parser_pre_promotion = Chess::FENParser.new(fen_pre_promotion)
+      position = described_class.from_fen_parser(fen_parser_pre_promotion)
+      position.update_metadata_before_move(source_coord, destination_coord)
+      position.move(source_coord, destination_coord)
+      position
+    end
+
+    let(:source_coord) { Chess::Coord.from_s('f2') }
+    let(:destination_coord) { Chess::Coord.from_s('g1') }
+    let(:previously_moved_pawn) do
+      board = position_pawn_promotion.instance_variable_get(:@board)
+      coord = position_pawn_promotion.dump_log[:metadata][:previous_destination]
+      board.square_at(coord).occupant
+    end
+
+    before { allow(previously_moved_pawn).to receive(:promote).with(Chess::Queen) }
+
+    it 'sends #promote to the previously moved Pawn with the given Piece' do
+      position_pawn_promotion.promote_previously_moved_pawn(Chess::Queen)
+      expect(previously_moved_pawn).to have_received(:promote).with(Chess::Queen)
+    end
+  end
+
   describe '#update_half_move_clock_after_move' do
     subject(:position_mid) do
       fen_immortal = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'

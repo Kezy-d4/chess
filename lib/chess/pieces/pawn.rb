@@ -23,6 +23,18 @@ module Chess
       end
     end
 
+    def eligible_for_promotion?(coord)
+      if white?
+        coord.rank == 8
+      elsif black?
+        coord.rank == 1
+      end
+    end
+
+    def promote(piece)
+      piece.new(@color)
+    end
+
     private
 
     def to_white_adjacent_movement_coords(coord)
