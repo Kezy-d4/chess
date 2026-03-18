@@ -3,6 +3,9 @@
 module Chess
   # A pawn chess piece
   class Pawn < Piece
+    WHITE_PAWN_LAST_RANK = 8
+    BLACK_PAWN_LAST_RANK = 1
+
     using HashExtensions
     # Wrap values in an array where necessary to maintain a common interface
     # with the other pieces.
@@ -25,9 +28,9 @@ module Chess
 
     def eligible_for_promotion?(coord)
       if white?
-        coord.rank == 8
+        coord.rank == WHITE_PAWN_LAST_RANK
       elsif black?
-        coord.rank == 1
+        coord.rank == BLACK_PAWN_LAST_RANK
       end
     end
 
