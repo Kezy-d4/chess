@@ -3,7 +3,9 @@
 module Chess
   # A pawn chess piece
   class Pawn < Piece
+    WHITE_PAWN_HOME_RANK = 2
     WHITE_PAWN_LAST_RANK = 8
+    BLACK_PAWN_HOME_RANK = 7
     BLACK_PAWN_LAST_RANK = 1
 
     using HashExtensions
@@ -41,7 +43,7 @@ module Chess
     private
 
     def to_white_adjacent_movement_coords(coord)
-      if coord.rank == 2
+      if coord.rank == WHITE_PAWN_HOME_RANK
         { north: coord.to_northern_adjacencies[0..1] }.delete_empty_arr_vals
       else
         { north: [coord.to_northern_adjacencies.first] }.delete_empty_arr_vals
@@ -49,7 +51,7 @@ module Chess
     end
 
     def to_black_adjacent_movement_coords(coord)
-      if coord.rank == 7
+      if coord.rank == BLACK_PAWN_HOME_RANK
         { south: coord.to_southern_adjacencies[0..1] }.delete_empty_arr_vals
       else
         { south: [coord.to_southern_adjacencies.first] }.delete_empty_arr_vals
