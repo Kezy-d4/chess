@@ -934,6 +934,50 @@ describe Chess::Position do
     end
   end
 
+  describe '#update_en_passant_target_after_move' do
+    context 'when the previous move was a pawn double push' do
+      subject(:position_double_pawn_push) do
+        fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+        position = described_class.from_fen_parser(fen_parser_default)
+        position.update_metadata_before_move(source_coord, destination_coord)
+        position.move(source_coord, destination_coord)
+        position
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e2') }
+      let(:destination_coord) { Chess::Coord.from_s('e4') }
+      let(:aux_pos_data) { position_double_pawn_push.instance_variable_get(:@aux_pos_data) }
+
+      before { allow(aux_pos_data).to receive(:update_en_passant_target).with('e3') }
+
+      it 'sends #update_en_passant_target to the AuxPosData with the expected string' do
+        position_double_pawn_push.update_en_passant_target_after_move
+        expect(aux_pos_data).to have_received(:update_en_passant_target).with('e3')
+      end
+    end
+
+    context 'when the previous move was not a pawn double push' do
+      subject(:position_no_double_pawn_push) do
+        fen_parser_default = Chess::FENParser.new(Chess::ChessConstants::FEN_DEFAULT)
+        position = described_class.from_fen_parser(fen_parser_default)
+        position.update_metadata_before_move(source_coord, destination_coord)
+        position.move(source_coord, destination_coord)
+        position
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e2') }
+      let(:destination_coord) { Chess::Coord.from_s('e3') }
+      let(:aux_pos_data) { position_no_double_pawn_push.instance_variable_get(:@aux_pos_data) }
+
+      before { allow(aux_pos_data).to receive(:reset_en_passant_target) }
+
+      it 'sends #reset_en_passant_target to the AuxPosData' do
+        position_no_double_pawn_push.update_en_passant_target_after_move
+        expect(aux_pos_data).to have_received(:reset_en_passant_target)
+      end
+    end
+  end
+
   describe '#update_metadata_before_move' do
     subject(:position_mid) do
       fen_immortal = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'

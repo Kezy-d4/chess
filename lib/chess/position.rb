@@ -136,6 +136,15 @@ module Chess
       @aux_pos_data.increment_full_move_number if to_active_player == @player_black
     end
 
+    def update_en_passant_target_after_move
+      if previous_double_pawn_push?
+        target = dump_log[:metadata][:previous_destination].to_adjacency(0, -1).to_s
+        @aux_pos_data.update_en_passant_target(target)
+      else
+        @aux_pos_data.reset_en_passant_target
+      end
+    end
+
     # rubocop:disable Metrics/MethodLength
     def update_metadata_before_move(source_coord, destination_coord)
       if @board.occupied_at?(destination_coord)
@@ -262,6 +271,15 @@ module Chess
     def previous_pawn_move?
       piece = @board.square_at(dump_log[:metadata][:previous_destination]).occupant
       piece.is_a?(Pawn)
+    end
+
+    def previous_double_pawn_push?
+      return false unless previous_pawn_move?
+
+      metadata = dump_log[:metadata]
+      previous_source = metadata[:previous_source]
+      previous_destination = metadata[:previous_destination]
+      previous_destination.rank - previous_source.rank == 2
     end
   end
 end
