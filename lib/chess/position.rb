@@ -145,12 +145,27 @@ module Chess
       end
     end
 
+    def capture_en_passant_target_before_move(source_coord, destination_coord)
+      capture_coord = to_en_passant_capture_coord(source_coord, destination_coord)
+      @board.square_at(capture_coord).remove_occupant
+    end
+
+    def move_to_en_passant_capture?(source_coord, destination_coord)
+      @board.square_at(source_coord).occupant.is_a?(Pawn) &&
+        destination_coord.to_s == @aux_pos_data.access_en_passant_target
+    end
+
     # rubocop:disable Metrics/MethodLength
     def update_metadata_before_move(source_coord, destination_coord)
       if @board.occupied_at?(destination_coord)
-        captured_piece = @board.square_at(destination_coord).occupant
         @log.update_metadata(
-          [:previous_capture, captured_piece],
+          [:previous_capture, destination_coord],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      elsif move_to_en_passant_capture?(source_coord, destination_coord)
+        @log.update_metadata(
+          [:previous_capture, to_en_passant_capture_coord(source_coord, destination_coord)],
           [:previous_source, source_coord],
           [:previous_destination, destination_coord]
         )
@@ -209,6 +224,9 @@ module Chess
 
     def move_would_leave_active_player_in_check?(source_coord, destination_coord)
       clone = self.clone
+      if clone.move_to_en_passant_capture?(source_coord, destination_coord)
+        clone.capture_en_passant_target_before_move(source_coord, destination_coord)
+      end
       clone.move(source_coord, destination_coord)
       clone.check?
     end
@@ -236,7 +254,10 @@ module Chess
     end
 
     def to_attacked_destinations_from(coord)
-      @board.to_adjacent_attacked_coords_from(coord).values.flatten
+      @board.to_adjacent_attacked_coords_from(
+        coord,
+        @aux_pos_data.access_en_passant_target
+      ).values.flatten
     end
 
     def to_possible_destinations_from(coord)
@@ -280,6 +301,15 @@ module Chess
       previous_source = metadata[:previous_source]
       previous_destination = metadata[:previous_destination]
       previous_destination.rank - previous_source.rank == 2
+    end
+
+    def to_en_passant_capture_coord(source_coord, destination_coord)
+      source_pawn = @board.square_at(source_coord).occupant
+      if source_pawn.white?
+        destination_coord.to_adjacency(0, -1)
+      elsif source_pawn.black?
+        destination_coord.to_adjacency(0, 1)
+      end
     end
   end
 end

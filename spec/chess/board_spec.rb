@@ -329,6 +329,94 @@ describe Chess::Board do
         expect(result).to be_a(Hash).and be_empty
       end
     end
+
+    context 'when passing an en passant target' do # rubocop:disable RSpec/MultipleMemoizedHelpers
+      subject(:board_en_passant) do
+        fen_en_passant = 'r1bqkbnr/ppp1p1pp/n2p4/4Pp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 6'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:en_passant_target) { 'f6' }
+      let(:coord_e5_expectation) do
+        {
+          north_west: ['d6'],
+          north_east: ['f6']
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+      let(:coord_e4_expectation) do
+        {
+          north_west_right: ['d6']
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+      let(:coord_f5_expectation) do
+        {
+          south_west: ['e4']
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+      let(:coord_d6_expectation) do
+        {
+          south_east: ['e5']
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+      let(:coord_f1_expectation) do
+        {
+          north_west: ['a6']
+        }.transform_values do |coord_a|
+          coord_a.map { |coord_s| Chess::Coord.from_s(coord_s) }
+        end
+      end
+
+      example 'Coord e5' do
+        coord_e5 = Chess::Coord.from_s('e5')
+        result = board_en_passant.to_adjacent_attacked_coords_from(coord_e5, en_passant_target)
+        expect(result).to eq(coord_e5_expectation)
+      end
+
+      example 'Coord e4' do
+        coord_e4 = Chess::Coord.from_s('e4')
+        result = board_en_passant.to_adjacent_attacked_coords_from(coord_e4, en_passant_target)
+        expect(result).to eq(coord_e4_expectation)
+      end
+
+      example 'Coord f5' do
+        coord_f5 = Chess::Coord.from_s('f5')
+        result = board_en_passant.to_adjacent_attacked_coords_from(coord_f5, en_passant_target)
+        expect(result).to eq(coord_f5_expectation)
+      end
+
+      example 'Coord d6' do
+        coord_d6 = Chess::Coord.from_s('d6')
+        result = board_en_passant.to_adjacent_attacked_coords_from(coord_d6, en_passant_target)
+        expect(result).to eq(coord_d6_expectation)
+      end
+
+      example 'Coord f1' do
+        coord_f1 = Chess::Coord.from_s('f1')
+        result = board_en_passant.to_adjacent_attacked_coords_from(coord_f1, en_passant_target)
+        expect(result).to eq(coord_f1_expectation)
+      end
+
+      example 'Coord d1' do
+        coord_d1 = Chess::Coord.from_s('d1')
+        result = board_en_passant.to_adjacent_attacked_coords_from(coord_d1, en_passant_target)
+        expect(result).to be_a(Hash).and be_empty
+      end
+
+      example 'Coord d8' do
+        coord_d8 = Chess::Coord.from_s('d8')
+        result = board_en_passant.to_adjacent_attacked_coords_from(coord_d8, en_passant_target)
+        expect(result).to be_a(Hash).and be_empty
+      end
+    end
   end
 
   describe '#to_occupied_associations' do

@@ -3,7 +3,7 @@
 module Chess
   # Logs data about a chess position
   class Log
-    # @param metadata [Hash{Symbol => Coord, Array<Coord>, Piece, nil}]
+    # @param metadata [Hash{Symbol => Coord, Array<Coord>, nil}]
     # @param fen_history [Array<String>] the chronological history of FEN records
     def initialize(metadata = {}, fen_history = [])
       @metadata = metadata

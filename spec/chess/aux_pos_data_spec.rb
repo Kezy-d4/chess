@@ -590,38 +590,19 @@ describe Chess::AuxPosData do
   end
 
   describe '#access_en_passant_target' do
-    context 'when an en passant target is available' do
-      subject(:aux_pos_data_en_passant) { described_class.new(data_fields_en_passant) }
+    subject(:aux_pos_data_en_passant) { described_class.new(data_fields_en_passant) }
 
-      let(:data_fields_en_passant) do
-        { active_color: 'b',
-          castling_availability: 'KQkq',
-          en_passant_target: 'e3',
-          half_move_clock: '0',
-          full_move_number: '1' }
-      end
-
-      it 'returns the en passant target coordinates' do
-        result = aux_pos_data_en_passant.access_en_passant_target
-        expect(result).to eq('e3')
-      end
+    let(:data_fields_en_passant) do
+      { active_color: 'b',
+        castling_availability: 'KQkq',
+        en_passant_target: 'e3',
+        half_move_clock: '0',
+        full_move_number: '1' }
     end
 
-    context 'when an en passant target is not available' do
-      subject(:aux_pos_data_no_en_passant) { described_class.new(data_fields_no_en_passant) }
-
-      let(:data_fields_no_en_passant) do
-        { active_color: 'w',
-          castling_availability: 'KQkq',
-          en_passant_target: '-',
-          half_move_clock: '0',
-          full_move_number: '1' }
-      end
-
-      it 'returns nil' do
-        result = aux_pos_data_no_en_passant.access_en_passant_target
-        expect(result).to be_nil
-      end
+    it 'returns the en passant target data field' do
+      result = aux_pos_data_en_passant.access_en_passant_target
+      expect(result).to eq('e3')
     end
   end
 

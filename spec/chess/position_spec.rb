@@ -247,6 +247,19 @@ describe Chess::Position do
         expect(result).to be(false)
       end
     end
+
+    context 'when testing a Position where the only legal move is an en passant capture' do
+      subject(:position_no_checkmate) do
+        fen_no_checkmate = '5B2/8/8/4RPpk/4pK1N/6P1/4qP2/8 w - g6 0 2'
+        fen_parser_no_checkmate = Chess::FENParser.new(fen_no_checkmate)
+        described_class.from_fen_parser(fen_parser_no_checkmate)
+      end
+
+      it 'returns false' do
+        result = position_no_checkmate.checkmate?
+        expect(result).to be(false)
+      end
+    end
   end
 
   describe '#stalemate?' do
@@ -318,6 +331,19 @@ describe Chess::Position do
     context 'when testing a Position of the immortal game after 2...exf4' do
       subject(:position_no_stalemate) do
         fen_no_stalemate = 'rnbqkbnr/pppp1ppp/8/8/4Pp2/8/PPPP2PP/RNBQKBNR w KQkq - 0 3'
+        fen_parser_no_stalemate = Chess::FENParser.new(fen_no_stalemate)
+        described_class.from_fen_parser(fen_parser_no_stalemate)
+      end
+
+      it 'returns false' do
+        result = position_no_stalemate.stalemate?
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when testing a Position where the only legal move is an en passant capture' do
+      subject(:position_no_stalemate) do
+        fen_no_stalemate = '8/7p/5K1k/8/6Pp/7P/5P2/8 b - g3 0 1'
         fen_parser_no_stalemate = Chess::FENParser.new(fen_no_stalemate)
         described_class.from_fen_parser(fen_parser_no_stalemate)
       end
@@ -590,6 +616,32 @@ describe Chess::Position do
       specify 'Coord h4 returns the expected array' do
         expected = %w[h3 h2 g3 f2 e1 g4 g5 f6 e7 d8 h5 h6].map { |coord_s| Chess::Coord.from_s(coord_s) }
         result = position_pinned.to_legal_destinations_from(Chess::Coord.from_s('h4'))
+        expect(result).to match_array(expected)
+      end
+    end
+
+    context 'when testing a Position with an en passant target' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'r1bqkbnr/ppp1p1pp/n2p4/4Pp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 6'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      specify 'Coord e5 returns the expected array' do
+        expected = %w[d6 e6 f6].map { |coord_s| Chess::Coord.from_s(coord_s) }
+        result = position_en_passant.to_legal_destinations_from(Chess::Coord.from_s('e5'))
+        expect(result).to match_array(expected)
+      end
+
+      specify 'Coord e4 returns the expected array' do
+        expected = %w[d6 c5 c3 g3 f6 g5].map { |coord_s| Chess::Coord.from_s(coord_s) }
+        result = position_en_passant.to_legal_destinations_from(Chess::Coord.from_s('e4'))
+        expect(result).to match_array(expected)
+      end
+
+      specify 'Coord f1 returns the expected array' do
+        expected = %w[e2 d3 c4 b5 a6].map { |coord_s| Chess::Coord.from_s(coord_s) }
+        result = position_en_passant.to_legal_destinations_from(Chess::Coord.from_s('f1'))
         expect(result).to match_array(expected)
       end
     end
@@ -978,6 +1030,120 @@ describe Chess::Position do
     end
   end
 
+  describe '#capture_en_passant_target_before_move' do
+    context 'when white is capturing an en passant target' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'r1bqkbnr/ppp1p1pp/n2p4/4Pp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 6'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e5') }
+      let(:destination_coord) { Chess::Coord.from_s('f6') }
+      let(:square) do
+        board = position_en_passant.instance_variable_get(:@board)
+        capture_coord = Chess::Coord.from_s('f5')
+        board.square_at(capture_coord)
+      end
+
+      before { allow(square).to receive(:remove_occupant) }
+
+      it 'sends #remove_occupant to the expected Square' do
+        position_en_passant.capture_en_passant_target_before_move(source_coord, destination_coord)
+        expect(square).to have_received(:remove_occupant)
+      end
+    end
+
+    context 'when black is capturing an en passant target' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'rnbqkb1r/pppp1ppp/8/1N6/4pP1n/4P3/PPPP3P/1RBQKBNR b Kkq f3 0 8'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e4') }
+      let(:destination_coord) { Chess::Coord.from_s('f3') }
+      let(:square) do
+        board = position_en_passant.instance_variable_get(:@board)
+        capture_coord = Chess::Coord.from_s('f4')
+        board.square_at(capture_coord)
+      end
+
+      before { allow(square).to receive(:remove_occupant) }
+
+      it 'sends #remove_occupant to the expected Square' do
+        position_en_passant.capture_en_passant_target_before_move(source_coord, destination_coord)
+        expect(square).to have_received(:remove_occupant)
+      end
+    end
+  end
+
+  describe '#move_to_en_passant_capture?' do
+    context 'when moving a white pawn to the en passant target' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'rnb1kb1r/pppq2pp/3pp3/3nPp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 8'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e5') }
+      let(:destination_coord) { Chess::Coord.from_s('f6') }
+
+      it 'returns true' do
+        result = position_en_passant.move_to_en_passant_capture?(source_coord, destination_coord)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when moving a black pawn to the en passant target' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'rnbqkbnr/pppp1ppp/8/8/4pP2/2N1P3/PPPPQ1PP/R1B1KBNR b KQkq f3 0 4'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e4') }
+      let(:destination_coord) { Chess::Coord.from_s('f3') }
+
+      it 'returns true' do
+        result = position_en_passant.move_to_en_passant_capture?(source_coord, destination_coord)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when moving a non-Pawn piece to the en passant target' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'rnb1kb1r/pppq2pp/3pp3/3nPp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 8'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e4') }
+      let(:destination_coord) { Chess::Coord.from_s('f6') }
+
+      it 'returns false' do
+        result = position_en_passant.move_to_en_passant_capture?(source_coord, destination_coord)
+        expect(result).to be(false)
+      end
+    end
+
+    context 'when moving a piece to somewhere besides the en passant target' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'rnb1kb1r/pppq2pp/3pp3/3nPp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 8'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('f2') }
+      let(:destination_coord) { Chess::Coord.from_s('f4') }
+
+      it 'returns false' do
+        result = position_en_passant.move_to_en_passant_capture?(source_coord, destination_coord)
+        expect(result).to be(false)
+      end
+    end
+  end
+
   describe '#update_metadata_before_move' do
     subject(:position_mid) do
       fen_immortal = 'rnb1kb1r/p2p1ppp/2p2n2/1B3Nq1/4PpP1/3P4/PPP4P/RNBQ1KR1 b kq - 2 11'
@@ -988,14 +1154,11 @@ describe Chess::Position do
     context 'when the destination is occupied' do
       let(:source_coord) { Chess::Coord.from_s('f6') }
       let(:destination_coord) { Chess::Coord.from_s('e4') }
-      let(:captured_piece) do
-        position_mid.instance_variable_get(:@board).square_at(destination_coord).occupant
-      end
       let(:log) { position_mid.instance_variable_get(:@log) }
 
       before do
         allow(log).to receive(:update_metadata).with(
-          [:previous_capture, captured_piece],
+          [:previous_capture, destination_coord],
           [:previous_source, source_coord],
           [:previous_destination, destination_coord]
         )
@@ -1005,12 +1168,42 @@ describe Chess::Position do
       it 'sends #update_metadata to the Log with expected args' do
         position_mid.update_metadata_before_move(source_coord, destination_coord)
         expect(log).to have_received(:update_metadata).with(
-          [:previous_capture, captured_piece],
+          [:previous_capture, destination_coord],
           [:previous_source, source_coord],
           [:previous_destination, destination_coord]
         )
       end
       # rubocop:enable all
+    end
+
+    context 'when the move involves an en passant capture' do
+      subject(:position_en_passant) do
+        fen_en_passant = 'r1bqkbnr/ppp1p1pp/n2p4/4Pp2/4N3/8/PPPP1PPP/RNBQKB1R w KQkq f6 0 6'
+        fen_parser_en_passant = Chess::FENParser.new(fen_en_passant)
+        described_class.from_fen_parser(fen_parser_en_passant)
+      end
+
+      let(:source_coord) { Chess::Coord.from_s('e5') }
+      let(:destination_coord) { Chess::Coord.from_s('f6') }
+      let(:en_passant_capture_coord) { Chess::Coord.from_s('f5') }
+      let(:log) { position_en_passant.instance_variable_get(:@log) }
+
+      before do
+        allow(log).to receive(:update_metadata).with(
+          [:previous_capture, en_passant_capture_coord],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
+
+      it 'sends #update_metadata to the Log with expected args' do # rubocop:disable RSpec/ExampleLength
+        position_en_passant.update_metadata_before_move(source_coord, destination_coord)
+        expect(log).to have_received(:update_metadata).with(
+          [:previous_capture, en_passant_capture_coord],
+          [:previous_source, source_coord],
+          [:previous_destination, destination_coord]
+        )
+      end
     end
 
     context 'when the destination is unoccupied' do

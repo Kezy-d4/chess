@@ -80,20 +80,22 @@ module Chess
       controlled.delete_empty_arr_vals
     end
 
-    # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    def to_adjacent_attacked_coords_from(coord)
+    # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    def to_adjacent_attacked_coords_from(coord, en_passant_target = '-')
       return {} unless occupied_at?(coord)
 
       piece = square_at(coord).occupant
       captures = piece.to_adjacent_capture_coords(coord)
       attacked = captures.transform_values do |coord_a|
         result = coord_a.find do |adjacent_coord|
-          next unless square_at(adjacent_coord).occupied?
+          adjacent_occupant = square_at(adjacent_coord)&.occupant
+          break if piece.color == adjacent_occupant&.color
 
-          adjacent_occupant = square_at(adjacent_coord).occupant
-          break if piece.color == adjacent_occupant.color
-
-          piece.color != adjacent_occupant.color
+          if adjacent_occupant
+            piece.color != adjacent_occupant.color
+          else
+            piece.is_a?(Pawn) && adjacent_coord.to_s == en_passant_target
+          end
         end
         [result]
       end

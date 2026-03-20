@@ -83,8 +83,6 @@ module Chess
     end
 
     def access_en_passant_target
-      return unless en_passant_target_available?
-
       @data_fields[:en_passant_target]
     end
 
