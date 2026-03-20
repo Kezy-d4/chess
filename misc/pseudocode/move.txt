@@ -1,0 +1,42 @@
+The following is a rough outline of the flow and order of methods necessary to
+execute a move. When I say rough, I mean it. This pseudocode doesn't account for
+collecting and verifying user input, checking game conditions, etc. It's just to
+give an idea of the order and process an end-to-end script might have to go
+through to make a move in the game. The methods shown here are all public 
+instance methods defined on Position. 
+
+Many of these methods are designed to be called only at a very specific time and
+under very specific conditions as outlined. I considered this to be a better
+design tradeoff than attempting to package all of the below logic into a single
+#move method for example, which would be impossible to test, a nightmare to 
+debug and extremely bloated. This does mean that any end-to-end script calling 
+these methods must be careful to use them responsibly, at the right time, in the
+right order and under the right conditions. This is the best solution I could
+think of with the architecture I had built.
+
+If you're wondering what the "update_metadata" methods are about, they basically
+record some extra info about the game to an injected Log object. They record the
+coordinates of key locations that would be lost with FEN alone, like the 
+previous source, previous destination, previous capture, etc. Some of that
+information is only useful for passing to Display to enrich the user interface,
+but I actually ended up relying on this info heavily to implement many features
+of the game. As an example, I can check if the previous move was a double pawn
+push by checking that the Piece at the previous destination is a Pawn and that 
+the difference between the rank of the previous destination and previous source
+is two.
+--------------------------------------------------------------------------------
+
+Pseudocode:
+
+push_to_fen_history
+update_metadata_before_move(source_coord, destination_coord)
+if move_to_en_passant_capture?(source_coord, destination_coord) do
+  capture_en_passant_target_before_move(source_coord, destination_coord)
+end
+move(source_coord, destination_coord)
+update_en_passant_target_after_move
+update_half_move_clock_after_move
+promote_previously_moved_pawn(piece) if previous_move_eligible_for_promotion?
+update_full_move_number_before_player_swap
+swap_active_player
+update_metadata_after_player_swap
